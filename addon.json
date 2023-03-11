@@ -1,0 +1,14 @@
+{
+    "legacy_addon_id": "",
+    "title": "Xenforo Subscriptions",
+    "description": "A Xenforo 2.2 addon that allows to process the post, conversation message and user notification creation events in a remote backend",
+    "version_id": 1000010,
+    "version_string": "1.0.0 Alpha",
+    "dev": "olml89",
+    "dev_url": "https://github.com/olml89",
+    "faq_url": "",
+    "support_url": "",
+    "extra_urls": [],
+    "require": [],
+    "icon": ""
+}
