@@ -11,6 +11,7 @@ use olml89\Subscriptions\ValueObjects\Uuid\Uuid;
 use olml89\Subscriptions\ValueObjects\ValueObjectHydrator;
 use ReflectionException;
 use XF\Db\Exception;
+use XF\Entity\User as XFUser;
 use XF\Error;
 use XF\Mvc\Entity\Manager;
 
@@ -61,6 +62,19 @@ final class SubscriptionRepository
     {
         $rows = $this->entityManager->getDb()->fetchAll(
             'SELECT * FROM `xf_subscriptions` GROUP BY `webhook`'
+        );
+
+        return $this->createInstances($rows);
+    }
+
+    /**
+     * @return Subscription[]
+     */
+    public function getByUser(XFUser $xfUser): array
+    {
+        $rows = $this->entityManager->getDb()->fetchAll(
+            query: 'SELECT * FROM `xf_subscriptions` WHERE user_id = ?',
+            params: ['user_id' => $xfUser->user_id]
         );
 
         return $this->createInstances($rows);
