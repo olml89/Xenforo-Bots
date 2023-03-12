@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\ValueObjects\UserId;
+namespace olml89\Subscriptions\ValueObjects\AutoId;
 
 use olml89\Subscriptions\ValueObjects\IntValueObject;
 
-final class UserId extends IntValueObject
+final class AutoId extends IntValueObject
 {
     /**
-     * @throws InvalidUserIdException
+     * @throws InvalidAutoIdException
      */
     public function __construct(int $user_id)
     {
@@ -17,12 +17,12 @@ final class UserId extends IntValueObject
     }
 
     /**
-     * @throws InvalidUserIdException
+     * @throws InvalidAutoIdException
      */
     private function ensureIsBiggerThan0(int $user_id): void
     {
         if ($user_id <= 0) {
-            throw new InvalidUserIdException($user_id);
+            throw new InvalidAutoIdException($user_id);
         }
     }
 }

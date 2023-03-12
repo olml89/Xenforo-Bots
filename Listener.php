@@ -3,12 +3,18 @@
 namespace olml89\Subscriptions;
 
 use GuzzleHttp\Client;
+use Laminas\Validator\Uuid;
 use olml89\Subscriptions\Exceptions\ErrorHandler;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Repositories\XFUserRepository;
+use olml89\Subscriptions\Services\LaminasUuidValidator;
+use olml89\Subscriptions\Services\StripeRandomUuidGenerator;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
+use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
+use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator;
+use Stripe\Util\RandomGenerator;
 use XF\App;
 use XF\Container;
 
@@ -57,11 +63,23 @@ final class Listener
             );
         };
 
+        $container[UuidGenerator::class] = function() use($app): UuidGenerator
+        {
+            return new StripeRandomUuidGenerator(new RandomGenerator());
+        };
+
+        $container[UuidValidator::class] = function() use($app): UuidValidator
+        {
+            return new LaminasUuidValidator(new Uuid());
+        };
+
         $container[CreateSubscription::class] = function() use($app): CreateSubscription
         {
             return new CreateSubscription(
-                xFUserFinder: $app->get(XFUserFinder::class),
+                uuidGenerator: $app->get(UuidGenerator::class),
+                uuidValidator: $app->get(UuidValidator::class),
                 xFUrlValidator: $app->validator('Url'),
+                xFUserFinder: $app->get(XFUserFinder::class),
                 webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
                 errorHandler: $app->get(ErrorHandler::class),

@@ -2,7 +2,7 @@
 
 namespace olml89\Subscriptions\Repositories;
 
-use olml89\Subscriptions\ValueObjects\UserId\UserId;
+use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
 use XF\Entity\User;
 use XF\Mvc\Entity\Manager;
 
@@ -12,7 +12,7 @@ final class XFUserRepository
         private readonly Manager $entityManager,
     ) {}
 
-    public function get(UserId $userId) : ?User
+    public function get(AutoId $userId) : ?User
     {
         return $this->entityManager->findOne(
             shortName: 'XF:User',

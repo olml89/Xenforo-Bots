@@ -20,6 +20,7 @@ final class SubscriptionRepository
         $this->entityManager->getDb()->insert(
             table: 'xf_subscriptions',
             rawValues: [
+                'id' => $subscription->id,
                 'user_id' => $subscription->userId->value,
                 'webhook' => $subscription->webhook,
                 'token' => $subscription->token,
