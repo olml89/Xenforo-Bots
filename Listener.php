@@ -5,7 +5,7 @@ namespace olml89\Subscriptions;
 use GuzzleHttp\Client;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Repositories\XFUserRepository;
-use olml89\Subscriptions\Services\WebhookVerifier\WebhookVeryfier;
+use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
 use XF\App;
@@ -38,9 +38,9 @@ final class Listener
             return new XFUserFinder($app->get(XFUserRepository::class));
         };
 
-        $container[WebhookVeryfier::class] = function() use($app): WebhookVeryfier
+        $container[WebhookVerifier::class] = function() use($app): WebhookVerifier
         {
-            return new WebhookVeryfier(self::createJsonHttpClient($app));
+            return new WebhookVerifier(self::createJsonHttpClient($app));
         };
 
         $container[SubscriptionRepository::class] = function() use($app): SubscriptionRepository
@@ -52,7 +52,7 @@ final class Listener
         {
             return new CreateSubscription(
                 xFUserFinder: $app->get(XFUserFinder::class),
-                webhookVeryfier: $app->get(WebhookVeryfier::class),
+                webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
             );
         };

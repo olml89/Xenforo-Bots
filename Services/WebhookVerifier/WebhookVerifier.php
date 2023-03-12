@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\RequestException;
 use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
 use olml89\Subscriptions\ValueObjects\Url\Url;
 
-final class WebhookVeryfier
+final class WebhookVerifier
 {
     public function __construct(
         private readonly Client $httpClient,

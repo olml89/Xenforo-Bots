@@ -5,7 +5,7 @@ namespace olml89\Subscriptions\UseCases\Subscription;
 use olml89\Subscriptions\Entities\Subscription;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookNotImplementedException;
-use olml89\Subscriptions\Services\WebhookVerifier\WebhookVeryfier;
+use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserNotFoundException;
 use olml89\Subscriptions\ValueObjects\Md5Hash\InvalidMd5HashException;
@@ -20,7 +20,7 @@ final class CreateSubscription
 {
     public function __construct(
         private readonly XFUserFinder $xFUserFinder,
-        private readonly WebhookVeryfier $webhookVeryfier,
+        private readonly WebhookVerifier $webhookVerifier,
         private readonly SubscriptionRepository $subscriptionRepository,
     ) {}
 
@@ -38,7 +38,7 @@ final class CreateSubscription
         );
 
         $this->xFUserFinder->find($subscription->userId);
-        $this->webhookVeryfier->verify($subscription->webhook, $subscription->token);
+        $this->webhookVerifier->verify($subscription->webhook, $subscription->token);
 
         try {
             $this->subscriptionRepository->save($subscription);
