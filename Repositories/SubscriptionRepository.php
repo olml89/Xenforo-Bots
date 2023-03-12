@@ -81,6 +81,33 @@ final class SubscriptionRepository
     }
 
     /**
+     * @param XFUser[] $xFUsers
+     *
+     * @return Subscription[]
+     */
+    public function getByUsers(array $xFUsers): array
+    {
+        $userIds = array_map(
+            function (XFUser $xFUser) : int {
+                return $xFUser->user_id;
+            },
+            $xFUsers
+        );
+
+        $userIdsPadding = implode(
+            separator: ',',
+            array: array_fill(0, count($userIds), '?')
+        );
+
+        $rows = $this->entityManager->getDb()->fetchAll(
+            query: 'SELECT * FROM `xf_subscriptions` WHERE user_id IN ('.$userIdsPadding.')',
+            params: $userIds
+        );
+
+        return $this->createInstances($rows);
+    }
+
+    /**
      * @throws Exception
      */
     public function save(Subscription $subscription): void

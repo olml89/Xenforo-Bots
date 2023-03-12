@@ -13,6 +13,7 @@ use olml89\Subscriptions\Services\WebhookNotifier\WebhookNotifier;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
+use olml89\Subscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
 use olml89\Subscriptions\UseCases\XFPost\NotifyXFPost;
 use olml89\Subscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
 use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
@@ -111,6 +112,14 @@ final class Listener
         $container[NotifyXFUserAlert::class] = function() use($app): NotifyXFUserAlert
         {
             return new NotifyXFUserAlert(
+                subscriptionRepository: $app->get(SubscriptionRepository::class),
+                webhookNotifier: $app->get(WebhookNotifier::class),
+            );
+        };
+
+        $container[NotifyXFConversationMessage::class] = function() use($app): NotifyXFConversationMessage
+        {
+            return new NotifyXFConversationMessage(
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
