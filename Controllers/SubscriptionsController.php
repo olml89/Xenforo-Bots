@@ -2,9 +2,6 @@
 
 namespace olml89\Subscriptions\Controllers;
 
-use olml89\Subscriptions\Repositories\SubscriptionRepository;
-use olml89\Subscriptions\Repositories\XFUserRepository;
-use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
@@ -18,12 +15,9 @@ final class SubscriptionsController extends AbstractController
 
     public function __construct(App $app, Request $request)
     {
+        $this->createSubscription = $app->get(CreateSubscription::class);
+
         parent::__construct($app, $request);
-
-        $xFUserFinder = new XFUserFinder(new XFUserRepository($this->em()));
-        $subscriptionRepository = new SubscriptionRepository($this->em());
-
-        $this->createSubscription = new CreateSubscription($xFUserFinder, $subscriptionRepository);
     }
 
     /**
