@@ -3,15 +3,16 @@
 namespace olml89\Subscriptions\ValueObjects\Url;
 
 use olml89\Subscriptions\ValueObjects\StringValueObject;
+use XF\Validator\Url as XFUrlValidator;
 
 final class Url extends StringValueObject
 {
     /**
      * @throws InvalidUrlException
      */
-    public function __construct(string $url)
+    public function __construct(string $url, XFUrlValidator $xfUrlValidator)
     {
-        $this->ensureIsAValidUrl($url);
+        $this->ensureIsAValidUrl($url, $xfUrlValidator);
 
         parent::__construct($url);
     }
@@ -19,10 +20,13 @@ final class Url extends StringValueObject
     /**
      * @throws InvalidUrlException
      */
-    private function ensureIsAValidUrl(string $url): void
+    private function ensureIsAValidUrl(string $url, XFUrlValidator $xfUrlValidator): void
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL) === true) {
-            throw new InvalidUrlException($url);
+        $xfUrlValidator->setOption('allow_empty', false);
+        $errorKey = '';
+
+        if (!$xfUrlValidator->isValid($url, $errorKey)) {
+            throw new InvalidUrlException($url, $errorKey);
         }
     }
 }

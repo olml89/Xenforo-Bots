@@ -6,11 +6,11 @@ use olml89\Subscriptions\Exceptions\InputException;
 
 final class InvalidUrlException extends InputException
 {
-    public function __construct(string $url)
+    public function __construct(string $url, string $errorKey)
     {
         parent::__construct(
             message: sprintf('Must represent a valid URL, \'%s\' provided', $url),
-            errorCode: 'invalid_url',
+            errorCode: 'invalid_url.'.$errorKey,
         );
     }
 }

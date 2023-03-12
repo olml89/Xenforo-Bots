@@ -15,11 +15,13 @@ use olml89\Subscriptions\ValueObjects\Url\Url;
 use olml89\Subscriptions\ValueObjects\UserId\InvalidUserIdException;
 use olml89\Subscriptions\ValueObjects\UserId\UserId;
 use XF\Db\Exception as XFDatabaseException;
+use XF\Validator\Url as XFUrlValidator;
 
 final class CreateSubscription
 {
     public function __construct(
         private readonly XFUserFinder $xFUserFinder,
+        private readonly XFUrlValidator $xFUrlValidator,
         private readonly WebhookVerifier $webhookVerifier,
         private readonly SubscriptionRepository $subscriptionRepository,
     ) {}
@@ -33,7 +35,7 @@ final class CreateSubscription
     {
         $subscription = new Subscription(
             userId: new UserId($user_id),
-            webhook: new Url($webhook),
+            webhook: new Url($webhook, $this->xFUrlValidator),
             token: new Md5Hash($token),
         );
 

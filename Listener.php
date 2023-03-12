@@ -52,6 +52,7 @@ final class Listener
         {
             return new CreateSubscription(
                 xFUserFinder: $app->get(XFUserFinder::class),
+                xFUrlValidator: $app->validator('Url'),
                 webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
             );
