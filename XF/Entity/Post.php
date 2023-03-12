@@ -7,7 +7,7 @@ use XF;
 
 final class Post extends XFCP_Post
 {
-    public function _postSave(): void
+    protected function _postSave(): void
     {
         parent::_postSave();
 

@@ -16,7 +16,7 @@ final class UserAlert extends XFCP_UserAlert
             && in_array($this->action, self::notifiableActions);
     }
 
-    public function _postSave(): void
+    protected function _postSave(): void
     {
         parent::_postSave();
 
