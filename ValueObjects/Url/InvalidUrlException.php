@@ -2,9 +2,9 @@
 
 namespace olml89\Subscriptions\ValueObjects\Url;
 
-use olml89\Subscriptions\Exceptions\InputException;
+use olml89\Subscriptions\Exceptions\ApplicationException;
 
-final class InvalidUrlException extends InputException
+final class InvalidUrlException extends ApplicationException
 {
     public function __construct(string $url, string $errorKey)
     {

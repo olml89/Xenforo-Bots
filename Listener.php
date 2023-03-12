@@ -3,6 +3,7 @@
 namespace olml89\Subscriptions;
 
 use GuzzleHttp\Client;
+use olml89\Subscriptions\Exceptions\ErrorHandler;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Repositories\XFUserRepository;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
@@ -48,6 +49,14 @@ final class Listener
             return new SubscriptionRepository($app->em());
         };
 
+        $container[ErrorHandler::class] = function() use($app, $container): ErrorHandler
+        {
+            return new ErrorHandler(
+                error: $app->error(),
+                debug: $container['config']['debug'],
+            );
+        };
+
         $container[CreateSubscription::class] = function() use($app): CreateSubscription
         {
             return new CreateSubscription(
@@ -55,6 +64,7 @@ final class Listener
                 xFUrlValidator: $app->validator('Url'),
                 webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
+                errorHandler: $app->get(ErrorHandler::class),
             );
         };
     }

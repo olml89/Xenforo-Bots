@@ -2,9 +2,9 @@
 
 namespace olml89\Subscriptions\ValueObjects\Md5Hash;
 
-use olml89\Subscriptions\Exceptions\InputException;
+use olml89\Subscriptions\Exceptions\ApplicationException;
 
-final class InvalidMd5HashException extends InputException
+final class InvalidMd5HashException extends ApplicationException
 {
     public function __construct(string $hash)
     {

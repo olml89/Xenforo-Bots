@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Exceptions;
+namespace olml89\Subscriptions\Exceptions\Http;
 
 use Exception;
 use XF\Api\ErrorMessage;
@@ -14,12 +14,15 @@ abstract class ApiException extends XFReplyException
         $apiErrorMessage = new ErrorMessage(
             message: $message,
             code: $errorCode,
-            params: !is_null($context) ? ['context' => $context] : null,
         );
         $apiError = new Error(
             errors: $apiErrorMessage,
             responseCode: $httpCode,
         );
+
+        if (!is_null($context)) {
+            $apiError->setJsonParam('exception', $context);
+        }
 
         parent::__construct($apiError);
     }

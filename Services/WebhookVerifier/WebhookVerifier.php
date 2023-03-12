@@ -22,8 +22,8 @@ final class WebhookVerifier
             $verificationEndpoint = sprintf('%s/challenge/$s', $webhook, $challenge);
             $this->httpClient->head($verificationEndpoint);
         }
-        catch (RequestException) {
-            throw new WebhookNotImplementedException($webhook);
+        catch (RequestException $reason) {
+            throw new WebhookNotImplementedException($webhook, $reason);
         }
     }
 }

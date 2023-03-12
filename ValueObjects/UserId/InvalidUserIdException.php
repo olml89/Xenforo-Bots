@@ -2,9 +2,9 @@
 
 namespace olml89\Subscriptions\ValueObjects\UserId;
 
-use olml89\Subscriptions\Exceptions\InputException;
+use olml89\Subscriptions\Exceptions\ApplicationException;
 
-final class InvalidUserIdException extends InputException
+final class InvalidUserIdException extends ApplicationException
 {
     public function __construct(int $user_id)
     {
