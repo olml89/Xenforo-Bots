@@ -9,13 +9,13 @@ use olml89\Subscriptions\ValueObjects\Url\Url;
 use olml89\Subscriptions\ValueObjects\UserId\UserId;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
-use XF\Db\Exception as XenforoDatabaseException;
-use XF\Mvc\Reply\Exception as XenforoApiException;
+use XF\Db\Exception as XFDatabaseException;
+use XF\Mvc\Reply\Exception as XFApiException;
 
 final class SubscriptionsController extends AbstractController
 {
     /**
-     * @throws XenforoApiException
+     * @throws XFApiException
      */
     public function actionPost() : ApiResult
     {
@@ -36,7 +36,7 @@ final class SubscriptionsController extends AbstractController
         try {
             $subscriptions->save($subscription);
         }
-        catch (XenforoDatabaseException $e) {
+        catch (XFDatabaseException $e) {
             throw $this->exception(
                 $this->apiError(
                     'The subscription has failed',
