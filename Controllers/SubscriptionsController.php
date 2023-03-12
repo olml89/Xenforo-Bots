@@ -37,14 +37,7 @@ final class SubscriptionsController extends AbstractController
             $subscriptions->save($subscription);
         }
         catch (XFDatabaseException $e) {
-            throw $this->exception(
-                $this->apiError(
-                    'The subscription has failed',
-                    'subscription_not_saved',
-                    ['exception' => $e],
-                    500,
-                )
-            );
+            throw new SaveSubscriptionException(\XF::$debugMode ? $e : null);
         }
 
         return $this->apiSuccess();
