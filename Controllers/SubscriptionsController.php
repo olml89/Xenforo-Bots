@@ -2,18 +2,26 @@
 
 namespace olml89\Subscriptions\Controllers;
 
-use olml89\Subscriptions\Entities\Subscription;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
-use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
-use olml89\Subscriptions\ValueObjects\Url\Url;
-use olml89\Subscriptions\ValueObjects\UserId\UserId;
+use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
-use XF\Db\Exception as XFDatabaseException;
+use XF\App;
+use XF\Http\Request;
 use XF\Mvc\Reply\Exception as XFApiException;
 
 final class SubscriptionsController extends AbstractController
 {
+    private CreateSubscription $createSubscription;
+
+    public function __construct(App $app, Request $request)
+    {
+        parent::__construct($app, $request);
+
+        $subscriptionRepository = new SubscriptionRepository($this->em());
+        $this->createSubscription = new CreateSubscription($subscriptionRepository);
+    }
+
     /**
      * @throws XFApiException
      */
@@ -25,20 +33,11 @@ final class SubscriptionsController extends AbstractController
             'webhook'
         ]);
 
-        $subscription = new Subscription(
-            userId: new UserId($this->request->filter('user_id', 'uint')),
-            webhook: new Url($this->request->filter('webhook', 'str')),
-            token: new Md5Hash($this->request->filter('token', 'str')),
+        $this->createSubscription->create(
+            user_id: $this->request->filter('user_id', 'uint'),
+            webhook: $this->request->filter('webhook', 'str'),
+            token: $this->request->filter('token', 'str'),
         );
-
-        $subscriptions = new SubscriptionRepository($this->em());
-
-        try {
-            $subscriptions->save($subscription);
-        }
-        catch (XFDatabaseException $e) {
-            throw new SaveSubscriptionException(\XF::$debugMode ? $e : null);
-        }
 
         return $this->apiSuccess();
     }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Controllers;
+namespace olml89\Subscriptions\UseCases\Subscription;
 
 use Exception;
 use olml89\Subscriptions\Exceptions\ApiException;
