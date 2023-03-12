@@ -8,6 +8,8 @@ use olml89\Subscriptions\Exceptions\ErrorHandler;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
+use olml89\Subscriptions\UseCases\DataTransferObject;
+use olml89\Subscriptions\UseCases\UseCaseResponse;
 use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
 use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
 use olml89\Subscriptions\ValueObjects\Url\Url;
@@ -33,7 +35,7 @@ final class CreateSubscription
     /**
      * @throws CreateSubscriptionException | ExistingSubscriptionException | SaveSubscriptionException
      */
-    public function create(int $user_id, string $webhook, string $token): void
+    public function create(int $user_id, string $webhook, string $token): UseCaseResponse
     {
         try {
             $subscription = new Subscription(
@@ -44,9 +46,10 @@ final class CreateSubscription
             );
 
             $this->xFUserFinder->find($subscription->userId);
-            //$this->webhookVerifier->verify($subscription->webhook, $subscription->token);
-
+            $this->webhookVerifier->verify($subscription->webhook, $subscription->token);
             $this->subscriptionRepository->save($subscription);
+
+            return new UseCaseResponse(new CreatedSubscriptionPresenter($subscription));
         }
         catch (ApplicationException $applicationException) {
             throw new CreateSubscriptionException($applicationException, $this->errorHandler);

@@ -31,12 +31,12 @@ final class SubscriptionsController extends AbstractController
             'webhook'
         ]);
 
-        $this->createSubscription->create(
+        $createSubscriptionResult = $this->createSubscription->create(
             user_id: $this->request->filter('user_id', 'uint'),
             webhook: $this->request->filter('webhook', 'str'),
             token: $this->request->filter('token', 'str'),
         );
 
-        return $this->apiSuccess();
+        return $this->apiResult($createSubscriptionResult);
     }
 }
