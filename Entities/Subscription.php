@@ -2,11 +2,15 @@
 
 namespace olml89\Subscriptions\Entities;
 
+use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
+use olml89\Subscriptions\ValueObjects\Url\Url;
+use olml89\Subscriptions\ValueObjects\UserId\UserId;
+
 final class Subscription
 {
     public function __construct(
-        public readonly int $userId,
-        public readonly string $webhook,
-        public readonly string $token,
+        public readonly UserId $userId,
+        public readonly Url $webhook,
+        public readonly Md5Hash $token,
     ) {}
 }

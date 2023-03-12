@@ -4,6 +4,9 @@ namespace olml89\Subscriptions\Controllers;
 
 use olml89\Subscriptions\Entities\Subscription;
 use olml89\Subscriptions\Repositories\SubscriptionRepository;
+use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
+use olml89\Subscriptions\ValueObjects\Url\Url;
+use olml89\Subscriptions\ValueObjects\UserId\UserId;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\Db\Exception as XenforoDatabaseException;
@@ -23,9 +26,9 @@ final class SubscriptionsController extends AbstractController
         ]);
 
         $subscription = new Subscription(
-            userId: $this->request->filter('user_id', 'uint'),
-            webhook: $this->request->filter('webhook', 'str'),
-            token: $this->request->filter('token', 'str'),
+            userId: new UserId($this->request->filter('user_id', 'uint')),
+            webhook: new Url($this->request->filter('webhook', 'str')),
+            token: new Md5Hash($this->request->filter('token', 'str')),
         );
 
         $subscriptions = new SubscriptionRepository($this->em());
