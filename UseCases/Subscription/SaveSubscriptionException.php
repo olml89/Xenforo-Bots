@@ -3,10 +3,10 @@
 namespace olml89\Subscriptions\UseCases\Subscription;
 
 use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Exceptions\Http\ApiException;
+use olml89\Subscriptions\Exceptions\Http\InternalServerErrorException;
 use XF\Db\Exception as XFDatabaseException;
 
-final class SaveSubscriptionException extends ApiException
+final class SaveSubscriptionException extends InternalServerErrorException
 {
     public function __construct(XFDatabaseException $xfDatabaseException, ErrorHandler $errorHandler)
     {
@@ -14,8 +14,7 @@ final class SaveSubscriptionException extends ApiException
 
         parent::__construct(
             message: 'The subscription has failed',
-            errorCode: 'subscription.store.error',
-            httpCode: 500,
+            errorCode: 'subscription.store.error.database_error',
             context: $context,
         );
     }

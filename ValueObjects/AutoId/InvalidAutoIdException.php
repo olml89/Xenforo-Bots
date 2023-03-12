@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\ValueObjects\UserId;
+namespace olml89\Subscriptions\ValueObjects\AutoId;
 
 use olml89\Subscriptions\Exceptions\ApplicationException;
 

@@ -25,8 +25,6 @@ final class SubscriptionRepository
                 'webhook' => $subscription->webhook,
                 'token' => $subscription->token,
             ],
-            replaceInto: true,
-            onDupe: true,
         );
     }
 }

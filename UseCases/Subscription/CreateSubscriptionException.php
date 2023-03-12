@@ -4,9 +4,9 @@ namespace olml89\Subscriptions\UseCases\Subscription;
 
 use olml89\Subscriptions\Exceptions\ApplicationException;
 use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Exceptions\Http\InputException;
+use olml89\Subscriptions\Exceptions\Http\BadRequestException;
 
-final class CreateSubscriptionException extends InputException
+final class CreateSubscriptionException extends BadRequestException
 {
     public function __construct(ApplicationException $applicationException, ErrorHandler $errorHandler)
     {

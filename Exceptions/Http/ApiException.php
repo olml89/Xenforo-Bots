@@ -2,14 +2,14 @@
 
 namespace olml89\Subscriptions\Exceptions\Http;
 
-use Exception;
+use Throwable;
 use XF\Api\ErrorMessage;
 use XF\Mvc\Reply\Error;
 use XF\Mvc\Reply\Exception as XFReplyException;
 
 abstract class ApiException extends XFReplyException
 {
-    public function __construct(string $message, string $errorCode, int $httpCode, ?Exception $context = null)
+    public function __construct(string $message, string $errorCode, ?Throwable $context = null)
     {
         $apiErrorMessage = new ErrorMessage(
             message: $message,
@@ -17,7 +17,7 @@ abstract class ApiException extends XFReplyException
         );
         $apiError = new Error(
             errors: $apiErrorMessage,
-            responseCode: $httpCode,
+            responseCode: $this->httpCode(),
         );
 
         if (!is_null($context)) {
@@ -26,4 +26,6 @@ abstract class ApiException extends XFReplyException
 
         parent::__construct($apiError);
     }
+
+    abstract protected function httpCode(): int;
 }

@@ -14,6 +14,7 @@ use olml89\Subscriptions\ValueObjects\Url\Url;
 use olml89\Subscriptions\ValueObjects\Uuid\Uuid;
 use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
 use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator;
+use XF\Db\DuplicateKeyException as XFDuplicateKeyException;
 use XF\Db\Exception as XFDatabaseException;
 use XF\Validator\Url as XFUrlValidator;
 
@@ -30,7 +31,7 @@ final class CreateSubscription
     ) {}
 
     /**
-     * @throws CreateSubscriptionException | SaveSubscriptionException
+     * @throws CreateSubscriptionException | ExistingSubscriptionException | SaveSubscriptionException
      */
     public function create(int $user_id, string $webhook, string $token): void
     {
@@ -43,12 +44,15 @@ final class CreateSubscription
             );
 
             $this->xFUserFinder->find($subscription->userId);
-            $this->webhookVerifier->verify($subscription->webhook, $subscription->token);
+            //$this->webhookVerifier->verify($subscription->webhook, $subscription->token);
 
             $this->subscriptionRepository->save($subscription);
         }
         catch (ApplicationException $applicationException) {
             throw new CreateSubscriptionException($applicationException, $this->errorHandler);
+        }
+        catch (XFDuplicateKeyException) {
+            throw new ExistingSubscriptionException($subscription);
         }
         catch (XFDatabaseException $xfDatabaseException) {
             throw new SaveSubscriptionException($xfDatabaseException, $this->errorHandler);
