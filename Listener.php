@@ -9,9 +9,11 @@ use olml89\Subscriptions\Repositories\SubscriptionRepository;
 use olml89\Subscriptions\Repositories\XFUserRepository;
 use olml89\Subscriptions\Services\LaminasUuidValidator;
 use olml89\Subscriptions\Services\StripeRandomUuidGenerator;
+use olml89\Subscriptions\Services\WebhookNotifier\WebhookNotifier;
 use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
+use olml89\Subscriptions\UseCases\XFPost\NotifyXFPost;
 use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
 use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator;
 use Stripe\Util\RandomGenerator;
@@ -37,22 +39,25 @@ final class Listener
 
         $container[XFUserRepository::class] = function() use($app): XFUserRepository
         {
-            return new XFUserRepository($app->em());
+            return new XFUserRepository(entityManager: $app->em());
         };
 
         $container[XFUserFinder::class] = function() use($app): XFUserFinder
         {
-            return new XFUserFinder($app->get(XFUserRepository::class));
+            return new XFUserFinder(xFUserRepository: $app->get(XFUserRepository::class));
         };
 
         $container[WebhookVerifier::class] = function() use($app): WebhookVerifier
         {
-            return new WebhookVerifier(self::createJsonHttpClient($app));
+            return new WebhookVerifier(httpClient: self::createJsonHttpClient($app));
         };
 
         $container[SubscriptionRepository::class] = function() use($app): SubscriptionRepository
         {
-            return new SubscriptionRepository($app->em());
+            return new SubscriptionRepository(
+                entityManager: $app->em(),
+                error: $app->error(),
+            );
         };
 
         $container[ErrorHandler::class] = function() use($app, $container): ErrorHandler
@@ -65,12 +70,12 @@ final class Listener
 
         $container[UuidGenerator::class] = function() use($app): UuidGenerator
         {
-            return new StripeRandomUuidGenerator(new RandomGenerator());
+            return new StripeRandomUuidGenerator(generator: new RandomGenerator());
         };
 
         $container[UuidValidator::class] = function() use($app): UuidValidator
         {
-            return new LaminasUuidValidator(new Uuid());
+            return new LaminasUuidValidator(validator: new Uuid());
         };
 
         $container[CreateSubscription::class] = function() use($app): CreateSubscription
@@ -83,6 +88,22 @@ final class Listener
                 webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
                 errorHandler: $app->get(ErrorHandler::class),
+            );
+        };
+
+        $container[WebhookNotifier::class] = function() use($app): WebhookNotifier
+        {
+            return new WebhookNotifier(
+                httpClient: self::createJsonHttpClient($app),
+                error: $app->error(),
+            );
+        };
+
+        $container[NotifyXFPost::class] = function() use($app): NotifyXFPost
+        {
+            return new NotifyXFPost(
+                subscriptionRepository: $app->get(SubscriptionRepository::class),
+                webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };
     }
