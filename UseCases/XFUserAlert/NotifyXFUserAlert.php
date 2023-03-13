@@ -8,6 +8,8 @@ use XF\Entity\UserAlert as XFUserAlert;
 
 final class NotifyXFUserAlert
 {
+    private const USER_ALERTS_ENDPOINT = '/user-alerts';
+
     public function __construct(
         private readonly SubscriptionRepository $subscriptionRepository,
         private readonly WebhookNotifier $webhookNotifier,
@@ -18,7 +20,7 @@ final class NotifyXFUserAlert
         return;
 
         $this->webhookNotifier->notify(
-            endpoint: 'user-alert',
+            endpoint: self::USER_ALERTS_ENDPOINT,
             subscriptions: $this->subscriptionRepository->getByUser($xFUserAlert->Receiver),
             data: new XFUserAlertData($xFUserAlert),
         );

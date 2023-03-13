@@ -38,7 +38,7 @@ final class WebhookNotifier
             foreach ($webhooks as $webhook) {
                 yield function() use ($webhook, $endpoint, $data): PromiseInterface {
                     return $this->httpClient->postAsync(
-                        $webhook.'/'.$endpoint,
+                        $webhook.$endpoint,
                         ['json' => $data]
                     );
                 };

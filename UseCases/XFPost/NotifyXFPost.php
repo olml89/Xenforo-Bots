@@ -8,6 +8,8 @@ use XF\Entity\Post as XFPost;
 
 final class NotifyXFPost
 {
+    private const POSTS_ENDPOINT = '/posts';
+
     public function __construct(
         private readonly SubscriptionRepository $subscriptionRepository,
         private readonly WebhookNotifier $webhookNotifier,
@@ -16,7 +18,7 @@ final class NotifyXFPost
     public function notify(XFPost $xFPost): void
     {
         $this->webhookNotifier->notify(
-            endpoint: '/posts',
+            endpoint: self::POSTS_ENDPOINT,
             subscriptions: $this->subscriptionRepository->getByWebhook(),
             data: new XFPostData($xFPost),
         );

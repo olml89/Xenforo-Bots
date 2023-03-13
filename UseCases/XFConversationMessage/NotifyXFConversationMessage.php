@@ -9,6 +9,8 @@ use XF\Entity\User as XFUser;
 
 final class NotifyXFConversationMessage
 {
+    private const CONVERSATION_MESSAGES_ENDPOINT = '/conversation-messages';
+
     public function __construct(
         private readonly SubscriptionRepository $subscriptionRepository,
         private readonly WebhookNotifier $webhookNotifier,
@@ -20,7 +22,7 @@ final class NotifyXFConversationMessage
     public function notify(XFConversationMessage $xFConversationMessage, array $usersNotified): void
     {
         $this->webhookNotifier->notify(
-            endpoint: 'conversation-message',
+            endpoint: self::CONVERSATION_MESSAGES_ENDPOINT,
             subscriptions: $this->subscriptionRepository->getByUsers($usersNotified),
             data: new XFConversationMessageData($xFConversationMessage),
         );

@@ -9,6 +9,8 @@ use olml89\Subscriptions\ValueObjects\Url\Url;
 
 final class WebhookVerifier
 {
+    private const VERIFICATION_ENDPOINT = '/challenges';
+
     public function __construct(
         private readonly Client $httpClient,
     ) {}
@@ -19,8 +21,7 @@ final class WebhookVerifier
     public function verify(Url $webhook, Md5Hash $challenge): void
     {
         try {
-            $verificationEndpoint = sprintf('%s/challenge/$s', $webhook, $challenge);
-            $this->httpClient->head($verificationEndpoint);
+            $this->httpClient->head($webhook.self::VERIFICATION_ENDPOINT.'/'.$challenge);
         }
         catch (RequestException $reason) {
             throw new WebhookNotImplementedException($webhook, $reason);
