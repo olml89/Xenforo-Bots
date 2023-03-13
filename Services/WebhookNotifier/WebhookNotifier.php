@@ -4,6 +4,7 @@ namespace olml89\Subscriptions\Services\WebhookNotifier;
 
 use Generator;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
 use olml89\Subscriptions\Entities\Subscription;
