@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Exceptions\Http;
+namespace olml89\Subscriptions\XF\Mvc\Reply;
 
 abstract class BadRequestException extends ApiException
 {

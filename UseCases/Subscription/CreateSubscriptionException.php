@@ -4,7 +4,7 @@ namespace olml89\Subscriptions\UseCases\Subscription;
 
 use olml89\Subscriptions\Exceptions\ApplicationException;
 use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Exceptions\Http\BadRequestException;
+use olml89\Subscriptions\XF\Mvc\Reply\BadRequestException;
 
 final class CreateSubscriptionException extends BadRequestException
 {

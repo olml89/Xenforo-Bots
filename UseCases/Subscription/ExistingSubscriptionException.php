@@ -3,7 +3,7 @@
 namespace olml89\Subscriptions\UseCases\Subscription;
 
 use olml89\Subscriptions\Entities\Subscription;
-use olml89\Subscriptions\Exceptions\Http\ConflictException;
+use olml89\Subscriptions\XF\Mvc\Reply\ConflictException;
 
 final class ExistingSubscriptionException extends ConflictException
 {

@@ -3,7 +3,7 @@
 namespace olml89\Subscriptions\UseCases\Subscription;
 
 use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Exceptions\Http\InternalServerErrorException;
+use olml89\Subscriptions\XF\Mvc\Reply\InternalServerErrorException;
 use XF\Db\Exception as XFDatabaseException;
 
 final class SaveSubscriptionException extends InternalServerErrorException

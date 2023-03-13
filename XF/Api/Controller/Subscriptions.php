@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Controllers;
+namespace olml89\Subscriptions\XF\Api\Controller;
 
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\App;
 use XF\Http\Request;
-use XF\Mvc\Reply\Exception as XFApiException;
+use XF\Mvc\Reply\Exception;
 
-final class SubscriptionsController extends AbstractController
+final class Subscriptions extends AbstractController
 {
     private CreateSubscription $createSubscription;
 
@@ -21,9 +21,9 @@ final class SubscriptionsController extends AbstractController
     }
 
     /**
-     * @throws XFApiException
+     * @throws Exception
      */
-    public function actionPost() : ApiResult
+    public function actionPost(): ApiResult
     {
         $this->assertRequiredApiInput([
             'user_id',
