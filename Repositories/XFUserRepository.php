@@ -16,7 +16,7 @@ final class XFUserRepository
     {
         return $this->entityManager->findOne(
             shortName: 'XF:User',
-            where: ['user_id' => $userId->value]
+            where: ['user_id' => $userId->toInt()]
         );
     }
 }

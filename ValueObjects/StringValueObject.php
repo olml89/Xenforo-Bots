@@ -7,7 +7,7 @@ use Stringable;
 abstract class StringValueObject implements Stringable
 {
     public function __construct(
-        public readonly string $value,
+        private readonly string $value,
     ) {}
 
     public function __toString(): string

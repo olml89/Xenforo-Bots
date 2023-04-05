@@ -12,7 +12,7 @@ final class ExistingSubscriptionException extends ConflictException
         parent::__construct(
             message: sprintf(
                 'A suscription for the user <%s> already exists on the webhook \'%s\' with the id <%s>',
-                $subscription->userId->value,
+                $subscription->userId->toInt(),
                 $subscription->webhook,
                 $subscription->id,
             ),
