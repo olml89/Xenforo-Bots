@@ -4,7 +4,7 @@ namespace olml89\Subscriptions\Services\XFUserFinder;
 
 use olml89\Subscriptions\Repositories\XFUserRepository;
 use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
-use XF\Entity\User;
+use XF\Entity\User as XFUser;
 
 final class XFUserFinder
 {
@@ -15,8 +15,14 @@ final class XFUserFinder
     /**
      * @throws XFUserNotFoundException
      */
-    public function find(AutoId $userId): User
+    public function find(AutoId $userId, string $password): XFUser
     {
-        return $this->xFUserRepository->get($userId) ?? throw new XFUserNotFoundException($userId);
+        $xFUser = $this->xFUserRepository->get($userId) ?? throw XFUserNotFoundException::unexisting($userId);
+
+        if (!$xFUser->Auth->authenticate($password)) {
+            throw XFUserNotFoundException::invalidPassword();
+        }
+
+        return $xFUser;
     }
 }

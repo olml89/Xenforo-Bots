@@ -27,14 +27,14 @@ final class Subscriptions extends AbstractController
     {
         $this->assertRequiredApiInput([
             'user_id',
-            'token',
-            'webhook'
+            'password',
+            'webhook',
         ]);
 
         $createSubscriptionResult = $this->createSubscription->create(
             user_id: $this->request->filter('user_id', 'uint'),
+            password: $this->request->filter('password', 'str'),
             webhook: $this->request->filter('webhook', 'str'),
-            token: $this->request->filter('token', 'str'),
         );
 
         return $this->apiResult($createSubscriptionResult);

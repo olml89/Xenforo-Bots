@@ -7,11 +7,21 @@ use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
 
 final class XFUserNotFoundException extends ApplicationException
 {
-    public function __construct(AutoId $userId)
+    private function __construct(string $message)
     {
         parent::__construct(
-            message: sprintf('User with user_id <%s> does not exist', $userId->value),
+            message: $message,
             errorCode: 'user_not_found',
         );
+    }
+
+    public static function unexisting(AutoId $userId): self
+    {
+        return new self(sprintf('User with user_id <%s> does not exist', $userId->toInt()));
+    }
+
+    public static function invalidPassword(): self
+    {
+        return new self('Invalid password');
     }
 }

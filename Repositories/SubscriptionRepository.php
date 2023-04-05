@@ -2,15 +2,15 @@
 
 namespace olml89\Subscriptions\Repositories;
 
+use DateTimeImmutable;
 use InvalidArgumentException;
 use olml89\Subscriptions\Entities\Subscription;
+use olml89\Subscriptions\Services\EntityHydrator;
 use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
 use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
 use olml89\Subscriptions\ValueObjects\Url\Url;
 use olml89\Subscriptions\ValueObjects\Uuid\Uuid;
-use olml89\Subscriptions\ValueObjects\ValueObjectHydrator;
 use ReflectionException;
-use XF\Db\Exception;
 use XF\Entity\User as XFUser;
 use XF\Error;
 use XF\Mvc\Entity\Manager;
@@ -24,15 +24,29 @@ final class SubscriptionRepository
 
     private function hydrateInstance(array $row): ?Subscription
     {
-        $hydrator = new ValueObjectHydrator($row);
-
         try {
-            return new Subscription(
-                id: $hydrator->hydrateValueObject(Uuid::class, 'id'),
-                userId: $hydrator->hydrateValueObject(AutoId::class, 'user_id'),
-                webhook: $hydrator->hydrateValueObject(Url::class,'webhook'),
-                token: $hydrator->hydrateValueObject(Md5Hash::class,'token'),
-            );
+            $subscription = EntityHydrator::getInstance(Subscription::class);
+            $hydrator = new EntityHydrator($subscription);
+
+            $hydrator
+                ->hydrateProperty(
+                    property: 'id',
+                    value: $hydrator->hydrateValueObject(Uuid::class, $row['id']),
+                )
+                ->hydrateProperty(
+                    property: 'userId',
+                    value: $hydrator->hydrateValueObject(AutoId::class, $row['user_id']),
+                )
+                ->hydrateProperty(
+                    property: 'webhook',
+                    value: $hydrator->hydrateValueObject(Url::class, $row['webhook']),
+                )
+                ->hydrateProperty(
+                    property: 'subscribedAt',
+                    value: $hydrator->hydrateDateTimeImmutable($row['subscribed_at']),
+                );
+
+            return $subscription;
         }
         catch(InvalidArgumentException|ReflectionException $e) {
             $this->error->logException($e);
@@ -107,18 +121,15 @@ final class SubscriptionRepository
         return $this->createInstances($rows);
     }
 
-    /**
-     * @throws Exception
-     */
     public function save(Subscription $subscription): void
     {
         $this->entityManager->getDb()->insert(
             table: 'xf_subscriptions',
             rawValues: [
-                'id' => $subscription->id,
-                'user_id' => $subscription->userId->value,
-                'webhook' => $subscription->webhook,
-                'token' => $subscription->token,
+                'id' => (string)$subscription->id,
+                'user_id' => $subscription->userId->toInt(),
+                'webhook' => (string)$subscription->webhook,
+                'subscribed_at' => $subscription->subscribedAt->format('c'),
             ],
         );
     }

@@ -10,13 +10,13 @@ final class CreatedSubscriptionPresenter extends DataTransferObject
     public readonly string $id;
     public readonly int $user_id;
     public readonly string $webhook;
-    public readonly string $token;
+    public readonly int $subscribed_at;
 
     public function __construct(Subscription $subscription)
     {
-        $this->id = $subscription->id->value;
-        $this->user_id = $subscription->userId->value;
-        $this->webhook = $subscription->webhook->value;
-        $this->token = $subscription->token->value;
+        $this->id = (string)$subscription->id;
+        $this->user_id = $subscription->userId->toInt();
+        $this->webhook = (string)$subscription->webhook;
+        $this->subscribed_at = $subscription->subscribedAt->getTimestamp();
     }
 }

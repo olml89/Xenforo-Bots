@@ -10,7 +10,6 @@ use olml89\Subscriptions\Repositories\XFUserRepository;
 use olml89\Subscriptions\Services\LaminasUuidValidator;
 use olml89\Subscriptions\Services\StripeRandomUuidGenerator;
 use olml89\Subscriptions\Services\WebhookNotifier\WebhookNotifier;
-use olml89\Subscriptions\Services\WebhookVerifier\WebhookVerifier;
 use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
 use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
 use olml89\Subscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
@@ -70,24 +69,25 @@ final class Listener
             );
         };
 
-        $container[UuidGenerator::class] = function() use($app): UuidGenerator
-        {
-            return new StripeRandomUuidGenerator(generator: new RandomGenerator());
-        };
-
         $container[UuidValidator::class] = function() use($app): UuidValidator
         {
             return new LaminasUuidValidator(validator: new Uuid());
+        };
+
+        $container[UuidGenerator::class] = function() use($app): UuidGenerator
+        {
+            return new StripeRandomUuidGenerator(
+                generator: new RandomGenerator(),
+                validator: $app->get(UuidValidator::class),
+            );
         };
 
         $container[CreateSubscription::class] = function() use($app): CreateSubscription
         {
             return new CreateSubscription(
                 uuidGenerator: $app->get(UuidGenerator::class),
-                uuidValidator: $app->get(UuidValidator::class),
                 xFUrlValidator: $app->validator('Url'),
                 xFUserFinder: $app->get(XFUserFinder::class),
-                webhookVerifier: $app->get(WebhookVerifier::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
                 errorHandler: $app->get(ErrorHandler::class),
             );

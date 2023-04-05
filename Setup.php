@@ -13,7 +13,7 @@ class Setup extends AbstractSetup
             $table->addColumn('id', 'varchar', 36)->primaryKey();
             $table->addColumn('user_id', 'int')->nullable(false);
             $table->addColumn('webhook', 'varchar', 255)->nullable(false);
-            $table->addColumn('token', 'varchar', 32)->nullable(false);
+            $table->addColumn('subscribed_at', 'datetime')->nullable(false);
             $table->addUniqueKey('user_id', 'idx_user_id_webhook')->addColumn('webhook');
         });
 	}
