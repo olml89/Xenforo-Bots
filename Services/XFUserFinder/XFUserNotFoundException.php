@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services\XFUserFinder;
+namespace olml89\XenforoSubscriptions\Services\XFUserFinder;
 
-use olml89\Subscriptions\Exceptions\ApplicationException;
-use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
+use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
+use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
 
 final class XFUserNotFoundException extends ApplicationException
 {

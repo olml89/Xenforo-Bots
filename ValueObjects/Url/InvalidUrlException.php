@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\ValueObjects\Url;
+namespace olml89\XenforoSubscriptions\ValueObjects\Url;
 
-use olml89\Subscriptions\Exceptions\ApplicationException;
+use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
 
 final class InvalidUrlException extends ApplicationException
 {

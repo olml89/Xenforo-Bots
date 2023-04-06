@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases;
+namespace olml89\XenforoSubscriptions\UseCases;
 
 use JsonSerializable;
 

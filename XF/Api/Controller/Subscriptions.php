@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\XF\Api\Controller;
+namespace olml89\XenforoSubscriptions\XF\Api\Controller;
 
-use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
+use olml89\XenforoSubscriptions\UseCases\Subscription\CreateSubscription;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\App;

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\XF\Entity;
+namespace olml89\XenforoSubscriptions\XF\Entity;
 
-use olml89\Subscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
+use olml89\XenforoSubscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
 use XF;
 
 final class UserAlert extends XFCP_UserAlert

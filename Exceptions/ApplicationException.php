@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Exceptions;
+namespace olml89\XenforoSubscriptions\Exceptions;
 
 use RuntimeException;
 use Throwable;

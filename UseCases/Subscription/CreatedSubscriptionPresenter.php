@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\Subscription;
+namespace olml89\XenforoSubscriptions\UseCases\Subscription;
 
-use olml89\Subscriptions\Entities\Subscription;
-use olml89\Subscriptions\UseCases\DataTransferObject;
+use olml89\XenforoSubscriptions\Entities\Subscription;
+use olml89\XenforoSubscriptions\UseCases\DataTransferObject;
 
 final class CreatedSubscriptionPresenter extends DataTransferObject
 {

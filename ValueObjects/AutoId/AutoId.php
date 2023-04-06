@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\ValueObjects\AutoId;
+namespace olml89\XenforoSubscriptions\ValueObjects\AutoId;
 
-use olml89\Subscriptions\ValueObjects\IntValueObject;
+use olml89\XenforoSubscriptions\ValueObjects\IntValueObject;
 
 final class AutoId extends IntValueObject
 {

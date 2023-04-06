@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services;
+namespace olml89\XenforoSubscriptions\Services;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use olml89\Subscriptions\ValueObjects\IntValueObject;
-use olml89\Subscriptions\ValueObjects\StringValueObject;
+use olml89\XenforoSubscriptions\ValueObjects\IntValueObject;
+use olml89\XenforoSubscriptions\ValueObjects\StringValueObject;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;

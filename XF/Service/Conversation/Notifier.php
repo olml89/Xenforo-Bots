@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\XF\Service\Conversation;
+namespace olml89\XenforoSubscriptions\XF\Service\Conversation;
 
-use olml89\Subscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
+use olml89\XenforoSubscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
 use XF;
 use XF\Entity\ConversationMessage as XFConversationMessage;
 use XF\Entity\User as XFUser;

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services;
+namespace olml89\XenforoSubscriptions\Services;
 
-use olml89\Subscriptions\ValueObjects\Uuid\Uuid;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\Uuid;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidGenerator;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidValidator;
 use Stripe\Util\RandomGenerator;
 
 final class StripeRandomUuidGenerator implements UuidGenerator

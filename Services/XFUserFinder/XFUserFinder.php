@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services\XFUserFinder;
+namespace olml89\XenforoSubscriptions\Services\XFUserFinder;
 
-use olml89\Subscriptions\Repositories\XFUserRepository;
-use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
+use olml89\XenforoSubscriptions\Repositories\XFUserRepository;
+use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
 use XF\Entity\User as XFUser;
 
 final class XFUserFinder

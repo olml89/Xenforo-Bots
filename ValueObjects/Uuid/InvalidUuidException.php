@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\ValueObjects\Uuid;
+namespace olml89\XenforoSubscriptions\ValueObjects\Uuid;
 
-use olml89\Subscriptions\Exceptions\ApplicationException;
+use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
 
 final class InvalidUuidException extends ApplicationException
 {

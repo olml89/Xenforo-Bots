@@ -1,22 +1,22 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions;
+namespace olml89\XenforoSubscriptions;
 
 use GuzzleHttp\Client;
 use Laminas\Validator\Uuid;
-use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Repositories\SubscriptionRepository;
-use olml89\Subscriptions\Repositories\XFUserRepository;
-use olml89\Subscriptions\Services\LaminasUuidValidator;
-use olml89\Subscriptions\Services\StripeRandomUuidGenerator;
-use olml89\Subscriptions\Services\WebhookNotifier\WebhookNotifier;
-use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
-use olml89\Subscriptions\UseCases\Subscription\CreateSubscription;
-use olml89\Subscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
-use olml89\Subscriptions\UseCases\XFPost\NotifyXFPost;
-use olml89\Subscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator;
+use olml89\XenforoSubscriptions\Exceptions\ErrorHandler;
+use olml89\XenforoSubscriptions\Repositories\SubscriptionRepository;
+use olml89\XenforoSubscriptions\Repositories\XFUserRepository;
+use olml89\XenforoSubscriptions\Services\LaminasUuidValidator;
+use olml89\XenforoSubscriptions\Services\StripeRandomUuidGenerator;
+use olml89\XenforoSubscriptions\Services\WebhookNotifier\WebhookNotifier;
+use olml89\XenforoSubscriptions\Services\XFUserFinder\XFUserFinder;
+use olml89\XenforoSubscriptions\UseCases\Subscription\CreateSubscription;
+use olml89\XenforoSubscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
+use olml89\XenforoSubscriptions\UseCases\XFPost\NotifyXFPost;
+use olml89\XenforoSubscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidGenerator;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidValidator;
 use Stripe\Util\RandomGenerator;
 use XF\App;
 use XF\Container;

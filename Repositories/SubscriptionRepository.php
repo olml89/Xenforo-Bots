@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Repositories;
+namespace olml89\XenforoSubscriptions\Repositories;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use olml89\Subscriptions\Entities\Subscription;
-use olml89\Subscriptions\Services\EntityHydrator;
-use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
-use olml89\Subscriptions\ValueObjects\Md5Hash\Md5Hash;
-use olml89\Subscriptions\ValueObjects\Url\Url;
-use olml89\Subscriptions\ValueObjects\Uuid\Uuid;
+use olml89\XenforoSubscriptions\Entities\Subscription;
+use olml89\XenforoSubscriptions\Services\EntityHydrator;
+use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
+use olml89\XenforoSubscriptions\ValueObjects\Md5Hash\Md5Hash;
+use olml89\XenforoSubscriptions\ValueObjects\Url\Url;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\Uuid;
 use ReflectionException;
 use XF\Entity\User as XFUser;
 use XF\Error;

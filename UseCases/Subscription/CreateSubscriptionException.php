@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\Subscription;
+namespace olml89\XenforoSubscriptions\UseCases\Subscription;
 
-use olml89\Subscriptions\Exceptions\ApplicationException;
-use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\XF\Mvc\Reply\BadRequestException;
+use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
+use olml89\XenforoSubscriptions\Exceptions\ErrorHandler;
+use olml89\XenforoSubscriptions\XF\Mvc\Reply\BadRequestException;
 
 final class CreateSubscriptionException extends BadRequestException
 {

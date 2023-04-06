@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\XFPost;
+namespace olml89\XenforoSubscriptions\UseCases\XFPost;
 
-use olml89\Subscriptions\UseCases\DataTransferObject;
+use olml89\XenforoSubscriptions\UseCases\DataTransferObject;
 use XF\Entity\Post as XFPost;
 
 final class XFPostData extends DataTransferObject

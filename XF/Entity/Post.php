@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\XF\Entity;
+namespace olml89\XenforoSubscriptions\XF\Entity;
 
-use olml89\Subscriptions\UseCases\XFPost\NotifyXFPost;
+use olml89\XenforoSubscriptions\UseCases\XFPost\NotifyXFPost;
 use XF;
 
 final class Post extends XFCP_Post

@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\Subscription;
+namespace olml89\XenforoSubscriptions\UseCases\Subscription;
 
-use olml89\Subscriptions\Entities\Subscription;
-use olml89\Subscriptions\Exceptions\ApplicationException;
-use olml89\Subscriptions\Exceptions\ErrorHandler;
-use olml89\Subscriptions\Repositories\SubscriptionRepository;
-use olml89\Subscriptions\Services\XFUserFinder\XFUserFinder;
-use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
-use olml89\Subscriptions\ValueObjects\Url\Url;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidGenerator;
-use olml89\Subscriptions\XF\Api\Result\UseCaseResponse;
+use olml89\XenforoSubscriptions\Entities\Subscription;
+use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
+use olml89\XenforoSubscriptions\Exceptions\ErrorHandler;
+use olml89\XenforoSubscriptions\Repositories\SubscriptionRepository;
+use olml89\XenforoSubscriptions\Services\XFUserFinder\XFUserFinder;
+use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
+use olml89\XenforoSubscriptions\ValueObjects\Url\Url;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidGenerator;
+use olml89\XenforoSubscriptions\XF\Api\Result\UseCaseResponse;
 use XF\Db\DuplicateKeyException as XFDuplicateKeyException;
 use XF\Db\Exception as XFDatabaseException;
 use XF\Validator\Url as XFUrlValidator;

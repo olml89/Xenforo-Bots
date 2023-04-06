@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services;
+namespace olml89\XenforoSubscriptions\Services;
 
 use Laminas\Validator\Uuid;
-use olml89\Subscriptions\ValueObjects\Uuid\UuidValidator as UuidValidatorContract;
+use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidValidator as UuidValidatorContract;
 
 final class LaminasUuidValidator implements UuidValidatorContract
 {

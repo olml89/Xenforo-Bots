@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\XFUserAlert;
+namespace olml89\XenforoSubscriptions\UseCases\XFUserAlert;
 
-use olml89\Subscriptions\UseCases\DataTransferObject;
+use olml89\XenforoSubscriptions\UseCases\DataTransferObject;
 use XF\Entity\UserAlert as XFUserAlert;
 
 final class XFUserAlertData extends DataTransferObject

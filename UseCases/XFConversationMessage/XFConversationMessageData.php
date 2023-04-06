@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\UseCases\XFConversationMessage;
+namespace olml89\XenforoSubscriptions\UseCases\XFConversationMessage;
 
-use olml89\Subscriptions\UseCases\DataTransferObject;
+use olml89\XenforoSubscriptions\UseCases\DataTransferObject;
 use XF\Entity\ConversationMessage as XFConversationMessage;
 
 final class XFConversationMessageData extends DataTransferObject

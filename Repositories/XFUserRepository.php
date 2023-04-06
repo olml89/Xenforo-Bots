@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Repositories;
+namespace olml89\XenforoSubscriptions\Repositories;
 
-use olml89\Subscriptions\ValueObjects\AutoId\AutoId;
+use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
 use XF\Entity\User;
 use XF\Mvc\Entity\Manager;
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\XF\Api\Result;
+namespace olml89\XenforoSubscriptions\XF\Api\Result;
 
 use JsonSerializable;
 use XF\Api\Result\ResultInterface;

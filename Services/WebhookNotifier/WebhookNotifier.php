@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace olml89\Subscriptions\Services\WebhookNotifier;
+namespace olml89\XenforoSubscriptions\Services\WebhookNotifier;
 
 use Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
-use olml89\Subscriptions\Entities\Subscription;
-use olml89\Subscriptions\UseCases\DataTransferObject;
-use olml89\Subscriptions\ValueObjects\Url\Url;
+use olml89\XenforoSubscriptions\Entities\Subscription;
+use olml89\XenforoSubscriptions\UseCases\DataTransferObject;
+use olml89\XenforoSubscriptions\ValueObjects\Url\Url;
 use XF\Error;
 
 final class WebhookNotifier
