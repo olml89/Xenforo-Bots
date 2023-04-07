@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\XF\Entity;
 
-use olml89\XenforoSubscriptions\UseCases\XFPost\NotifyXFPost;
+use olml89\XenforoSubscriptions\UseCase\XFPost\Notify as NotifyXFPost;
 use XF;
 
 final class Post extends XFCP_Post

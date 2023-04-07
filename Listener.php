@@ -4,19 +4,19 @@ namespace olml89\XenforoSubscriptions;
 
 use GuzzleHttp\Client;
 use Laminas\Validator\Uuid;
-use olml89\XenforoSubscriptions\Exceptions\ErrorHandler;
-use olml89\XenforoSubscriptions\Repositories\SubscriptionRepository;
-use olml89\XenforoSubscriptions\Repositories\XFUserRepository;
-use olml89\XenforoSubscriptions\Services\LaminasUuidValidator;
-use olml89\XenforoSubscriptions\Services\StripeRandomUuidGenerator;
-use olml89\XenforoSubscriptions\Services\WebhookNotifier\WebhookNotifier;
-use olml89\XenforoSubscriptions\Services\XFUserFinder\XFUserFinder;
-use olml89\XenforoSubscriptions\UseCases\Subscription\CreateSubscription;
-use olml89\XenforoSubscriptions\UseCases\XFConversationMessage\NotifyXFConversationMessage;
-use olml89\XenforoSubscriptions\UseCases\XFPost\NotifyXFPost;
-use olml89\XenforoSubscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
-use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidGenerator;
-use olml89\XenforoSubscriptions\ValueObjects\Uuid\UuidValidator;
+use olml89\XenforoSubscriptions\Entity\SubscriptionFactory;
+use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
+use olml89\XenforoSubscriptions\Repository\XFUserRepository;
+use olml89\XenforoSubscriptions\Service\ErrorHandler;
+use olml89\XenforoSubscriptions\Service\UuidGenerator;
+use olml89\XenforoSubscriptions\Service\WebhookNotifier;
+use olml89\XenforoSubscriptions\Service\XFUserFinder;
+use olml89\XenforoSubscriptions\UseCase\Subscription\Create;
+use olml89\XenforoSubscriptions\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
+use olml89\XenforoSubscriptions\UseCase\XFPost\Notify as NotifyXFPost;
+use olml89\XenforoSubscriptions\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
+use olml89\XenforoSubscriptions\Validator\UrlValidator;
+use olml89\XenforoSubscriptions\Validator\UuidValidator;
 use Stripe\Util\RandomGenerator;
 use XF\App;
 use XF\Container;
@@ -38,27 +38,32 @@ final class Listener
         /** @var Container $container */
         $container = $app->container();
 
-        $container[XFUserRepository::class] = function() use($app): XFUserRepository
+        $container[SubscriptionFactory::class] = function() use($app): SubscriptionFactory
         {
-            return new XFUserRepository(entityManager: $app->em());
-        };
-
-        $container[XFUserFinder::class] = function() use($app): XFUserFinder
-        {
-            return new XFUserFinder(xFUserRepository: $app->get(XFUserRepository::class));
-        };
-
-        $container[WebhookVerifier::class] = function() use($app): WebhookVerifier
-        {
-            return new WebhookVerifier(httpClient: self::createJsonHttpClient($app));
+            return new SubscriptionFactory(
+                xFUserFinder: $app->get(XFUserFinder::class),
+                entityManager: $app->em(),
+                uuidGenerator: $app->get(UuidGenerator::class),
+                errorHandler: $app->get(ErrorHandler::class),
+            );
         };
 
         $container[SubscriptionRepository::class] = function() use($app): SubscriptionRepository
         {
             return new SubscriptionRepository(
-                entityManager: $app->em(),
-                error: $app->error(),
+                subscriptionFinder: $app->finder('olml89\XenforoSubscriptions:Subscription'),
+                errorHandler: $app->get(ErrorHandler::class),
             );
+        };
+
+        $container[XFUserRepository::class] = function() use($app): XFUserRepository
+        {
+            return new XFUserRepository(userFinder: $app->finder('XF:User'));
+        };
+
+        $container[XFUserFinder::class] = function() use($app): XFUserFinder
+        {
+            return new XFUserFinder(userRepository: $app->get(XFUserRepository::class));
         };
 
         $container[ErrorHandler::class] = function() use($app, $container): ErrorHandler
@@ -69,28 +74,9 @@ final class Listener
             );
         };
 
-        $container[UuidValidator::class] = function() use($app): UuidValidator
-        {
-            return new LaminasUuidValidator(validator: new Uuid());
-        };
-
         $container[UuidGenerator::class] = function() use($app): UuidGenerator
         {
-            return new StripeRandomUuidGenerator(
-                generator: new RandomGenerator(),
-                validator: $app->get(UuidValidator::class),
-            );
-        };
-
-        $container[CreateSubscription::class] = function() use($app): CreateSubscription
-        {
-            return new CreateSubscription(
-                uuidGenerator: $app->get(UuidGenerator::class),
-                xFUrlValidator: $app->validator('Url'),
-                xFUserFinder: $app->get(XFUserFinder::class),
-                subscriptionRepository: $app->get(SubscriptionRepository::class),
-                errorHandler: $app->get(ErrorHandler::class),
-            );
+            return new UuidGenerator(stripeRandomGenerator: new RandomGenerator());
         };
 
         $container[WebhookNotifier::class] = function() use($app): WebhookNotifier
@@ -98,6 +84,14 @@ final class Listener
             return new WebhookNotifier(
                 httpClient: self::createJsonHttpClient($app),
                 error: $app->error(),
+            );
+        };
+
+        $container[Create::class] = function() use($app): Create
+        {
+            return new Create(
+                subscriptionFactory: $app->get(SubscriptionFactory::class),
+                subscriptionRepository: $app->get(SubscriptionRepository::class),
             );
         };
 
@@ -123,6 +117,16 @@ final class Listener
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
+        };
+
+        $container[UrlValidator::class] = function() use($app): UrlValidator
+        {
+            return new UrlValidator(xFUrlValidator: $app->validator('Url'));
+        };
+
+        $container[UuidValidator::class] = function() use($app): UuidValidator
+        {
+            return new UuidValidator(laminasUuidValidator: new Uuid());
         };
     }
 }

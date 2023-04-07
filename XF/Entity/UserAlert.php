@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\XF\Entity;
 
-use olml89\XenforoSubscriptions\UseCases\XFUserAlert\NotifyXFUserAlert;
+use olml89\XenforoSubscriptions\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
 use XF;
 
 final class UserAlert extends XFCP_UserAlert
