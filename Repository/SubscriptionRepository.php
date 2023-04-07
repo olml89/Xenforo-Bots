@@ -5,10 +5,10 @@ namespace olml89\XenforoSubscriptions\Repository;
 use Exception;
 use olml89\XenforoSubscriptions\Entity\Subscription;
 use olml89\XenforoSubscriptions\Exception\ExistingSubscriptionException;
-use olml89\XenforoSubscriptions\Exception\SaveSubscriptionException;
+use olml89\XenforoSubscriptions\Exception\SubscriptionStorageException;
 use olml89\XenforoSubscriptions\Service\ErrorHandler;
+use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use XF\Db\DuplicateKeyException;
-use XF\Entity\User as XFUser;
 use XF\Mvc\Entity\Finder;
 
 final class SubscriptionRepository
@@ -25,8 +25,7 @@ final class SubscriptionRepository
     {
         return $this->subscriptionFinder
             ->where('user_id', '=', $xFUser->user_id)
-            ->fetch()
-            ->toArray();
+            ->fetchOne();
     }
 
     /**
@@ -90,7 +89,7 @@ final class SubscriptionRepository
     }
 
     /**
-     * @throws ExistingSubscriptionException | SaveSubscriptionException
+     * @throws ExistingSubscriptionException | SubscriptionStorageException
      */
     public function save(Subscription $subscription): void
     {
@@ -103,7 +102,7 @@ final class SubscriptionRepository
             );
         }
         catch (Exception $e) {
-            throw new SaveSubscriptionException(
+            throw new SubscriptionStorageException(
                 exception: $e,
                 errorHandler: $this->errorHandler,
             );

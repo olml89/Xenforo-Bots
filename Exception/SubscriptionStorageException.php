@@ -6,7 +6,7 @@ use Exception;
 use olml89\XenforoSubscriptions\Service\ErrorHandler;
 use olml89\XenforoSubscriptions\XF\Mvc\Reply\InternalServerErrorException;
 
-final class SaveSubscriptionException extends InternalServerErrorException
+final class SubscriptionStorageException extends InternalServerErrorException
 {
     public function __construct(Exception $exception, ErrorHandler $errorHandler)
     {

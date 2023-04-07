@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\Entity;
 
-use olml89\XenforoSubscriptions\Exception\CreateSubscriptionException;
+use olml89\XenforoSubscriptions\Exception\SubscriptionCreationException;
 use olml89\XenforoSubscriptions\Exception\InvalidUrlException;
 use olml89\XenforoSubscriptions\Exception\InvalidUuidException;
 use olml89\XenforoSubscriptions\Exception\XFUserNotFoundException;
@@ -21,12 +21,12 @@ final class SubscriptionFactory
     ) {}
 
     /**
-     * @throws CreateSubscriptionException
+     * @throws SubscriptionCreationException
      */
     public function create(int $user_id, string $password, string $webhook): Subscription
     {
         try {
-            $this->xFUserFinder->find($user_id, $password);
+            $this->xFUserFinder->findWithPassword($user_id, $password);
 
             /** @var Subscription $subscription */
             $subscription = $this->entityManager->create(
@@ -40,7 +40,7 @@ final class SubscriptionFactory
             return $subscription;
         }
         catch (XFUserNotFoundException|InvalidUuidException|InvalidUrlException $e) {
-            throw new CreateSubscriptionException($e, $this->errorHandler);
+            throw new SubscriptionCreationException($e, $this->errorHandler);
         }
     }
 }

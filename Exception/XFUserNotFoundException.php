@@ -2,7 +2,6 @@
 
 namespace olml89\XenforoSubscriptions\Exception;
 
-use olml89\XenforoSubscriptions\Exceptions\ApplicationException;
 use olml89\XenforoSubscriptions\ValueObjects\AutoId\AutoId;
 
 final class XFUserNotFoundException extends ApplicationException

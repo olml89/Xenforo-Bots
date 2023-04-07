@@ -93,7 +93,5 @@ class Subscription extends Entity
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = []
     ): void
-    {
-        $result->subscription_id = $this->subscription_id;
-    }
+    {}
 }

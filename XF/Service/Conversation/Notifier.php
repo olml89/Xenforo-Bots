@@ -3,9 +3,9 @@
 namespace olml89\XenforoSubscriptions\XF\Service\Conversation;
 
 use olml89\XenforoSubscriptions\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
+use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use XF;
 use XF\Entity\ConversationMessage as XFConversationMessage;
-use XF\Entity\User as XFUser;
 
 final class Notifier extends XFCP_Notifier
 {

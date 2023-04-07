@@ -4,9 +4,9 @@ namespace olml89\XenforoSubscriptions\UseCase\Subscription;
 
 use olml89\XenforoSubscriptions\Entity\Subscription;
 use olml89\XenforoSubscriptions\Entity\SubscriptionFactory;
-use olml89\XenforoSubscriptions\Exception\CreateSubscriptionException;
+use olml89\XenforoSubscriptions\Exception\SubscriptionCreationException;
 use olml89\XenforoSubscriptions\Exception\ExistingSubscriptionException;
-use olml89\XenforoSubscriptions\Exception\SaveSubscriptionException;
+use olml89\XenforoSubscriptions\Exception\SubscriptionStorageException;
 use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
 use olml89\XenforoSubscriptions\XF\Api\Result\UseCaseResponse;
 
@@ -18,7 +18,7 @@ final class Create
     ) {}
 
     /**
-     * @throws CreateSubscriptionException | ExistingSubscriptionException | SaveSubscriptionException
+     * @throws SubscriptionCreationException | ExistingSubscriptionException | SubscriptionStorageException
      */
     public function create(int $user_id, string $password, string $webhook): Subscription
     {

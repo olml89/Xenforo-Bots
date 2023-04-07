@@ -19,7 +19,7 @@ final class Notify
     {
         $this->webhookNotifier->notify(
             endpoint: self::USER_ALERTS_ENDPOINT,
-            subscriptions: $this->subscriptionRepository->getByUser($xFUserAlert->Receiver),
+            subscriptions: [$this->subscriptionRepository->getByUser($xFUserAlert->Receiver)],
             data: new XFUserAlertData($xFUserAlert),
         );
     }

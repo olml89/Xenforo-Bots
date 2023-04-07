@@ -5,7 +5,7 @@ namespace olml89\XenforoSubscriptions\Exception;
 use olml89\XenforoSubscriptions\Service\ErrorHandler;
 use olml89\XenforoSubscriptions\XF\Mvc\Reply\BadRequestException;
 
-final class CreateSubscriptionException extends BadRequestException
+final class SubscriptionCreationException extends BadRequestException
 {
     public function __construct(ApplicationException $applicationException, ErrorHandler $errorHandler)
     {

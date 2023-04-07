@@ -9,15 +9,6 @@ class Setup extends AbstractSetup
 {
     public function install(array $stepParams = []): void
 	{
-        /*
-        $this->schemaManager()->createTable('xf_subscriptions', function(Create $table): void {
-            $table->addColumn('id', 'varchar', 36)->primaryKey();
-            $table->addColumn('user_id', 'int')->nullable(false);
-            $table->addColumn('webhook', 'varchar', 255)->nullable(false);
-            $table->addColumn('subscribed_at', 'datetime')->nullable(false);
-            $table->addUniqueKey('user_id', 'idx_user_id_webhook')->addColumn('webhook');
-        });
-        */
         $this->createTable('olml89_xenforo_subscriptions_subscription', function (Create $table)
         {
             $table->addColumn('subscription_id', 'varchar', 36)->primaryKey();

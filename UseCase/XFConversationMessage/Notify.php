@@ -4,8 +4,8 @@ namespace olml89\XenforoSubscriptions\UseCase\XFConversationMessage;
 
 use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
 use olml89\XenforoSubscriptions\Service\WebhookNotifier;
+use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use XF\Entity\ConversationMessage as XFConversationMessage;
-use XF\Entity\User as XFUser;
 
 final class Notify
 {

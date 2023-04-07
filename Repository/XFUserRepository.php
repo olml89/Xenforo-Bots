@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\Repository;
 
-use XF\Entity\User as XFUser;
+use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use XF\Mvc\Entity\Finder;
 
 final class XFUserRepository

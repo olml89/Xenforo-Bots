@@ -11,7 +11,8 @@ use olml89\XenforoSubscriptions\Service\ErrorHandler;
 use olml89\XenforoSubscriptions\Service\UuidGenerator;
 use olml89\XenforoSubscriptions\Service\WebhookNotifier;
 use olml89\XenforoSubscriptions\Service\XFUserFinder;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Create;
+use olml89\XenforoSubscriptions\UseCase\Subscription\Create as CreateSubscription;
+use olml89\XenforoSubscriptions\UseCase\Subscription\Retrieve as RetrieveSubscription;
 use olml89\XenforoSubscriptions\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
 use olml89\XenforoSubscriptions\UseCase\XFPost\Notify as NotifyXFPost;
 use olml89\XenforoSubscriptions\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
@@ -87,12 +88,17 @@ final class Listener
             );
         };
 
-        $container[Create::class] = function() use($app): Create
+        $container[CreateSubscription::class] = function() use($app): CreateSubscription
         {
-            return new Create(
+            return new CreateSubscription(
                 subscriptionFactory: $app->get(SubscriptionFactory::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
             );
+        };
+
+        $container[RetrieveSubscription::class] = function() use($app): RetrieveSubscription
+        {
+            return new RetrieveSubscription(xFUserFinder: $app->get(XFUserFinder::class));
         };
 
         $container[NotifyXFPost::class] = function() use($app): NotifyXFPost
