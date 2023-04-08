@@ -94,4 +94,9 @@ class Subscription extends Entity
         array $options = []
     ): void
     {}
+
+    protected function _postDelete()
+    {
+        $this->User->clearCache('Subscriptions');
+    }
 }

@@ -10,6 +10,7 @@ use olml89\XenforoSubscriptions\Service\ErrorHandler;
 use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use XF\Db\DuplicateKeyException;
 use XF\Mvc\Entity\Finder;
+use XF\PrintableException;
 
 final class SubscriptionRepository
 {
@@ -100,6 +101,22 @@ final class SubscriptionRepository
             throw new ExistingSubscriptionException(
                 subscription: $subscription
             );
+        }
+        catch (Exception $e) {
+            throw new SubscriptionStorageException(
+                exception: $e,
+                errorHandler: $this->errorHandler,
+            );
+        }
+    }
+
+    /**
+     * @throws SubscriptionStorageException
+     */
+    public function remove(Subscription $subscription): void
+    {
+        try {
+            $subscription->delete();
         }
         catch (Exception $e) {
             throw new SubscriptionStorageException(

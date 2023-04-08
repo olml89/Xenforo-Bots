@@ -3,6 +3,7 @@
 namespace olml89\XenforoSubscriptions\XF\Api\Controller;
 
 use olml89\XenforoSubscriptions\UseCase\Subscription\Create;
+use olml89\XenforoSubscriptions\UseCase\Subscription\Delete;
 use olml89\XenforoSubscriptions\UseCase\Subscription\Retrieve;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
@@ -12,13 +13,15 @@ use XF\Mvc\Reply\Exception;
 
 final class Subscriptions extends AbstractController
 {
-    private Create $createSubscription;
     private Retrieve $retrieveSubscription;
+    private Create $createSubscription;
+    private Delete $deleteSubscription;
 
     public function __construct(App $app, Request $request)
     {
-        $this->createSubscription = $app->get(Create::class);
         $this->retrieveSubscription = $app->get(Retrieve::class);
+        $this->createSubscription = $app->get(Create::class);
+        $this->deleteSubscription = $app->get(Delete::class);
 
         parent::__construct($app, $request);
     }
@@ -59,5 +62,20 @@ final class Subscriptions extends AbstractController
         );
 
         return $this->apiSuccess(['subscription' => $subscription->toApiResult()]);
+    }
+
+    public function actionDelete(): ApiResult
+    {
+        $this->assertRequiredApiInput([
+            'user_id',
+            'webhook',
+        ]);
+
+        $this->deleteSubscription->delete(
+            user_id: $this->request->filter('user_id', 'uint'),
+            webhook: $this->request->filter('webhook', 'str'),
+        );
+
+        return $this->apiSuccess();
     }
 }

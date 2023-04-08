@@ -2,6 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\Exception;
 
+use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 use olml89\XenforoSubscriptions\XF\Mvc\Reply\NotFoundException;
 
 final class SubscriptionNotFoundException extends NotFoundException
@@ -14,10 +15,14 @@ final class SubscriptionNotFoundException extends NotFoundException
         );
     }
 
-    public static function forUser(int $user_id): self
+    public static function forUserAndWebhook(XFUser $xFUser, string $webhook): self
     {
         return new self(
-            sprintf('Subscription for user <%s> does not exist', $user_id)
+            sprintf(
+                'Subscription for user <%s> does not exist in \'%s\'',
+                $xFUser->user_id,
+                $webhook,
+            )
         );
     }
 }

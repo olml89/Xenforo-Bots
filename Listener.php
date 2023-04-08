@@ -8,10 +8,12 @@ use olml89\XenforoSubscriptions\Entity\SubscriptionFactory;
 use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
 use olml89\XenforoSubscriptions\Repository\XFUserRepository;
 use olml89\XenforoSubscriptions\Service\ErrorHandler;
+use olml89\XenforoSubscriptions\Service\SubscriptionFinder;
 use olml89\XenforoSubscriptions\Service\UuidGenerator;
 use olml89\XenforoSubscriptions\Service\WebhookNotifier;
 use olml89\XenforoSubscriptions\Service\XFUserFinder;
 use olml89\XenforoSubscriptions\UseCase\Subscription\Create as CreateSubscription;
+use olml89\XenforoSubscriptions\UseCase\Subscription\Delete as DeleteSubscription;
 use olml89\XenforoSubscriptions\UseCase\Subscription\Retrieve as RetrieveSubscription;
 use olml89\XenforoSubscriptions\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
 use olml89\XenforoSubscriptions\UseCase\XFPost\Notify as NotifyXFPost;
@@ -75,6 +77,11 @@ final class Listener
             );
         };
 
+        $container[SubscriptionFinder::class] = function() use($app): SubscriptionFinder
+        {
+            return new SubscriptionFinder(urlValidator: $app->get(UrlValidator::class));
+        };
+
         $container[UuidGenerator::class] = function() use($app): UuidGenerator
         {
             return new UuidGenerator(stripeRandomGenerator: new RandomGenerator());
@@ -92,6 +99,15 @@ final class Listener
         {
             return new CreateSubscription(
                 subscriptionFactory: $app->get(SubscriptionFactory::class),
+                subscriptionRepository: $app->get(SubscriptionRepository::class),
+            );
+        };
+
+        $container[DeleteSubscription::class] = function() use($app): DeleteSubscription
+        {
+            return new DeleteSubscription(
+                xFUserFinder: $app->get(XFUserFinder::class),
+                subscriptionFinder: $app->get(SubscriptionFinder::class),
                 subscriptionRepository: $app->get(SubscriptionRepository::class),
             );
         };
