@@ -22,7 +22,7 @@ final class Retrieve
         $subscription = $xFUser->getSubscriptionByWebhook($webhook);
 
         if (is_null($subscription)) {
-            throw SubscriptionNotFoundException::forUser($user_id);
+            throw SubscriptionNotFoundException::forUserAndWebhook($xFUser, $webhook);
         }
 
         return $subscription;
