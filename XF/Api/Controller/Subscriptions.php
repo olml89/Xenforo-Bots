@@ -64,6 +64,9 @@ final class Subscriptions extends AbstractController
         return $this->apiSuccess(['subscription' => $subscription->toApiResult()]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function actionDelete(): ApiResult
     {
         $this->assertRequiredApiInput([
