@@ -2,6 +2,7 @@
 
 namespace olml89\XenforoSubscriptions\Entity;
 
+use olml89\XenforoSubscriptions\Exception\InvalidUrlException;
 use olml89\XenforoSubscriptions\Exception\InvalidUuidException;
 use olml89\XenforoSubscriptions\Validator\UrlValidator;
 use olml89\XenforoSubscriptions\Validator\UuidValidator;
