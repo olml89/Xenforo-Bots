@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Service;
+namespace olml89\XenforoBots\Service;
 
 use Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
-use olml89\XenforoSubscriptions\Entity\Subscription;
-use olml89\XenforoSubscriptions\UseCase\JsonSerializableObject;
+use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Error;
 
 final class WebhookNotifier

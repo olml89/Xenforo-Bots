@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Service;
+namespace olml89\XenforoBots\Service;
 
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\ForbiddenException;
+use olml89\XenforoBots\XF\Mvc\Reply\ForbiddenException;
 use XF;
 
 final class Authenticator

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\XF\Api\Controller;
+namespace olml89\XenforoBots\XF\Api\Controller;
 
-use olml89\XenforoSubscriptions\UseCase\Subscription\Create;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Delete;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Retrieve;
+use olml89\XenforoBots\UseCase\Subscription\Create;
+use olml89\XenforoBots\UseCase\Subscription\Delete;
+use olml89\XenforoBots\UseCase\Subscription\Retrieve;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\App;

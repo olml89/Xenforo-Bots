@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\Bot;
+namespace olml89\XenforoBots\UseCase\Bot;
 
-use olml89\XenforoSubscriptions\Exception\BotNotFoundException;
-use olml89\XenforoSubscriptions\Exception\BotRemovalException;
-use olml89\XenforoSubscriptions\Repository\BotRepository;
+use olml89\XenforoBots\Exception\BotNotFoundException;
+use olml89\XenforoBots\Exception\BotRemovalException;
+use olml89\XenforoBots\Repository\BotRepository;
 
 final class Delete
 {

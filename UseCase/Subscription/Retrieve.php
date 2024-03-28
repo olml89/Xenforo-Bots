@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\Subscription;
+namespace olml89\XenforoBots\UseCase\Subscription;
 
-use olml89\XenforoSubscriptions\Entity\Subscription;
-use olml89\XenforoSubscriptions\Exception\SubscriptionNotFoundException;
-use olml89\XenforoSubscriptions\Exception\XFUserNotFoundException;
-use olml89\XenforoSubscriptions\Service\XFUserFinder;
+use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\Exception\SubscriptionNotFoundException;
+use olml89\XenforoBots\Exception\XFUserNotFoundException;
+use olml89\XenforoBots\Service\XFUserFinder;
 
 final class Retrieve
 {

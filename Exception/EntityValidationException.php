@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\DomainException;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\UnprocessableEntityException;
+use olml89\XenforoBots\XF\Mvc\Reply\DomainException;
+use olml89\XenforoBots\XF\Mvc\Reply\UnprocessableEntityException;
 use XF\Api\ErrorMessage;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Reply\Error;

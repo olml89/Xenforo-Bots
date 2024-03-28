@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\XF\Api\Controller;
+namespace olml89\XenforoBots\XF\Api\Controller;
 
-use olml89\XenforoSubscriptions\Exception\BotCreationException;
-use olml89\XenforoSubscriptions\Exception\BotNotFoundException;
-use olml89\XenforoSubscriptions\Exception\BotRemovalException;
-use olml89\XenforoSubscriptions\Exception\BotStorageException;
-use olml89\XenforoSubscriptions\Service\Authenticator;
-use olml89\XenforoSubscriptions\UseCase\Bot\Create;
-use olml89\XenforoSubscriptions\UseCase\Bot\Delete;
-use olml89\XenforoSubscriptions\UseCase\Bot\Retrieve;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\ForbiddenException;
+use olml89\XenforoBots\Exception\BotCreationException;
+use olml89\XenforoBots\Exception\BotNotFoundException;
+use olml89\XenforoBots\Exception\BotRemovalException;
+use olml89\XenforoBots\Exception\BotStorageException;
+use olml89\XenforoBots\Service\Authenticator;
+use olml89\XenforoBots\UseCase\Bot\Create;
+use olml89\XenforoBots\UseCase\Bot\Delete;
+use olml89\XenforoBots\UseCase\Bot\Retrieve;
+use olml89\XenforoBots\XF\Mvc\Reply\ForbiddenException;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\App;

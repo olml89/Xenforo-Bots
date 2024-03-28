@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
-use olml89\XenforoSubscriptions\Entity\Bot;
+use olml89\XenforoBots\Entity\Bot;
 
 final class BotNotFoundException extends EntityNotFoundException
 {

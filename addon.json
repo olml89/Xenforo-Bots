@@ -1,7 +1,7 @@
 {
     "legacy_addon_id": "",
-    "title": "Xenforo Subscriptions",
-    "description": "A Xenforo 2.2 addon that allows to process the post, conversation message and user notification creation events in a remote backend",
+    "title": "Xenforo Bots",
+    "description": "A Xenforo 2.2 addon that allows to manage users remotely as bots.",
     "version_id": 1000010,
     "version_string": "1.0.0 Alpha",
     "dev": "olml89",

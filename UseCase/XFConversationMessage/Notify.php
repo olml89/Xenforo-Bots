@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\XFConversationMessage;
+namespace olml89\XenforoBots\UseCase\XFConversationMessage;
 
-use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
-use olml89\XenforoSubscriptions\Service\WebhookNotifier;
-use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
+use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\Service\WebhookNotifier;
+use olml89\XenforoBots\XF\Entity\User as XFUser;
 use XF\Entity\ConversationMessage as XFConversationMessage;
 
 final class Notify

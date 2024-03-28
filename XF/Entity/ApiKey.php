@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\XF\Entity;
+namespace olml89\XenforoBots\XF\Entity;
 
 use XF\Api\Result\EntityResult;
 

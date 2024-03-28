@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase;
+namespace olml89\XenforoBots\UseCase;
 
 use JsonSerializable;
 

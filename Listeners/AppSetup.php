@@ -1,34 +1,34 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Listeners;
+namespace olml89\XenforoBots\Listeners;
 
 use GuzzleHttp\Client;
 use Laminas\Validator\Uuid as LaminasUuid;
-use olml89\XenforoSubscriptions\Factory\ApiKeyFactory;
-use olml89\XenforoSubscriptions\Factory\BotFactory;
-use olml89\XenforoSubscriptions\Factory\SubscriptionFactory;
-use olml89\XenforoSubscriptions\Factory\UserFactory;
-use olml89\XenforoSubscriptions\Repository\ApiKeyRepository;
-use olml89\XenforoSubscriptions\Repository\BotRepository;
-use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
-use olml89\XenforoSubscriptions\Repository\UserRepository;
-use olml89\XenforoSubscriptions\Repository\XFUserRepository;
-use olml89\XenforoSubscriptions\Service\Authenticator;
-use olml89\XenforoSubscriptions\Service\ErrorHandler;
-use olml89\XenforoSubscriptions\Service\SubscriptionFinder;
-use olml89\XenforoSubscriptions\Service\UuidGenerator;
-use olml89\XenforoSubscriptions\Service\WebhookNotifier;
-use olml89\XenforoSubscriptions\Service\XFUserFinder;
-use olml89\XenforoSubscriptions\UseCase\Bot\Create as CreateBot;
-use olml89\XenforoSubscriptions\UseCase\Bot\Delete as DeleteBot;
-use olml89\XenforoSubscriptions\UseCase\Bot\Retrieve as RetrieveBot;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Create as CreateSubscription;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Delete as DeleteSubscription;
-use olml89\XenforoSubscriptions\UseCase\Subscription\Retrieve as RetrieveSubscription;
-use olml89\XenforoSubscriptions\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
-use olml89\XenforoSubscriptions\UseCase\XFPost\Notify as NotifyXFPost;
-use olml89\XenforoSubscriptions\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
-use olml89\XenforoSubscriptions\XF\Validator\Uuid;
+use olml89\XenforoBots\Factory\ApiKeyFactory;
+use olml89\XenforoBots\Factory\BotFactory;
+use olml89\XenforoBots\Factory\SubscriptionFactory;
+use olml89\XenforoBots\Factory\UserFactory;
+use olml89\XenforoBots\Repository\ApiKeyRepository;
+use olml89\XenforoBots\Repository\BotRepository;
+use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\Repository\UserRepository;
+use olml89\XenforoBots\Repository\XFUserRepository;
+use olml89\XenforoBots\Service\Authenticator;
+use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\Service\SubscriptionFinder;
+use olml89\XenforoBots\Service\UuidGenerator;
+use olml89\XenforoBots\Service\WebhookNotifier;
+use olml89\XenforoBots\Service\XFUserFinder;
+use olml89\XenforoBots\UseCase\Bot\Create as CreateBot;
+use olml89\XenforoBots\UseCase\Bot\Delete as DeleteBot;
+use olml89\XenforoBots\UseCase\Bot\Retrieve as RetrieveBot;
+use olml89\XenforoBots\UseCase\Subscription\Create as CreateSubscription;
+use olml89\XenforoBots\UseCase\Subscription\Delete as DeleteSubscription;
+use olml89\XenforoBots\UseCase\Subscription\Retrieve as RetrieveSubscription;
+use olml89\XenforoBots\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
+use olml89\XenforoBots\UseCase\XFPost\Notify as NotifyXFPost;
+use olml89\XenforoBots\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
+use olml89\XenforoBots\XF\Validator\Uuid;
 use Stripe\Util\RandomGenerator;
 use XF\App;
 use XF\Container;
@@ -106,14 +106,14 @@ final class AppSetup
         $container[BotRepository::class] = function() use ($app): BotRepository
         {
             return new BotRepository(
-                botFinder: $app->finder('olml89\XenforoSubscriptions:Bot'),
+                botFinder: $app->finder('olml89\XenforoBots:Bot'),
             );
         };
 
         $container[SubscriptionRepository::class] = function() use($app): SubscriptionRepository
         {
             return new SubscriptionRepository(
-                subscriptionFinder: $app->finder('olml89\XenforoSubscriptions:Subscription'),
+                subscriptionFinder: $app->finder('olml89\XenforoBots:Subscription'),
                 errorHandler: $app->get(ErrorHandler::class),
             );
         };

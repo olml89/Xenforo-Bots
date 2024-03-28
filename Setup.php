@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions;
+namespace olml89\XenforoBots;
 
 use XF\AddOn\AbstractSetup;
 use XF\Db\Schema\Create;

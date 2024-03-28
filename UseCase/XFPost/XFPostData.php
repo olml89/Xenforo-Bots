@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\XFPost;
+namespace olml89\XenforoBots\UseCase\XFPost;
 
-use olml89\XenforoSubscriptions\UseCase\JsonSerializableObject;
+use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Entity\Post as XFPost;
 
 final class XFPostData extends JsonSerializableObject

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Repository;
+namespace olml89\XenforoBots\Repository;
 
 use Exception;
-use olml89\XenforoSubscriptions\Entity\Subscription;
-use olml89\XenforoSubscriptions\Exception\ExistingSubscriptionException;
-use olml89\XenforoSubscriptions\Exception\SubscriptionStorageException;
-use olml89\XenforoSubscriptions\Service\ErrorHandler;
-use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
+use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\Exception\ExistingSubscriptionException;
+use olml89\XenforoBots\Exception\SubscriptionStorageException;
+use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\XF\Entity\User as XFUser;
 use XF\Db\DuplicateKeyException;
 use XF\Mvc\Entity\Finder;
 use XF\PrintableException;

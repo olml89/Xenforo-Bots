@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\XF\Mvc\Reply;
+namespace olml89\XenforoBots\XF\Mvc\Reply;
 
 abstract class NotFoundException extends DomainException
 {

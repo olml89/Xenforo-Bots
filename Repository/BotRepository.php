@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Repository;
+namespace olml89\XenforoBots\Repository;
 
-use olml89\XenforoSubscriptions\Entity\Bot;
-use olml89\XenforoSubscriptions\Exception\BotNotFoundException;
-use olml89\XenforoSubscriptions\Exception\BotRemovalException;
-use olml89\XenforoSubscriptions\Exception\BotStorageException;
+use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\BotNotFoundException;
+use olml89\XenforoBots\Exception\BotRemovalException;
+use olml89\XenforoBots\Exception\BotStorageException;
 use Throwable;
 use XF\Mvc\Entity\Finder;
 

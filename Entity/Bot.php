@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Entity;
+namespace olml89\XenforoBots\Entity;
 
-use olml89\XenforoSubscriptions\XF\Validator\Uuid;
+use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
 use XF\Entity\ApiKey;
@@ -40,7 +40,7 @@ final class Bot extends Entity
     public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'olml89_xenforo_subscriptions_bot';
-        $structure->shortName = 'olml89\XenforoSubscriptions:Bot';
+        $structure->shortName = 'olml89\XenforoBots:Bot';
         $structure->contentType = 'olml89_xenforo_subscriptions_bot';
         $structure->primaryKey = 'bot_id';
         $structure->columns = [

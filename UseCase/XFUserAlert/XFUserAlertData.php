@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\XFUserAlert;
+namespace olml89\XenforoBots\UseCase\XFUserAlert;
 
-use olml89\XenforoSubscriptions\UseCase\JsonSerializableObject;
+use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Entity\UserAlert as XFUserAlert;
 
 final class XFUserAlertData extends JsonSerializableObject

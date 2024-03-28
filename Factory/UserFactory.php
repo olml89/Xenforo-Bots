@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Factory;
+namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoSubscriptions\Exception\UserCreationException;
+use olml89\XenforoBots\Exception\UserCreationException;
 use XF\Entity\User;
 use XF\PrintableException;
 use XF\Repository\User as UserRepository;

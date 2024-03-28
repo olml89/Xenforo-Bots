@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\XF\Validator;
+namespace olml89\XenforoBots\XF\Validator;
 
 use XF\Validator\Url as UrlValidator;
 

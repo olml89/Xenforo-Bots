@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Factory;
+namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoSubscriptions\Exception\SubscriptionCreationException;
-use olml89\XenforoSubscriptions\Exception\InvalidUrlException;
-use olml89\XenforoSubscriptions\Exception\InvalidUuidException;
-use olml89\XenforoSubscriptions\Exception\XFUserNotFoundException;
-use olml89\XenforoSubscriptions\Service\ErrorHandler;
-use olml89\XenforoSubscriptions\Service\UuidGenerator;
-use olml89\XenforoSubscriptions\Service\XFUserFinder;
+use olml89\XenforoBots\Exception\SubscriptionCreationException;
+use olml89\XenforoBots\Exception\InvalidUrlException;
+use olml89\XenforoBots\Exception\InvalidUuidException;
+use olml89\XenforoBots\Exception\XFUserNotFoundException;
+use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\Service\UuidGenerator;
+use olml89\XenforoBots\Service\XFUserFinder;
 use XF\Mvc\Entity\Manager;
 
 final class SubscriptionFactory
@@ -30,7 +30,7 @@ final class SubscriptionFactory
 
             /** @var Subscription $subscription */
             $subscription = $this->entityManager->create(
-                shortName: 'olml89\XenforoSubscriptions:Subscription'
+                shortName: 'olml89\XenforoBots:Subscription'
             );
 
             $subscription->subscription_id = $this->uuidGenerator->random();

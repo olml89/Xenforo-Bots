@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
 use Exception;
-use olml89\XenforoSubscriptions\Service\ErrorHandler;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\InternalServerErrorException;
+use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\XF\Mvc\Reply\InternalServerErrorException;
 
 final class SubscriptionStorageException extends InternalServerErrorException
 {

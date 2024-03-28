@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
 final class InvalidUuidException extends ApplicationException
 {

@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\Bot;
+namespace olml89\XenforoBots\UseCase\Bot;
 
-use olml89\XenforoSubscriptions\Entity\Bot;
-use olml89\XenforoSubscriptions\Exception\ApiKeyCreationException;
-use olml89\XenforoSubscriptions\Exception\ApiKeyStorageException;
-use olml89\XenforoSubscriptions\Exception\BotCreationException;
-use olml89\XenforoSubscriptions\Exception\BotStorageException;
-use olml89\XenforoSubscriptions\Exception\UserCreationException;
-use olml89\XenforoSubscriptions\Exception\UserStorageException;
-use olml89\XenforoSubscriptions\Factory\ApiKeyFactory;
-use olml89\XenforoSubscriptions\Factory\BotFactory;
-use olml89\XenforoSubscriptions\Factory\UserFactory;
-use olml89\XenforoSubscriptions\Repository\ApiKeyRepository;
-use olml89\XenforoSubscriptions\Repository\BotRepository;
-use olml89\XenforoSubscriptions\Repository\UserRepository;
+use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\ApiKeyCreationException;
+use olml89\XenforoBots\Exception\ApiKeyStorageException;
+use olml89\XenforoBots\Exception\BotCreationException;
+use olml89\XenforoBots\Exception\BotStorageException;
+use olml89\XenforoBots\Exception\UserCreationException;
+use olml89\XenforoBots\Exception\UserStorageException;
+use olml89\XenforoBots\Factory\ApiKeyFactory;
+use olml89\XenforoBots\Factory\BotFactory;
+use olml89\XenforoBots\Factory\UserFactory;
+use olml89\XenforoBots\Repository\ApiKeyRepository;
+use olml89\XenforoBots\Repository\BotRepository;
+use olml89\XenforoBots\Repository\UserRepository;
 use XF\Db\AbstractAdapter;
 use XF\Entity\ApiKey;
 use XF\Entity\User;

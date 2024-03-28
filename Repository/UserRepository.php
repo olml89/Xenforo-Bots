@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Repository;
+namespace olml89\XenforoBots\Repository;
 
-use olml89\XenforoSubscriptions\Exception\UserStorageException;
+use olml89\XenforoBots\Exception\UserStorageException;
 use Throwable;
 use XF\Entity\User;
 

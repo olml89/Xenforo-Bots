@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Factory;
+namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoSubscriptions\Entity\Bot;
-use olml89\XenforoSubscriptions\Exception\ApiKeyCreationException;
+use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\ApiKeyCreationException;
 use XF\App;
 use XF\Entity\ApiKey;
 use XF\Mvc\Entity\Manager as EntityManager;

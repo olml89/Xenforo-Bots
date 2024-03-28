@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
-use olml89\XenforoSubscriptions\Entity\Subscription;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\ConflictException;
+use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\XF\Mvc\Reply\ConflictException;
 
 final class ExistingSubscriptionException extends ConflictException
 {

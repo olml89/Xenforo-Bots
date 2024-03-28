@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Exception;
+namespace olml89\XenforoBots\Exception;
 
-use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\NotFoundException;
+use olml89\XenforoBots\XF\Entity\User as XFUser;
+use olml89\XenforoBots\XF\Mvc\Reply\NotFoundException;
 
 final class SubscriptionNotFoundException extends NotFoundException
 {

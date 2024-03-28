@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Factory;
+namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoSubscriptions\Entity\Bot;
-use olml89\XenforoSubscriptions\Exception\BotCreationException;
-use olml89\XenforoSubscriptions\Service\UuidGenerator;
+use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\BotCreationException;
+use olml89\XenforoBots\Service\UuidGenerator;
 use XF\Entity\User;
 use XF\Mvc\Entity\Manager;
 
@@ -33,7 +33,7 @@ final class BotFactory
     {
         /** @var Bot $bot */
         $bot = $this->entityManager->create(
-            shortName: 'olml89\XenforoSubscriptions:Bot'
+            shortName: 'olml89\XenforoBots:Bot'
         );
 
         $bot->bot_id = $this->uuidGenerator->random();

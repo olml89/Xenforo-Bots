@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Entity;
+namespace olml89\XenforoBots\Entity;
 
-use olml89\XenforoSubscriptions\Exception\InvalidUrlException;
-use olml89\XenforoSubscriptions\Exception\InvalidUuidException;
-use olml89\XenforoSubscriptions\Validator\Url;
-use olml89\XenforoSubscriptions\Validator\Uuid;
+use olml89\XenforoBots\Exception\InvalidUrlException;
+use olml89\XenforoBots\Exception\InvalidUuidException;
+use olml89\XenforoBots\Validator\Url;
+use olml89\XenforoBots\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
 use XF\Mvc\Entity\Entity;
@@ -26,7 +26,7 @@ class Subscription extends Entity
     public static function getStructure(Structure $structure): Structure
     {
         $structure->table = 'olml89_xenforo_subscriptions_subscription';
-        $structure->shortName = 'olml89\XenforoSubscriptions:Subscription';
+        $structure->shortName = 'olml89\XenforoBots:Subscription';
         $structure->contentType = 'olml89_xenforo_subscriptions_subscription';
         $structure->primaryKey = 'subscription_id';
         $structure->columns = [

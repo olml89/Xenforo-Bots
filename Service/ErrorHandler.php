@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Service;
+namespace olml89\XenforoBots\Service;
 
 use Throwable;
 use XF\Error;

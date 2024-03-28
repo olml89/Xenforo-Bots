@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\XFPost;
+namespace olml89\XenforoBots\UseCase\XFPost;
 
-use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
-use olml89\XenforoSubscriptions\Service\WebhookNotifier;
+use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\Service\WebhookNotifier;
 use XF\Entity\Post as XFPost;
 
 final class Notify

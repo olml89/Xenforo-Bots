@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\UseCase\Subscription;
+namespace olml89\XenforoBots\UseCase\Subscription;
 
-use olml89\XenforoSubscriptions\Entity\Subscription;
-use olml89\XenforoSubscriptions\Entity\SubscriptionFactory;
-use olml89\XenforoSubscriptions\Exception\SubscriptionCreationException;
-use olml89\XenforoSubscriptions\Exception\ExistingSubscriptionException;
-use olml89\XenforoSubscriptions\Exception\SubscriptionStorageException;
-use olml89\XenforoSubscriptions\Repository\SubscriptionRepository;
-use olml89\XenforoSubscriptions\XF\Api\Result\UseCaseResponse;
+use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\Entity\SubscriptionFactory;
+use olml89\XenforoBots\Exception\SubscriptionCreationException;
+use olml89\XenforoBots\Exception\ExistingSubscriptionException;
+use olml89\XenforoBots\Exception\SubscriptionStorageException;
+use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\XF\Api\Result\UseCaseResponse;
 
 final class Create
 {

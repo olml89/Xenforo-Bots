@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Service;
+namespace olml89\XenforoBots\Service;
 
-use olml89\XenforoSubscriptions\Exception\XFUserNotFoundException;
-use olml89\XenforoSubscriptions\Repository\XFUserRepository;
-use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
+use olml89\XenforoBots\Exception\XFUserNotFoundException;
+use olml89\XenforoBots\Repository\XFUserRepository;
+use olml89\XenforoBots\XF\Entity\User as XFUser;
 
 final class XFUserFinder
 {
