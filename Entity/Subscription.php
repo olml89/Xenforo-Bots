@@ -4,8 +4,8 @@ namespace olml89\XenforoSubscriptions\Entity;
 
 use olml89\XenforoSubscriptions\Exception\InvalidUrlException;
 use olml89\XenforoSubscriptions\Exception\InvalidUuidException;
-use olml89\XenforoSubscriptions\Validator\UrlValidator;
-use olml89\XenforoSubscriptions\Validator\UuidValidator;
+use olml89\XenforoSubscriptions\Validator\Url;
+use olml89\XenforoSubscriptions\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
 use XF\Mvc\Entity\Entity;
@@ -70,8 +70,8 @@ class Subscription extends Entity
      */
     protected function verifySubscriptionId(string &$value): bool
     {
-        /** @var UuidValidator $validator */
-        $validator = $this->app()->get(UuidValidator::class);
+        /** @var Uuid $validator */
+        $validator = $this->app()->get(Uuid::class);
         $validator->ensureIsValid($value);
 
         return true;
@@ -82,8 +82,8 @@ class Subscription extends Entity
      */
     protected function verifyWebhook(string &$value): bool
     {
-        /** @var UrlValidator $validator */
-        $validator = $this->app()->get(UrlValidator::class);
+        /** @var Url $validator */
+        $validator = $this->app()->get(Url::class);
         $validator->ensureIsValid($value);
 
         return true;
@@ -92,9 +92,8 @@ class Subscription extends Entity
     protected function setupApiResultData(
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
-        array $options = []
-    ): void
-    {}
+        array $options = [],
+    ): void {}
 
     protected function _postDelete()
     {

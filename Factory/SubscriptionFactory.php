@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoSubscriptions\Entity;
+namespace olml89\XenforoSubscriptions\Factory;
 
 use olml89\XenforoSubscriptions\Exception\SubscriptionCreationException;
 use olml89\XenforoSubscriptions\Exception\InvalidUrlException;

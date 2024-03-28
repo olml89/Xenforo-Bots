@@ -1,0 +1,42 @@
+<?php declare(strict_types=1);
+
+namespace olml89\XenforoSubscriptions\Factory;
+
+use olml89\XenforoSubscriptions\Exception\UserCreationException;
+use XF\Entity\User;
+use XF\PrintableException;
+use XF\Repository\User as UserRepository;
+
+final class UserFactory
+{
+    public function __construct(
+        private readonly UserRepository $userRepository,
+    ) {}
+
+    /**
+     * @throws UserCreationException
+     */
+    public function create(string $username, string $password): User
+    {
+        $user = $this->instantiateUser($username, $password);
+
+        if ($user->hasErrors()) {
+            throw UserCreationException::entity($user);
+        }
+
+        return $user;
+    }
+
+    private function instantiateUser(string $username, string $password): User
+    {
+        $user = $this->userRepository->setupBaseUser();
+
+        $user->username = $username;
+        $user->Auth->setPassword($password);
+
+        // This allows the creation of an User without a set email address
+        $user->setOption('admin_edit', true);
+
+        return $user;
+    }
+}

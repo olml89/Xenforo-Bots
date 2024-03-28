@@ -3,9 +3,9 @@
 namespace olml89\XenforoSubscriptions\Exception;
 
 use olml89\XenforoSubscriptions\Service\ErrorHandler;
-use olml89\XenforoSubscriptions\XF\Mvc\Reply\BadRequestException;
+use olml89\XenforoSubscriptions\XF\Mvc\Reply\UnprocessableEntityException;
 
-final class SubscriptionCreationException extends BadRequestException
+final class SubscriptionCreationException extends UnprocessableEntityException
 {
     public function __construct(ApplicationException $applicationException, ErrorHandler $errorHandler)
     {

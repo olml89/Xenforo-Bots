@@ -2,10 +2,13 @@
 
 namespace olml89\XenforoSubscriptions\XF\Mvc\Reply;
 
-abstract class InternalServerErrorException extends DomainException
+use XF\Mvc\Entity\Entity;
+use XF\PrintableException;
+
+abstract class UnprocessableEntityException extends DomainException
 {
     protected static function httpCode(): int
     {
-        return 500;
+        return 422;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace olml89\XenforoSubscriptions\XF\Mvc\Reply;
 
-abstract class NotFoundException extends ApiException
+abstract class NotFoundException extends DomainException
 {
-    protected function httpCode(): int
+    protected static function httpCode(): int
     {
         return 404;
     }

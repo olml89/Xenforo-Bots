@@ -4,13 +4,13 @@ namespace olml89\XenforoSubscriptions\Service;
 
 use olml89\XenforoSubscriptions\Entity\Subscription;
 use olml89\XenforoSubscriptions\Exception\SubscriptionNotFoundException;
-use olml89\XenforoSubscriptions\Validator\UrlValidator;
+use olml89\XenforoSubscriptions\Validator\Url;
 use olml89\XenforoSubscriptions\XF\Entity\User as XFUser;
 
 final class SubscriptionFinder
 {
     public function __construct(
-        private readonly UrlValidator $urlValidator,
+        private readonly Url $urlValidator,
     ) {}
 
     /**
