@@ -21,7 +21,7 @@ use XF\Mvc\Entity\Structure;
  * RELATIONS
  * @property-read User $User
  * @property-read ApiKey $ApiKey
- * @property-read Subscription[] $Subscriptions
+ * @property-read BotSubscription[] $BotSubscriptions
  */
 final class Bot extends Entity
 {
@@ -39,9 +39,9 @@ final class Bot extends Entity
 
     public static function getStructure(Structure $structure): Structure
     {
-        $structure->table = 'olml89_xenforo_subscriptions_bot';
+        $structure->table = 'olml89_xenforo_bots_bot';
         $structure->shortName = 'olml89\XenforoBots:Bot';
-        $structure->contentType = 'olml89_xenforo_subscriptions_bot';
+        $structure->contentType = 'olml89_xenforo_bots_bot';
         $structure->primaryKey = 'bot_id';
         $structure->columns = [
             'bot_id' => [

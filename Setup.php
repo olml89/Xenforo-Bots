@@ -9,7 +9,7 @@ class Setup extends AbstractSetup
 {
     public function install(array $stepParams = []): void
 	{
-        $this->createTable('olml89_xenforo_subscriptions_bot', function (Create $table)
+        $this->createTable('olml89_xenforo_bots_bot', function (Create $table)
         {
             $table->addColumn('bot_id', 'varchar', 36)->primaryKey();
             $table->addColumn('user_id', 'int')->nullable(false);
@@ -17,7 +17,7 @@ class Setup extends AbstractSetup
             $table->addColumn('created_at', 'int')->nullable(false);
         });
 
-        $this->createTable('olml89_xenforo_subscriptions_bot_subscription', function (Create $table)
+        $this->createTable('olml89_xenforo_bots_bot_subscription', function (Create $table)
         {
             $table->addColumn('subscription_id', 'varchar', 36)->primaryKey();
             $table->addColumn('bot_id', 'varchar', 36)->nullable(false);
@@ -34,7 +34,7 @@ class Setup extends AbstractSetup
 
 	public function uninstall(array $stepParams = []): void
 	{
-        $this->schemaManager()->dropTable('olml89_xenforo_subscriptions_bot');
-        $this->schemaManager()->dropTable('olml89_xenforo_subscriptions_subscription');
+        $this->schemaManager()->dropTable('olml89_xenforo_bots_bot');
+        $this->schemaManager()->dropTable('olml89_xenforo_bots_bot_subscription');
 	}
 }
