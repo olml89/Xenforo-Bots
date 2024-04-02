@@ -2,10 +2,9 @@
 
 namespace olml89\XenforoBots\Entity;
 
-use olml89\XenforoBots\Exception\InvalidUrlException;
-use olml89\XenforoBots\Exception\InvalidUuidException;
-use olml89\XenforoBots\Validator\Url;
-use olml89\XenforoBots\Validator\Uuid;
+use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
+use olml89\XenforoBots\XF\Validator\Url;
+use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
 use XF\Mvc\Entity\Entity;
@@ -13,13 +12,14 @@ use XF\Mvc\Entity\Structure;
 
 /**
  * COLUMNS
- * @property string $subscription_id
- * @property int $user_id
+ * @property string $bot_subscription_id
+ * @property string $bot_id
  * @property string $webhook
  * @property int $subscribed_at
  *
  * RELATIONS
- * @property \XF\Entity\User $User
+ *
+ * @property Bot $Bot
  */
 class BotSubscription extends Entity
 {
@@ -28,17 +28,17 @@ class BotSubscription extends Entity
         $structure->table = 'olml89_xenforo_bots_bot_subscription';
         $structure->shortName = 'olml89\XenforoBots:BotSubscription';
         $structure->contentType = 'olml89_xenforo_bots_bot_subscription';
-        $structure->primaryKey = 'subscription_id';
+        $structure->primaryKey = 'bot_subscription_id';
         $structure->columns = [
-            'subscription_id' => [
+            'bot_subscription_id' => [
                 'type' => self::STR,
                 'length' => 36,
                 'api' => true
             ],
-            'user_id' => [
-                'type' => self::UINT,
-                'required' => true,
-                'api' => true,
+            'bot_id' => [
+                'type' => self::STR,
+                'length' => 36,
+                'api' => true
             ],
             'webhook' => [
                 'type' => self::STR,
@@ -53,50 +53,66 @@ class BotSubscription extends Entity
             ]
         ];
         $structure->relations = [
-            'User' => [
-                'entity' => 'XF:User',
+            'Bot' => [
+                'entity' => 'olml89\XenforoBots:Bot',
                 'type' => self::TO_ONE,
-                'conditions' => 'user_id',
+                'conditions' => 'bot_id',
                 'primary' => true,
             ],
         ];
-        $structure->defaultWith = ['User'];
+        $structure->defaultWith = ['Bot'];
 
         return $structure;
     }
 
-    /**
-     * @throws InvalidUuidException
-     */
-    protected function verifySubscriptionId(string &$value): bool
+    protected function verifyBotSubscriptionId(string &$bot_subscription_id): bool
     {
         /** @var Uuid $validator */
-        $validator = $this->app()->get(Uuid::class);
-        $validator->ensureIsValid($value);
+        $validator = $this->app()->validator('Uuid');
+
+        if (!$validator->isValid($bot_subscription_id, $errorKey)) {
+            $this->error($validator->getPrintableErrorValue($errorKey), 'bot_subscription_id');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function verifyWebhook(string &$webhook): bool
+    {
+        /** @var Url $validator */
+        $validator = $this->app()->validator('Url');
+
+        if (!$validator->isValid($webhook, $errorKey)) {
+            $this->error($validator->getPrintableErrorValue($errorKey), 'webhook');
+
+            return false;
+        }
 
         return true;
     }
 
     /**
-     * @throws InvalidUrlException
+     * @throws BotSubscriptionAlreadyExistsException
      */
-    protected function verifyWebhook(string &$value): bool
+    public function setSubscriber(Bot $bot): void
     {
-        /** @var Url $validator */
-        $validator = $this->app()->get(Url::class);
-        $validator->ensureIsValid($value);
+        foreach ($bot->BotSubscriptions as $alreadyExistingSubscription) {
+            if ($this->webhook === $alreadyExistingSubscription->webhook) {
+                throw new BotSubscriptionAlreadyExistsException($bot, $this);
+            }
+        }
 
-        return true;
+        $this->bot_id = $bot->bot_id;
+        $this->hydrateRelation('Bot', $bot);
     }
-
+    
     protected function setupApiResultData(
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
-    ): void {}
-
-    protected function _postDelete()
-    {
-        $this->User->clearCache('Subscriptions');
+    ): void {
+        $result->skipColumn('bot_id');
     }
 }

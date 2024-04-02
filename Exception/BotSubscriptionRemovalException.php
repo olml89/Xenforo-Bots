@@ -2,10 +2,10 @@
 
 namespace olml89\XenforoBots\Exception;
 
-final class UserCreationException extends EntityValidationException
+final class BotSubscriptionRemovalException extends EntityRemovalException
 {
     protected static function errorCode(): string
     {
-        return 'user.creation';
+        return 'botSubscription.removal';
     }
 }

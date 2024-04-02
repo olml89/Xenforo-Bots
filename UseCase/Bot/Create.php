@@ -3,11 +3,11 @@
 namespace olml89\XenforoBots\UseCase\Bot;
 
 use olml89\XenforoBots\Entity\Bot;
-use olml89\XenforoBots\Exception\ApiKeyCreationException;
+use olml89\XenforoBots\Exception\ApiKeyValidationException;
 use olml89\XenforoBots\Exception\ApiKeyStorageException;
-use olml89\XenforoBots\Exception\BotCreationException;
+use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Exception\BotStorageException;
-use olml89\XenforoBots\Exception\UserCreationException;
+use olml89\XenforoBots\Exception\UserValidationException;
 use olml89\XenforoBots\Exception\UserStorageException;
 use olml89\XenforoBots\Factory\ApiKeyFactory;
 use olml89\XenforoBots\Factory\BotFactory;
@@ -32,7 +32,7 @@ final class Create
     ) {}
 
     /**
-     * @throws BotCreationException
+     * @throws BotValidationException
      * @throws BotStorageException
      */
     public function create(string $username, string $password): Bot
@@ -44,14 +44,14 @@ final class Create
 
             return $bot;
         }
-        catch (BotCreationException|BotStorageException $e) {
+        catch (BotValidationException|BotStorageException $e) {
             $this->database->rollback();
             throw $e;
         }
     }
 
     /**
-     * @throws BotCreationException
+     * @throws BotValidationException
      * @throws BotStorageException
      */
     private function createBot(string $username, string $password): Bot
@@ -60,18 +60,18 @@ final class Create
             $user = $this->createUser($username, $password);
             $bot = $this->botFactory->create($user);
             $apiKey = $this->createApiKey($bot);
-            $bot->api_key_id = $apiKey->api_key_id;
+            $bot->setApiKey($apiKey);
             $this->botRepository->save($bot);
 
             return $bot;
         }
-        catch (UserCreationException|UserStorageException|ApiKeyCreationException|ApiKeyStorageException $e) {
-            throw BotCreationException::childEntityException($e);
+        catch (UserValidationException|UserStorageException|ApiKeyValidationException|ApiKeyStorageException $e) {
+            throw BotValidationException::fromDomainException($e);
         }
     }
 
     /**
-     * @throws UserCreationException
+     * @throws UserValidationException
      * @throws UserStorageException
      */
     private function createUser(string $username, string $password): User
@@ -83,7 +83,7 @@ final class Create
     }
 
     /**
-     * @throws ApiKeyCreationException
+     * @throws ApiKeyValidationException
      * @throws ApiKeyStorageException
      */
     private function createApiKey(Bot $bot): ApiKey

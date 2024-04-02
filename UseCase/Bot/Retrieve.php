@@ -4,12 +4,12 @@ namespace olml89\XenforoBots\UseCase\Bot;
 
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotNotFoundException;
-use olml89\XenforoBots\Repository\BotRepository;
+use olml89\XenforoBots\Service\BotFinder;
 
 final class Retrieve
 {
     public function __construct(
-        private readonly BotRepository $botRepository,
+        private readonly BotFinder $botFinder,
     ) {}
 
     /**
@@ -17,6 +17,6 @@ final class Retrieve
      */
     public function retrieve(string $bot_id): Bot
     {
-        return $this->botRepository->find($bot_id);
+        return $this->botFinder->find($bot_id);
     }
 }

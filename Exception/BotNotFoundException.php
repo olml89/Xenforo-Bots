@@ -8,7 +8,7 @@ final class BotNotFoundException extends EntityNotFoundException
 {
     protected static function errorCode(): string
     {
-        return 'bot.not_found';
+        return 'bot.retrieval.not_found';
     }
 
     protected static function entityClass(): string

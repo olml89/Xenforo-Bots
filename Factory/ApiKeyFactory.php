@@ -3,7 +3,7 @@
 namespace olml89\XenforoBots\Factory;
 
 use olml89\XenforoBots\Entity\Bot;
-use olml89\XenforoBots\Exception\ApiKeyCreationException;
+use olml89\XenforoBots\Exception\ApiKeyValidationException;
 use XF\App;
 use XF\Entity\ApiKey;
 use XF\Mvc\Entity\Manager as EntityManager;
@@ -17,7 +17,7 @@ final class ApiKeyFactory
     ) {}
 
     /**
-     * @throws ApiKeyCreationException
+     * @throws ApiKeyValidationException
      */
     public function create(Bot $bot): ApiKey
     {
@@ -25,7 +25,7 @@ final class ApiKeyFactory
         $apiKey = $apiKeyManager->getKey();
 
         if ($apiKey->hasErrors()) {
-            throw ApiKeyCreationException::entity($apiKey);
+            throw ApiKeyValidationException::entity($apiKey);
         }
 
         return $apiKey;

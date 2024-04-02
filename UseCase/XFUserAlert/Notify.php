@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoBots\UseCase\XFUserAlert;
 
-use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\Repository\BotSubscriptionRepository;
 use olml89\XenforoBots\Service\WebhookNotifier;
 use XF\Entity\UserAlert as XFUserAlert;
 
@@ -11,8 +11,8 @@ final class Notify
     private const USER_ALERTS_ENDPOINT = '/user-alerts';
 
     public function __construct(
-        private readonly SubscriptionRepository $subscriptionRepository,
-        private readonly WebhookNotifier $webhookNotifier,
+        private readonly BotSubscriptionRepository $subscriptionRepository,
+        private readonly WebhookNotifier           $webhookNotifier,
     ) {}
 
     public function notify(XFUserAlert $xFUserAlert): void

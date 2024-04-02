@@ -2,10 +2,10 @@
 
 namespace olml89\XenforoBots\Exception;
 
-final class ApiKeyCreationException extends EntityValidationException
+final class BotValidationException extends EntityValidationException
 {
     protected static function errorCode(): string
     {
-        return 'api_key.creation';
+        return 'bot.validation';
     }
 }

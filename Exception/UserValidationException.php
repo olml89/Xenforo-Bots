@@ -2,10 +2,10 @@
 
 namespace olml89\XenforoBots\Exception;
 
-final class BotCreationException extends EntityValidationException
+final class UserValidationException extends EntityValidationException
 {
     protected static function errorCode(): string
     {
-        return 'bot.creation';
+        return 'user.validation';
     }
 }

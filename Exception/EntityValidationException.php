@@ -21,19 +21,4 @@ abstract class EntityValidationException extends UnprocessableEntityException
             context: $printableException,
         );
     }
-
-    public static function childEntityException(DomainException $domainException): static
-    {
-        /** @var Error $error */
-        $error = $domainException->getReply();
-
-        /** @var ErrorMessage $errorMessage */
-        $errorMessage = $error->getErrors()[0];
-
-        return static::fromMessageAndErrorCode(
-            message: $errorMessage->getMessage(),
-            errorCode: static::errorCode() . '.' . $errorMessage->getCode(),
-            context: $domainException,
-        );
-    }
 }

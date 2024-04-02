@@ -5,10 +5,12 @@ namespace olml89\XenforoBots\UseCase\Bot;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Repository\BotRepository;
+use olml89\XenforoBots\Service\BotFinder;
 
 final class Delete
 {
     public function __construct(
+        private readonly BotFinder $botFinder,
         private readonly BotRepository $botRepository,
     ) {}
 
@@ -18,7 +20,7 @@ final class Delete
      */
     public function delete(string $bot_id): void
     {
-        $bot = $this->botRepository->find($bot_id);
+        $bot = $this->botFinder->find($bot_id);
         $this->botRepository->delete($bot);
     }
 }

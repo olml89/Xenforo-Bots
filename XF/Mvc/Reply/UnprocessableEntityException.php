@@ -2,9 +2,6 @@
 
 namespace olml89\XenforoBots\XF\Mvc\Reply;
 
-use XF\Mvc\Entity\Entity;
-use XF\PrintableException;
-
 abstract class UnprocessableEntityException extends DomainException
 {
     protected static function httpCode(): int

@@ -3,7 +3,7 @@
 namespace olml89\XenforoBots\Factory;
 
 use olml89\XenforoBots\Entity\Bot;
-use olml89\XenforoBots\Exception\BotCreationException;
+use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Service\UuidGenerator;
 use XF\Entity\User;
 use XF\Mvc\Entity\Manager;
@@ -16,14 +16,14 @@ final class BotFactory
     ) {}
 
     /**
-     * @throws BotCreationException
+     * @throws BotValidationException
      */
     public function create(User $user): Bot
     {
         $bot = $this->instantiateBot($user);
 
         if ($bot->hasErrors()) {
-            throw BotCreationException::entity($bot);
+            throw BotValidationException::entity($bot);
         }
 
         return $bot;
@@ -37,8 +37,7 @@ final class BotFactory
         );
 
         $bot->bot_id = $this->uuidGenerator->random();
-        $bot->user_id = $user->user_id;
-        $bot->created_at = time();
+        $bot->attachToUser($user);
 
         return $bot;
     }

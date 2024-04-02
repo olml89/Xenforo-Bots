@@ -4,6 +4,11 @@ namespace olml89\XenforoBots\XF\Entity;
 
 use XF\Api\Result\EntityResult;
 
+/**
+ * RELATIONS
+ *
+ * @property-read User $User
+ */
 final class ApiKey extends XFCP_ApiKey
 {
     protected function setupApiResultData(

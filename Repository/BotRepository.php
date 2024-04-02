@@ -3,7 +3,6 @@
 namespace olml89\XenforoBots\Repository;
 
 use olml89\XenforoBots\Entity\Bot;
-use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Exception\BotStorageException;
 use Throwable;
@@ -24,14 +23,6 @@ final class BotRepository
             ->fetchOne();
 
         return $bot;
-    }
-
-    /**
-     * @throws BotNotFoundException
-     */
-    public function find(string $bot_id): Bot
-    {
-        return $this->get($bot_id) ?? throw BotNotFoundException::id($bot_id);
     }
 
     /**

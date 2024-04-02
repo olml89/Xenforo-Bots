@@ -9,7 +9,9 @@ use XF\Mvc\Reply\Exception;
 
 abstract class ApiException extends Exception
 {
-    protected function __construct(ErrorMessage $apiErrorMessage, ?Throwable $context = null)
+    public readonly ?Throwable $context;
+
+    public function __construct(ErrorMessage $apiErrorMessage, ?Throwable $context = null)
     {
         $apiError = new Error(
             errors: $apiErrorMessage,
@@ -17,10 +19,19 @@ abstract class ApiException extends Exception
         );
 
         if (!is_null($context)) {
-            $apiError->setJsonParam('exception', $context);
+            $apiError->setJsonParam('debug', [
+                'exception' => $context,
+            ]);
         }
 
+        $this->context = $context;
+
         parent::__construct($apiError);
+    }
+
+    public function getContext(): ?Throwable
+    {
+        return $this->context;
     }
 
     abstract protected static function httpCode(): int;

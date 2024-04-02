@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoBots\UseCase\XFConversationMessage;
 
-use olml89\XenforoBots\Repository\SubscriptionRepository;
+use olml89\XenforoBots\Repository\BotSubscriptionRepository;
 use olml89\XenforoBots\Service\WebhookNotifier;
 use olml89\XenforoBots\XF\Entity\User as XFUser;
 use XF\Entity\ConversationMessage as XFConversationMessage;
@@ -12,8 +12,8 @@ final class Notify
     private const CONVERSATION_MESSAGES_ENDPOINT = '/conversation-messages';
 
     public function __construct(
-        private readonly SubscriptionRepository $subscriptionRepository,
-        private readonly WebhookNotifier $webhookNotifier,
+        private readonly BotSubscriptionRepository $subscriptionRepository,
+        private readonly WebhookNotifier           $webhookNotifier,
     ) {}
 
     /**

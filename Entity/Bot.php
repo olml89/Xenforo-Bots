@@ -2,11 +2,14 @@
 
 namespace olml89\XenforoBots\Entity;
 
+use olml89\XenforoBots\Exception\BotNotAuthorizedException;
+use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
 use XF\Entity\ApiKey;
 use XF\Entity\User;
+use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -19,9 +22,10 @@ use XF\Mvc\Entity\Structure;
  * @property int $created_at
  *
  * RELATIONS
+ *
  * @property-read User $User
  * @property-read ApiKey $ApiKey
- * @property-read BotSubscription[] $BotSubscriptions
+ * @property-read ArrayCollection|BotSubscription[] $BotSubscriptions
  */
 final class Bot extends Entity
 {
@@ -81,6 +85,12 @@ final class Bot extends Entity
                 'primary' => true,
                 'cascadeDelete' => true,
             ],
+            'BotSubscriptions' => [
+                'entity' => 'olml89\XenforoBots:BotSubscription',
+                'type' => self::TO_MANY,
+                'conditions' => 'bot_id',
+                'cascadeDelete' => true,
+            ],
         ];
         $structure->defaultWith = [
             'User',
@@ -104,12 +114,72 @@ final class Bot extends Entity
         return true;
     }
 
+    public function attachToUser(User $user): void
+    {
+        $this->user_id = $user->user_id;
+        $this->hydrateRelation('User', $user);
+    }
+
+    public function setApiKey(ApiKey $apiKey): void
+    {
+        $this->api_key_id = $apiKey->api_key_id;
+        $this->hydrateRelation('ApiKey', $apiKey);
+    }
+
+    public function hasBotSubscription(BotSubscription $botSubscription): bool
+    {
+        foreach ($this->BotSubscriptions as $ownedBotSubscription) {
+            if ($botSubscription->bot_subscription_id === $ownedBotSubscription->bot_subscription_id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @throws BotNotAuthorizedException
+     */
+    public function owns(BotSubscription $botSubscription): void
+    {
+        if (!$this->hasBotSubscription($botSubscription)) {
+            throw BotNotAuthorizedException::notAllowed($this);
+        }
+    }
+
+    /**
+     * @throws BotSubscriptionAlreadyExistsException
+     */
+    public function subscribe(BotSubscription $botSubscription): void
+    {
+        $botSubscription->setSubscriber($this);
+
+        $this->hydrateRelation(
+            'BotSubscriptions',
+            $this->BotSubscriptions->merge(new ArrayCollection([$botSubscription]))
+        );
+    }
+
+    public function unsubscribe(BotSubscription $botSubscription): void
+    {
+        $this->hydrateRelation(
+            'BotSubscriptions',
+            $this->BotSubscriptions->filter(
+                function (BotSubscription $alreadyExistingBotSubscription) use ($botSubscription): bool {
+                    return $alreadyExistingBotSubscription->bot_subscription_id !== $botSubscription->bot_subscription_id;
+                }
+            )
+        );
+    }
+
     protected function setupApiResultData(
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
     ): void {
-        $result->User = $this->User;
-        $result->ApiKey = $this->ApiKey;
+        $result->skipColumn('user_id');
+        $result->skipColumn('api_key_id');
+
+        $result->includeRelation('BotSubscriptions');
     }
 }

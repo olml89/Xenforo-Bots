@@ -19,7 +19,7 @@ class Setup extends AbstractSetup
 
         $this->createTable('olml89_xenforo_bots_bot_subscription', function (Create $table)
         {
-            $table->addColumn('subscription_id', 'varchar', 36)->primaryKey();
+            $table->addColumn('bot_subscription_id', 'varchar', 36)->primaryKey();
             $table->addColumn('bot_id', 'varchar', 36)->nullable(false);
             $table->addColumn('webhook', 'varchar', 255);
             $table->addColumn('subscribed_at', 'int')->nullable(false);

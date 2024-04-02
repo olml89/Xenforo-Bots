@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
-use olml89\XenforoBots\Entity\Subscription;
+use olml89\XenforoBots\Entity\BotSubscription;
 use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Error;
 
@@ -19,7 +19,7 @@ final class WebhookNotifier
     ) {}
 
     /**
-     * @param Subscription[] $subscriptions
+     * @param BotSubscription[] $subscriptions
      */
     public function notify(string $endpoint, array $subscriptions, JsonSerializableObject $data): void
     {
@@ -28,7 +28,7 @@ final class WebhookNotifier
         }
 
         $webhooks = array_map(
-            function (Subscription $subscription): Url {
+            function (BotSubscription $subscription): Url {
                 return $subscription->webhook;
             },
             $subscriptions,

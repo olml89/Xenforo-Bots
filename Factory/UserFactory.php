@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoBots\Exception\UserCreationException;
+use olml89\XenforoBots\Exception\UserValidationException;
 use XF\Entity\User;
 use XF\PrintableException;
 use XF\Repository\User as UserRepository;
@@ -14,14 +14,14 @@ final class UserFactory
     ) {}
 
     /**
-     * @throws UserCreationException
+     * @throws UserValidationException
      */
     public function create(string $username, string $password): User
     {
         $user = $this->instantiateUser($username, $password);
 
         if ($user->hasErrors()) {
-            throw UserCreationException::entity($user);
+            throw UserValidationException::entity($user);
         }
 
         return $user;
