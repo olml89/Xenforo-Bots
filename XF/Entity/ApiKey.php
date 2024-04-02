@@ -16,6 +16,7 @@ final class ApiKey extends XFCP_ApiKey
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
     ): void {
-        $result->api_key = $this->api_key;
+        $result->skipColumn('api_key_id');
+        $result->includeColumn('api_key');
     }
 }

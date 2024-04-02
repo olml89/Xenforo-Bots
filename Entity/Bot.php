@@ -170,9 +170,9 @@ final class Bot extends Entity
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
     ): void {
-        $result->skipColumn('user_id');
         $result->skipColumn('api_key_id');
 
+        $result->includeRelation('ApiKey');
         $result->includeRelation('BotSubscriptions');
     }
 }
