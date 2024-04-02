@@ -92,12 +92,15 @@ final class AppSetup
          */
         $container[ApiKeyRepository::class] = function() use ($app): ApiKeyRepository
         {
-            return new ApiKeyRepository();
+            return new ApiKeyRepository(
+                errorHandler: $app->get(ErrorHandler::class),
+            );
         };
 
         $container[BotRepository::class] = function() use ($app): BotRepository
         {
             return new BotRepository(
+                errorHandler: $app->get(ErrorHandler::class),
                 botFinder: $app->finder('olml89\XenforoBots:Bot'),
             );
         };
@@ -105,13 +108,16 @@ final class AppSetup
         $container[BotSubscriptionRepository::class] = function() use($app): BotSubscriptionRepository
         {
             return new BotSubscriptionRepository(
+                errorHandler: $app->get(ErrorHandler::class),
                 botSubscriptionFinder: $app->finder('olml89\XenforoBots:BotSubscription'),
             );
         };
 
         $container[UserRepository::class] = function() use ($app): UserRepository
         {
-            return new UserRepository();
+            return new UserRepository(
+                errorHandler: $app->get(ErrorHandler::class),
+            );
         };
 
         /**

@@ -5,12 +5,14 @@ namespace olml89\XenforoBots\Repository;
 use olml89\XenforoBots\Entity\BotSubscription;
 use olml89\XenforoBots\Exception\BotSubscriptionRemovalException;
 use olml89\XenforoBots\Exception\BotSubscriptionStorageException;
+use olml89\XenforoBots\Service\ErrorHandler;
 use Throwable;
 use XF\Mvc\Entity\Finder;
 
 final class BotSubscriptionRepository
 {
     public function __construct(
+        private readonly ErrorHandler $errorHandler,
         private readonly Finder $botSubscriptionFinder,
     ) {}
 
@@ -34,7 +36,10 @@ final class BotSubscriptionRepository
             $botSubscription->save();
         }
         catch (Throwable $e) {
-            throw BotSubscriptionStorageException::entity($botSubscription, $e);
+            throw BotSubscriptionStorageException::entity(
+                entity: $botSubscription,
+                context: $this->errorHandler->handle($e),
+            );
         }
     }
 
@@ -47,7 +52,10 @@ final class BotSubscriptionRepository
             $botSubscription->delete();
         }
         catch (Throwable $e) {
-            throw BotSubscriptionRemovalException::entity($botSubscription, $e);
+            throw BotSubscriptionRemovalException::entity(
+                entity: $botSubscription,
+                context: $this->errorHandler->handle($e),
+            );
         }
     }
 }

@@ -8,7 +8,7 @@ use XF\Mvc\Entity\Entity;
 
 abstract class EntityRemovalException extends InternalServerErrorException
 {
-    public static function entity(Entity $entity, ?Throwable $exception = null): static
+    public static function entity(Entity $entity, ?Throwable $context = null): static
     {
         return static::fromMessageAndErrorCode(
             message: sprintf(
@@ -17,7 +17,7 @@ abstract class EntityRemovalException extends InternalServerErrorException
                 $entity->getEntityId(),
             ),
             errorCode: static::errorCode(),
-            context: $exception,
+            context: $context,
         );
     }
 }

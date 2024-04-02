@@ -12,24 +12,19 @@ final class ErrorHandler
         private readonly bool $debug,
     ) {}
 
-    public function handle(?Throwable $e): ?Throwable
+    public function handle(Throwable $e): ?Throwable
     {
-        if (is_null($e)) {
+        if (!$this->debug) {
+            $this->logException($e);
+
             return null;
         }
 
-        $this->logException($e);
-
-        return $this->getContext($e);
+        return $e;
     }
 
     private function logException(Throwable $e): void
     {
         $this->error->logException($e);
-    }
-
-    private function getContext(Throwable $e): ?Throwable
-    {
-        return $this->debug ? $e : null;
     }
 }
