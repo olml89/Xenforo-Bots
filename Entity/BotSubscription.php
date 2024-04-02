@@ -100,7 +100,7 @@ class BotSubscription extends Entity
     {
         foreach ($bot->BotSubscriptions as $alreadyExistingSubscription) {
             if ($this->webhook === $alreadyExistingSubscription->webhook) {
-                //throw new BotSubscriptionAlreadyExistsException($bot, $this);
+                throw new BotSubscriptionAlreadyExistsException($bot, $this);
             }
         }
 

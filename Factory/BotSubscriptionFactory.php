@@ -22,19 +22,18 @@ final class BotSubscriptionFactory
      */
     public function create(Bot $bot, string $webhook): BotSubscription
     {
-        $botSubscription = $this->instantiateBotSubscription($bot, $webhook);
+        $botSubscription = $this->instantiateBotSubscription($webhook);
 
         if ($botSubscription->hasErrors()) {
             throw BotSubscriptionValidationException::entity($botSubscription);
         }
 
+        $botSubscription->setSubscriber($bot);
+
         return $botSubscription;
     }
 
-    /**
-     * @throws BotSubscriptionAlreadyExistsException
-     */
-    private function instantiateBotSubscription(Bot $bot, string $webhook): BotSubscription
+    private function instantiateBotSubscription(string $webhook): BotSubscription
     {
         /** @var BotSubscription $botSubscription */
         $botSubscription = $this->entityManager->create(
@@ -43,7 +42,6 @@ final class BotSubscriptionFactory
 
         $botSubscription->bot_subscription_id = $this->uuidGenerator->random();
         $botSubscription->webhook = $webhook;
-        $botSubscription->setSubscriber($bot);
 
         return $botSubscription;
     }
