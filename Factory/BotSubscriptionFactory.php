@@ -42,8 +42,8 @@ final class BotSubscriptionFactory
         );
 
         $botSubscription->bot_subscription_id = $this->uuidGenerator->random();
-        $botSubscription->setSubscriber($bot);
         $botSubscription->webhook = $webhook;
+        $botSubscription->setSubscriber($bot);
 
         return $botSubscription;
     }
