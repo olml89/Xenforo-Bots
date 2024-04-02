@@ -4,11 +4,11 @@ namespace olml89\XenforoBots\Entity;
 
 use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
+use olml89\XenforoBots\XF\Entity\ApiKey;
+use olml89\XenforoBots\XF\Entity\User;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
-use XF\Entity\ApiKey;
-use XF\Entity\User;
 use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
@@ -126,25 +126,18 @@ final class Bot extends Entity
         $this->hydrateRelation('ApiKey', $apiKey);
     }
 
-    public function hasBotSubscription(BotSubscription $botSubscription): bool
-    {
-        foreach ($this->BotSubscriptions as $ownedBotSubscription) {
-            if ($botSubscription->bot_subscription_id === $ownedBotSubscription->bot_subscription_id) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @throws BotNotAuthorizedException
      */
     public function owns(BotSubscription $botSubscription): void
     {
-        if (!$this->hasBotSubscription($botSubscription)) {
-            throw BotNotAuthorizedException::notAllowed($this);
+        foreach ($this->BotSubscriptions as $ownedBotSubscription) {
+            if ($botSubscription->bot_subscription_id === $ownedBotSubscription->bot_subscription_id) {
+                return;
+            }
         }
+
+        throw BotNotAuthorizedException::notAllowed($this);
     }
 
     /**

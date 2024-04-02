@@ -5,7 +5,7 @@ namespace olml89\XenforoBots\Factory;
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Service\UuidGenerator;
-use XF\Entity\User;
+use olml89\XenforoBots\XF\Entity\User;
 use XF\Mvc\Entity\Manager;
 
 final class BotFactory

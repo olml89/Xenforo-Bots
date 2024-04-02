@@ -3,8 +3,8 @@
 namespace olml89\XenforoBots\Exception;
 
 use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\XF\Entity\User;
 use olml89\XenforoBots\XF\Mvc\Reply\ForbiddenException;
-use XF\Entity\User;
 
 final class UserNotAuthorizedException extends ForbiddenException
 {

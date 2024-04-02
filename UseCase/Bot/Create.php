@@ -15,9 +15,9 @@ use olml89\XenforoBots\Factory\UserFactory;
 use olml89\XenforoBots\Repository\ApiKeyRepository;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Repository\UserRepository;
+use olml89\XenforoBots\XF\Entity\ApiKey;
+use olml89\XenforoBots\XF\Entity\User;
 use XF\Db\AbstractAdapter;
-use XF\Entity\ApiKey;
-use XF\Entity\User;
 
 final class Create
 {

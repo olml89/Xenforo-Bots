@@ -3,8 +3,7 @@
 namespace olml89\XenforoBots\Factory;
 
 use olml89\XenforoBots\Exception\UserValidationException;
-use XF\Entity\User;
-use XF\PrintableException;
+use olml89\XenforoBots\XF\Entity\User;
 use XF\Repository\User as UserRepository;
 
 final class UserFactory
@@ -29,6 +28,7 @@ final class UserFactory
 
     private function instantiateUser(string $username, string $password): User
     {
+        /** @var User $user */
         $user = $this->userRepository->setupBaseUser();
 
         $user->username = $username;

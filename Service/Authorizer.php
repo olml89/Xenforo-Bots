@@ -6,8 +6,8 @@ use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\UserNotAuthorizedException;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 use XF;
-use XF\Entity\ApiKey;
 
 final class Authorizer
 {

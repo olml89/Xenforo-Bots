@@ -3,8 +3,8 @@
 namespace olml89\XenforoBots\Repository;
 
 use olml89\XenforoBots\Exception\UserStorageException;
+use olml89\XenforoBots\XF\Entity\User;
 use Throwable;
-use XF\Entity\User;
 
 final class UserRepository
 {

@@ -3,8 +3,8 @@
 namespace olml89\XenforoBots\Repository;
 
 use olml89\XenforoBots\Exception\ApiKeyStorageException;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 use Throwable;
-use XF\Entity\ApiKey;
 
 final class ApiKeyRepository
 {

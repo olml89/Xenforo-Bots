@@ -4,8 +4,8 @@ namespace olml89\XenforoBots\Factory;
 
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\ApiKeyValidationException;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 use XF\App;
-use XF\Entity\ApiKey;
 use XF\Mvc\Entity\Manager as EntityManager;
 use XF\Service\ApiKey\Manager as ApiKeyManager;
 
@@ -21,8 +21,7 @@ final class ApiKeyFactory
      */
     public function create(Bot $bot): ApiKey
     {
-        $apiKeyManager = $this->instantiateApiKeyManager($bot);
-        $apiKey = $apiKeyManager->getKey();
+        $apiKey = $this->instantiateApiKey($bot);
 
         if ($apiKey->hasErrors()) {
             throw ApiKeyValidationException::entity($apiKey);
@@ -31,7 +30,7 @@ final class ApiKeyFactory
         return $apiKey;
     }
 
-    private function instantiateApiKeyManager(Bot $bot): ApiKeyManager
+    private function instantiateApiKey(Bot $bot): ApiKey
     {
         /** @var ApiKey $apiKey */
         $apiKey = $this->entityManager->create(
@@ -49,6 +48,6 @@ final class ApiKeyFactory
         $apiKeyManager->setScopes(false, $bot::SCOPES);
         $apiKeyManager->setKeyType('user', $bot->User->username);
 
-        return $apiKeyManager;
+        return $apiKey;
     }
 }

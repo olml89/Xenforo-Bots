@@ -8,7 +8,7 @@ use XF\Mvc\Entity\Structure;
 /**
  * RELATIONS
  *
- * @property-read Bot $Bot
+ * @property-read ?Bot $Bot
  */
 final class User extends XFCP_User
 {
