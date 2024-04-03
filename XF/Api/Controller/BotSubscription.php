@@ -6,8 +6,11 @@ use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotSubscriptionNotFoundException;
 use olml89\XenforoBots\Exception\BotSubscriptionRemovalException;
+use olml89\XenforoBots\Exception\BotSubscriptionStorageException;
 use olml89\XenforoBots\Exception\UserNotAuthorizedException;
 use olml89\XenforoBots\Service\Authorizer;
+use olml89\XenforoBots\UseCase\BotSubscription\Activate;
+use olml89\XenforoBots\UseCase\BotSubscription\Deactivate;
 use olml89\XenforoBots\UseCase\BotSubscription\Delete;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve;
 use XF\Api\Controller\AbstractController;
@@ -21,12 +24,16 @@ final class BotSubscription extends AbstractController
     private Authorizer $authorizer;
     private Retrieve $retrieveBotSubscription;
     private Delete $deleteBotSubscription;
+    private Activate $activateBotSubscription;
+    private Deactivate $deactivateBotSubscription;
 
     public function __construct(App $app, Request $request)
     {
         $this->authorizer = $app->get(Authorizer::class);
         $this->retrieveBotSubscription = $app->get(Retrieve::class);
         $this->deleteBotSubscription = $app->get(Delete::class);
+        $this->activateBotSubscription = $app->get(Activate::class);
+        $this->deactivateBotSubscription = $app->get(Deactivate::class);
 
         parent::__construct($app, $request);
     }
@@ -63,6 +70,44 @@ final class BotSubscription extends AbstractController
         $bot = $this->authorizer->getAuthorizedBot($params->get('bot_id'));
 
         $this->deleteBotSubscription->delete(
+            bot: $bot,
+            bot_subscription_id: $params->get('bot_subscription_id'),
+        );
+
+        return $this->apiSuccess();
+    }
+
+    /**
+     * @throws UserNotAuthorizedException
+     * @throws BotNotFoundException
+     * @throws BotNotAuthorizedException
+     * @throws BotSubscriptionNotFoundException
+     * @throws BotSubscriptionStorageException
+     */
+    public function actionPostActivation(ParameterBag $params): ApiResult
+    {
+        $bot = $this->authorizer->getAuthorizedBot($params->get('bot_id'));
+
+        $this->activateBotSubscription->activate(
+            bot: $bot,
+            bot_subscription_id: $params->get('bot_subscription_id'),
+        );
+
+        return $this->apiSuccess();
+    }
+
+    /**
+     * @throws UserNotAuthorizedException
+     * @throws BotNotFoundException
+     * @throws BotNotAuthorizedException
+     * @throws BotSubscriptionNotFoundException
+     * @throws BotSubscriptionStorageException
+     */
+    public function actionDeleteActivation(ParameterBag $params): ApiResult
+    {
+        $bot = $this->authorizer->getAuthorizedBot($params->get('bot_id'));
+
+        $this->deactivateBotSubscription->deactivate(
             bot: $bot,
             bot_subscription_id: $params->get('bot_subscription_id'),
         );

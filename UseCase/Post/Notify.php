@@ -2,6 +2,7 @@
 
 namespace olml89\XenforoBots\UseCase\Post;
 
+use olml89\XenforoBots\Entity\ActiveBotSubscriptionCollection;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Service\WebhookNotifier;
 use olml89\XenforoBots\XF\Entity\Post;
@@ -17,20 +18,13 @@ final class Notify
 
     public function notify(Post $post): void
     {
-        $notifiedBots = $this->botRepository->getAll();
-
-        $botSubscriptions = [];
-
-        foreach ($notifiedBots as $bot) {
-            foreach ($bot->BotSubscriptions as $botSubscription) {
-                $botSubscriptions[] = $botSubscription;
-            }
-        }
+        $notifiableBots = $this->botRepository->getAll();
+        $activeBotSubscriptions = new ActiveBotSubscriptionCollection(...$notifiableBots);
 
         $this->webhookNotifier->notify(
             endpoint: self::POSTS_ENDPOINT,
             data: new PostData($post),
-            botSubscriptions: $botSubscriptions,
+            botSubscriptions: $activeBotSubscriptions,
         );
     }
 }

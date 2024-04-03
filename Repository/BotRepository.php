@@ -6,7 +6,6 @@ use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Exception\BotStorageException;
 use olml89\XenforoBots\Service\ErrorHandler;
-use olml89\XenforoBots\XF\Entity\User;
 use Throwable;
 use XF\Mvc\Entity\Finder;
 
@@ -26,38 +25,6 @@ final class BotRepository
             ->botFinder
             ->fetch()
             ->toArray();
-    }
-
-    /**
-     * @return Bot[]
-     */
-    public function getByUsers(User ...$users): array
-    {
-        if (empty($users)) {
-            return [];
-        }
-
-        $userIds = array_map(
-            fn (User $user): int => $user->user_id,
-            $users
-        );
-
-        return $this
-            ->botFinder
-            ->where('user_id', $userIds)
-            ->fetch()
-            ->toArray();
-    }
-
-    public function getByUser(User $user): ?Bot
-    {
-        /** @var ?Bot $bot */
-        $bot = $this
-            ->botFinder
-            ->where('user_id', $user->user_id)
-            ->fetchOne();
-
-        return $bot;
     }
 
     public function get(string $bot_id): ?Bot

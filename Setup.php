@@ -21,7 +21,8 @@ class Setup extends AbstractSetup
         {
             $table->addColumn('bot_subscription_id', 'varchar', 36)->primaryKey();
             $table->addColumn('bot_id', 'varchar', 36)->nullable(false);
-            $table->addColumn('webhook', 'varchar', 255);
+            $table->addColumn('is_active', 'bool')->nullable(false);
+            $table->addColumn('webhook', 'varchar', 255)->nullable(false);
             $table->addColumn('subscribed_at', 'int')->nullable(false);
             $table->addUniqueKey('bot_id', 'idx_bot_id_webhook')->addColumn('webhook');
         });

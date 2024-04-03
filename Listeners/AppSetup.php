@@ -21,7 +21,9 @@ use olml89\XenforoBots\Service\BotFinder;
 use olml89\XenforoBots\UseCase\Bot\Create as CreateBot;
 use olml89\XenforoBots\UseCase\Bot\Delete as DeleteBot;
 use olml89\XenforoBots\UseCase\Bot\Retrieve as RetrieveBot;
+use olml89\XenforoBots\UseCase\BotSubscription\Activate as ActivateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Create as CreateBotSubscription;
+use olml89\XenforoBots\UseCase\BotSubscription\Deactivate as DeactivateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Delete as DeleteBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve as RetrieveBotSubscription;
 use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
@@ -219,10 +221,25 @@ final class AppSetup
             );
         };
 
+        $container[ActivateBotSubscription::class] = function() use ($app): ActivateBotSubscription
+        {
+            return new ActivateBotSubscription(
+                botSubscriptionFinder: $app->get(BotSubscriptionFinder::class),
+                botSubscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            );
+        };
+
+        $container[DeactivateBotSubscription::class] = function() use ($app): DeactivateBotSubscription
+        {
+            return new DeactivateBotSubscription(
+                botSubscriptionFinder: $app->get(BotSubscriptionFinder::class),
+                botSubscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            );
+        };
+
         $container[NotifyConversationMessage::class] = function() use($app): NotifyConversationMessage
         {
             return new NotifyConversationMessage(
-                botRepository: $app->get(BotRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };
@@ -238,7 +255,6 @@ final class AppSetup
         $container[NotifyUserAlert::class] = function() use($app): NotifyUserAlert
         {
             return new NotifyUserAlert(
-                botRepository: $app->get(BotRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };

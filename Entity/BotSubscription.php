@@ -15,6 +15,7 @@ use XF\Mvc\Entity\Structure;
  *
  * @property string $bot_subscription_id
  * @property string $bot_id
+ * @property bool $is_active
  * @property string $webhook
  * @property int $subscribed_at
  *
@@ -39,6 +40,11 @@ class BotSubscription extends Entity
             'bot_id' => [
                 'type' => self::STR,
                 'length' => 36,
+            ],
+            'is_active' => [
+                'type' => self::BOOL,
+                'required' => true,
+                'api' => true,
             ],
             'webhook' => [
                 'type' => self::STR,
@@ -91,6 +97,16 @@ class BotSubscription extends Entity
         }
 
         return true;
+    }
+
+    public function activate(): void
+    {
+        $this->is_active = true;
+    }
+
+    public function deactivate(): void
+    {
+        $this->is_active = false;
     }
 
     /**
