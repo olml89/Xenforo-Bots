@@ -39,7 +39,6 @@ class BotSubscription extends Entity
             'bot_id' => [
                 'type' => self::STR,
                 'length' => 36,
-                'api' => true
             ],
             'webhook' => [
                 'type' => self::STR,
@@ -108,12 +107,10 @@ class BotSubscription extends Entity
         $this->bot_id = $bot->bot_id;
         $this->hydrateRelation('Bot', $bot);
     }
-    
+
     protected function setupApiResultData(
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
-    ): void {
-        $result->skipColumn('bot_id');
-    }
+    ): void {}
 }

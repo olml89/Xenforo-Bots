@@ -61,7 +61,6 @@ final class Bot extends Entity
             'api_key_id' => [
                 'type' => self::UINT,
                 'required' => true,
-                'api' => true,
             ],
             'created_at' => [
                 'type' => self::UINT,
@@ -84,12 +83,14 @@ final class Bot extends Entity
                 'conditions' => 'api_key_id',
                 'primary' => true,
                 'cascadeDelete' => true,
+                'api' => true,
             ],
             'BotSubscriptions' => [
                 'entity' => 'olml89\XenforoBots:BotSubscription',
                 'type' => self::TO_MANY,
                 'conditions' => 'bot_id',
                 'cascadeDelete' => true,
+                'api' => true,
             ],
         ];
         $structure->defaultWith = [
@@ -170,10 +171,5 @@ final class Bot extends Entity
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
         array $options = [],
-    ): void {
-        $result->skipColumn('api_key_id');
-
-        $result->includeRelation('ApiKey');
-        $result->includeRelation('BotSubscriptions');
-    }
+    ): void {}
 }
