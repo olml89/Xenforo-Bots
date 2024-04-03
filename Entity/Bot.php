@@ -114,6 +114,11 @@ final class Bot extends Entity
         return true;
     }
 
+    public function equals(Bot $bot): bool
+    {
+        return $this->bot_id === $bot->bot_id;
+    }
+
     public function attachToUser(User $user): void
     {
         $this->user_id = $user->user_id;
@@ -131,13 +136,9 @@ final class Bot extends Entity
      */
     public function owns(BotSubscription $botSubscription): void
     {
-        foreach ($this->BotSubscriptions as $ownedBotSubscription) {
-            if ($botSubscription->bot_subscription_id === $ownedBotSubscription->bot_subscription_id) {
-                return;
-            }
+        if (!$this->equals($botSubscription->Bot)) {
+            throw BotNotAuthorizedException::notAllowed($this);
         }
-
-        throw BotNotAuthorizedException::notAllowed($this);
     }
 
     /**
