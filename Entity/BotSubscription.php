@@ -12,6 +12,7 @@ use XF\Mvc\Entity\Structure;
 
 /**
  * COLUMNS
+ *
  * @property string $bot_subscription_id
  * @property string $bot_id
  * @property string $webhook
