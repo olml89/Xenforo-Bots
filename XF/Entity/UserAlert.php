@@ -2,9 +2,17 @@
 
 namespace olml89\XenforoBots\XF\Entity;
 
-use olml89\XenforoBots\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
+use olml89\XenforoBots\UseCase\UserAlert\Notify as NotifyUserAlert;
 use XF;
 
+/**
+ * @extends \XF\Entity\UserAlert
+ *
+ * RELATIONS
+ *
+ * @property-read User $Receiver
+ * @property-read User $User
+ */
 final class UserAlert extends XFCP_UserAlert
 {
     private const notifiableContentType = 'post';
@@ -24,8 +32,8 @@ final class UserAlert extends XFCP_UserAlert
             return;
         }
 
-        /** @var NotifyXFUserAlert $notifyUserAlert */
-        $notifyUserAlert = XF::app()->get(NotifyXFUserAlert::class);
+        /** @var NotifyUserAlert $notifyUserAlert */
+        $notifyUserAlert = XF::app()->get(NotifyUserAlert::class);
         $notifyUserAlert->notify($this);
     }
 }

@@ -16,6 +16,17 @@ final class BotSubscriptionRepository
         private readonly Finder $botSubscriptionFinder,
     ) {}
 
+    /**
+     * @return BotSubscription[]
+     */
+    public function getByWebhook(): array
+    {
+        return $this
+            ->botSubscriptionFinder
+            ->fetch()
+            ->groupBy('webhook');
+    }
+
     public function get(string $bot_subscription_id): ?BotSubscription
     {
         /** @var BotSubscription $botSubscription */

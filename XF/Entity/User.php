@@ -6,6 +6,8 @@ use olml89\XenforoBots\Entity\Bot;
 use XF\Mvc\Entity\Structure;
 
 /**
+ * @extends \XF\Entity\User
+ *
  * RELATIONS
  *
  * @property-read ?Bot $Bot

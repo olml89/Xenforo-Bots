@@ -19,28 +19,27 @@ final class WebhookNotifier
     ) {}
 
     /**
-     * @param BotSubscription[] $subscriptions
+     * @param BotSubscription[] $botSubscriptions
      */
-    public function notify(string $endpoint, array $subscriptions, JsonSerializableObject $data): void
+    public function notify(string $endpoint, JsonSerializableObject $data, array $botSubscriptions): void
     {
-        if (!$subscriptions) {
+        if (empty($botSubscriptions)) {
             return;
         }
 
-        $webhooks = array_map(
-            function (BotSubscription $subscription): Url {
-                return $subscription->webhook;
-            },
-            $subscriptions,
-        );
-
-        $asyncRequests = function() use($webhooks, $endpoint, $data): Generator {
-            foreach ($webhooks as $webhook) {
-                yield function() use ($webhook, $endpoint, $data): PromiseInterface {
-                    return $this->httpClient->postAsync(
-                        $webhook.$endpoint,
-                        ['json' => $data]
+        $asyncRequests = function() use($botSubscriptions, $endpoint, $data): Generator {
+            foreach ($botSubscriptions as $botSubscription) {
+                yield function() use ($botSubscription, $endpoint, $data): PromiseInterface {
+                    $url = sprintf(
+                        '%s/bots/%s%s',
+                        $botSubscription->webhook,
+                        $botSubscription->Bot->bot_id,
+                        $endpoint,
                     );
+
+                    return $this->httpClient->postAsync($url, [
+                        'json' => $data,
+                    ]);
                 };
             }
         };

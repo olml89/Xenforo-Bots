@@ -24,9 +24,9 @@ use olml89\XenforoBots\UseCase\Bot\Retrieve as RetrieveBot;
 use olml89\XenforoBots\UseCase\BotSubscription\Create as CreateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Delete as DeleteBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve as RetrieveBotSubscription;
-use olml89\XenforoBots\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
-use olml89\XenforoBots\UseCase\XFPost\Notify as NotifyXFPost;
-use olml89\XenforoBots\UseCase\XFUserAlert\Notify as NotifyXFUserAlert;
+use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
+use olml89\XenforoBots\UseCase\Post\Notify as NotifyPost;
+use olml89\XenforoBots\UseCase\UserAlert\Notify as NotifyUserAlert;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use Stripe\Util\RandomGenerator;
 use XF\App;
@@ -219,26 +219,26 @@ final class AppSetup
             );
         };
 
-        $container[NotifyXFPost::class] = function() use($app): NotifyXFPost
+        $container[NotifyConversationMessage::class] = function() use($app): NotifyConversationMessage
         {
-            return new NotifyXFPost(
-                subscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            return new NotifyConversationMessage(
+                botRepository: $app->get(BotRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };
 
-        $container[NotifyXFUserAlert::class] = function() use($app): NotifyXFUserAlert
+        $container[NotifyPost::class] = function() use($app): NotifyPost
         {
-            return new NotifyXFUserAlert(
-                subscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            return new NotifyPost(
+                botRepository: $app->get(BotRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };
 
-        $container[NotifyXFConversationMessage::class] = function() use($app): NotifyXFConversationMessage
+        $container[NotifyUserAlert::class] = function() use($app): NotifyUserAlert
         {
-            return new NotifyXFConversationMessage(
-                subscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            return new NotifyUserAlert(
+                botRepository: $app->get(BotRepository::class),
                 webhookNotifier: $app->get(WebhookNotifier::class),
             );
         };

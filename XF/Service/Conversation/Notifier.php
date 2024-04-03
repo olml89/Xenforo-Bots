@@ -2,30 +2,28 @@
 
 namespace olml89\XenforoBots\XF\Service\Conversation;
 
-use olml89\XenforoBots\UseCase\XFConversationMessage\Notify as NotifyXFConversationMessage;
-use olml89\XenforoBots\XF\Entity\User as XFUser;
+use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
 use XF;
-use XF\Entity\ConversationMessage as XFConversationMessage;
+use XF\Entity\ConversationMessage;
+use XF\Entity\User;
 
 final class Notifier extends XFCP_Notifier
 {
     /**
-     * @return array<int, XFUser>
+     * @return User[]
      */
     protected function _sendNotifications(
         $actionType,
-        array $notifyUsers,
-        XFConversationMessage $message = null,
-        XFUser $sender = null
-    ): array
-    {
+        array$notifyUsers,
+        ConversationMessage $message = null,
+        User $sender = null,
+    ): array {
         $usersNotified = parent::_sendNotifications($actionType, $notifyUsers, $message, $sender);
 
         if (!is_null($message)) {
-
-            /** @var NotifyXFConversationMessage $notifyXFConversationMessage */
-            $notifyXFConversationMessage = XF::app()->get(NotifyXFConversationMessage::class);
-            $notifyXFConversationMessage->notify($message, $usersNotified);
+            /** @var NotifyConversationMessage $notifyConversationMessage */
+            $notifyConversationMessage = XF::app()->get(NotifyConversationMessage::class);
+            $notifyConversationMessage->notify($message, $usersNotified);
         }
 
         return $usersNotified;

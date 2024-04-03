@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoBots\XF\Entity;
 
-use olml89\XenforoBots\UseCase\XFPost\Notify as NotifyXFPost;
+use olml89\XenforoBots\UseCase\Post\Notify as NotifyPost;
 use XF;
 
 final class Post extends XFCP_Post
@@ -11,8 +11,8 @@ final class Post extends XFCP_Post
     {
         parent::_postSave();
 
-        /** @var NotifyXFPost $notifyXFPost */
-        $notifyXFPost = XF::app()->get(NotifyXFPost::class);
-        $notifyXFPost->notify($this);
+        /** @var NotifyPost $notifyPost */
+        $notifyPost = XF::app()->get(NotifyPost::class);
+        $notifyPost->notify($this);
     }
 }

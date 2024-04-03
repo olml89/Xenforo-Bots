@@ -5,6 +5,8 @@ namespace olml89\XenforoBots\XF\Entity;
 use XF\Api\Result\EntityResult;
 
 /**
+ * @extends \XF\Entity\ApiKey
+ *
  * RELATIONS
  *
  * @property-read User $User

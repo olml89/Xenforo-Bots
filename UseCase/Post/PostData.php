@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoBots\UseCase\XFPost;
+namespace olml89\XenforoBots\UseCase\Post;
 
 use olml89\XenforoBots\UseCase\JsonSerializableObject;
-use XF\Entity\Post as XFPost;
+use XF\Entity\Post;
 
-final class XFPostData extends JsonSerializableObject
+final class PostData extends JsonSerializableObject
 {
     public readonly int $post_id;
     public readonly int $thread_id;
@@ -15,7 +15,7 @@ final class XFPostData extends JsonSerializableObject
     public readonly int $update_date;
     public readonly string $message;
 
-    public function __construct(XFPost $post)
+    public function __construct(Post $post)
     {
         $this->post_id = $post->post_id ;
         $this->thread_id = $post->thread_id ;
