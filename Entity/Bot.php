@@ -4,12 +4,12 @@ namespace olml89\XenforoBots\Entity;
 
 use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
+use olml89\XenforoBots\Exception\BotSubscriptionNotFoundException;
 use olml89\XenforoBots\XF\Entity\ApiKey;
 use olml89\XenforoBots\XF\Entity\User;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
 use XF\Api\Result\EntityResult;
-use XF\Mvc\Entity\ArrayCollection;
 use XF\Mvc\Entity\Entity;
 use XF\Mvc\Entity\Structure;
 
@@ -25,7 +25,7 @@ use XF\Mvc\Entity\Structure;
  *
  * @property-read User $User
  * @property-read ApiKey $ApiKey
- * @property-read ArrayCollection|BotSubscription[] $BotSubscriptions
+ * @property-read BotSubscriptionCollection $BotSubscriptions
  */
 final class Bot extends Entity
 {
@@ -51,6 +51,7 @@ final class Bot extends Entity
             'bot_id' => [
                 'type' => self::STR,
                 'length' => 36,
+                'required' => true,
                 'api' => true
             ],
             'user_id' => [
@@ -64,8 +65,8 @@ final class Bot extends Entity
             ],
             'created_at' => [
                 'type' => self::UINT,
-                'required' => true,
                 'default' => XF::$time,
+                'required' => true,
                 'api' => true,
             ]
         ];
@@ -93,6 +94,9 @@ final class Bot extends Entity
                 'api' => true,
             ],
         ];
+        $structure->getters = [
+            'BotSubscriptions' => true,
+        ];
         $structure->defaultWith = [
             'User',
             'ApiKey',
@@ -115,7 +119,12 @@ final class Bot extends Entity
         return true;
     }
 
-    public function equals(Bot $bot): bool
+    protected function getBotSubscriptions(): BotSubscriptionCollection
+    {
+        return new BotSubscriptionCollection(...$this->getRelation('BotSubscriptions'));
+    }
+
+    public function same(Bot $bot): bool
     {
         return $this->bot_id === $bot->bot_id;
     }
@@ -137,7 +146,7 @@ final class Bot extends Entity
      */
     public function owns(BotSubscription $botSubscription): void
     {
-        if (!$this->equals($botSubscription->Bot)) {
+        if (!$this->same($botSubscription->Bot)) {
             throw BotNotAuthorizedException::notAllowed($this);
         }
     }
@@ -147,24 +156,32 @@ final class Bot extends Entity
      */
     public function subscribe(BotSubscription $botSubscription): void
     {
-        $botSubscription->setSubscriber($this);
+        // Bot can only subscribe to a BotSubscription if the BotSubscription has not a subscriber,
+        // or if the subscriber is this same Bot.
+        if (!is_null($botSubscription->Bot) && !$botSubscription->Bot->same($this)) {
+            throw BotSubscriptionAlreadyExistsException::alreadySubscribed($botSubscription);
+        }
 
-        $this->hydrateRelation(
-            'BotSubscriptions',
-            $this->BotSubscriptions->merge(new ArrayCollection([$botSubscription]))
-        );
+        // We can set a BotSubscription with the same webhook if it is the same BotSubscription, to update it
+        $checkingEqualsFunction = function(BotSubscription $existingBotSubscription) use ($botSubscription): bool {
+            return !$botSubscription->same($existingBotSubscription)
+                && $botSubscription->equals($existingBotSubscription);
+        };
+
+        if ($this->BotSubscriptions->contains($checkingEqualsFunction)) {
+            throw BotSubscriptionAlreadyExistsException::sameWebhook($botSubscription);
+        }
+
+        $this->BotSubscriptions->set($botSubscription);
+        $botSubscription->setSubscriber($this);
     }
 
+    /**
+     * @throws BotSubscriptionNotFoundException
+     */
     public function unsubscribe(BotSubscription $botSubscription): void
     {
-        $this->hydrateRelation(
-            'BotSubscriptions',
-            $this->BotSubscriptions->filter(
-                function (BotSubscription $alreadyExistingBotSubscription) use ($botSubscription): bool {
-                    return $alreadyExistingBotSubscription->bot_subscription_id !== $botSubscription->bot_subscription_id;
-                }
-            )
-        );
+        $this->BotSubscriptions->remove($botSubscription);
     }
 
     protected function setupApiResultData(

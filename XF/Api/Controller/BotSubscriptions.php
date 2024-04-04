@@ -42,11 +42,13 @@ final class BotSubscriptions extends AbstractController
         $bot = $this->authorizer->getAuthorizedBot($params->get('bot_id'));
 
         $this->assertRequiredApiInput([
+            'platform_api_key',
             'webhook',
         ]);
 
         $botSubscription = $this->createBotSubscription->create(
             bot: $bot,
+            platform_api_key: $this->request->filter('platform_api_key', 'str'),
             webhook: $this->request->filter('webhook', 'str'),
         );
 

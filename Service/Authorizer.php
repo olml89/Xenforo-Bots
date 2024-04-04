@@ -37,7 +37,7 @@ final class Authorizer
         $authenticatedBot = $this->getAuthenticatedBot();
         $requestedBot = $this->botFinder->find($bot_id);
 
-        if (!$authenticatedBot->equals($requestedBot)) {
+        if (!$authenticatedBot->same($requestedBot)) {
             throw BotNotAuthorizedException::notAllowed($authenticatedBot);
         }
 

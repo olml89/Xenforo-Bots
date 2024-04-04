@@ -2,12 +2,11 @@
 
 namespace olml89\XenforoBots\UseCase\ConversationMessage;
 
-use olml89\XenforoBots\Entity\ActiveBotSubscriptionCollection;
 use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Entity\BotSubscriptionCollection;
 use olml89\XenforoBots\Service\WebhookNotifier;
 use olml89\XenforoBots\XF\Entity\User;
 use XF\Entity\ConversationMessage;
-
 
 final class Notify
 {
@@ -28,13 +27,16 @@ final class Notify
                 $usersNotified
             )
         );
+        $botSubscriptions = new BotSubscriptionCollection();
 
-        $activeBotSubscriptions = new ActiveBotSubscriptionCollection(...$notifiableBots);
+        foreach ($notifiableBots as $notifiableBot) {
+            $botSubscriptions = $botSubscriptions->merge($notifiableBot->BotSubscriptions);
+        }
 
         $this->webhookNotifier->notify(
             endpoint: self::CONVERSATION_MESSAGES_ENDPOINT,
             data: new ConversationMessageData($conversationMessage),
-            botSubscriptions: $activeBotSubscriptions,
+            botSubscriptions: $botSubscriptions,
         );
     }
 }

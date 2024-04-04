@@ -2,9 +2,7 @@
 
 namespace olml89\XenforoBots\Factory;
 
-use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Entity\BotSubscription;
-use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
 use olml89\XenforoBots\Exception\BotSubscriptionValidationException;
 use olml89\XenforoBots\Service\UuidGenerator;
 use XF\Mvc\Entity\Manager;
@@ -18,22 +16,34 @@ final class BotSubscriptionFactory
 
     /**
      * @throws BotSubscriptionValidationException
-     * @throws BotSubscriptionAlreadyExistsException
      */
-    public function create(Bot $bot, string $webhook): BotSubscription
+    public function create(string $platform_api_key, string $webhook): BotSubscription
     {
-        $botSubscription = $this->instantiateBotSubscription($webhook);
-
-        if ($botSubscription->hasErrors()) {
-            throw BotSubscriptionValidationException::entity($botSubscription);
-        }
-
-        $botSubscription->setSubscriber($bot);
+        $botSubscription = $this->instantiateBotSubscription();
+        $this->update($botSubscription, $platform_api_key, $webhook);
 
         return $botSubscription;
     }
 
-    private function instantiateBotSubscription(string $webhook): BotSubscription
+    /**
+     * @throws BotSubscriptionValidationException
+     */
+    public function update(BotSubscription $botSubscription, ?string $platform_api_key, ?string $webhook): void
+    {
+        if (!is_null($platform_api_key)) {
+            $botSubscription->platform_api_key = $platform_api_key;
+        }
+
+        if (!is_null($webhook)) {
+            $botSubscription->webhook = $webhook;
+        }
+
+        if ($botSubscription->hasErrors()) {
+            throw BotSubscriptionValidationException::entity($botSubscription);
+        }
+    }
+
+    private function instantiateBotSubscription(): BotSubscription
     {
         /** @var BotSubscription $botSubscription */
         $botSubscription = $this->entityManager->create(
@@ -41,7 +51,6 @@ final class BotSubscriptionFactory
         );
 
         $botSubscription->bot_subscription_id = $this->uuidGenerator->random();
-        $botSubscription->webhook = $webhook;
         $botSubscription->activate();
 
         return $botSubscription;

@@ -19,4 +19,16 @@ abstract class EntityNotFoundException extends NotFoundException
             errorCode: static::errorCode(),
         );
     }
+
+    public static function withMessage(string $message): static
+    {
+        return static::fromMessageAndErrorCode(
+            message: sprintf(
+                'Entity \'%s\' %s',
+                static::entityClass(),
+                $message,
+            ),
+            errorCode: static::errorCode(),
+        );
+    }
 }

@@ -7,7 +7,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
-use olml89\XenforoBots\Entity\ActiveBotSubscriptionCollection;
+use olml89\XenforoBots\Entity\BotSubscription;
+use olml89\XenforoBots\Entity\BotSubscriptionCollection;
 use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Error;
 
@@ -18,8 +19,12 @@ final class WebhookNotifier
         private readonly Error $error,
     ) {}
 
-    public function notify(string $endpoint, JsonSerializableObject $data, ActiveBotSubscriptionCollection $botSubscriptions): void
+    public function notify(string $endpoint, JsonSerializableObject $data, BotSubscriptionCollection $botSubscriptions): void
     {
+        $botSubscriptions = $botSubscriptions->filter(
+            fn (BotSubscription $botSubscription): bool => $botSubscription->is_active
+        );
+
         if ($botSubscriptions->isEmpty()) {
             return;
         }
@@ -35,6 +40,9 @@ final class WebhookNotifier
                     );
 
                     return $this->httpClient->postAsync($url, [
+                        'headers' => [
+                            'Platform-Api-Key' => $botSubscription->platform_api_key,
+                        ],
                         'json' => $data,
                     ]);
                 };

@@ -2,7 +2,7 @@
 
 namespace olml89\XenforoBots\Entity;
 
-use olml89\XenforoBots\Exception\BotSubscriptionAlreadyExistsException;
+use olml89\XenforoBots\XF\Validator\Md5Token;
 use olml89\XenforoBots\XF\Validator\Url;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use XF;
@@ -16,6 +16,7 @@ use XF\Mvc\Entity\Structure;
  * @property string $bot_subscription_id
  * @property string $bot_id
  * @property bool $is_active
+ * @property string $platform_api_key
  * @property string $webhook
  * @property int $subscribed_at
  *
@@ -35,26 +36,35 @@ class BotSubscription extends Entity
             'bot_subscription_id' => [
                 'type' => self::STR,
                 'length' => 36,
+                'required' => true,
                 'api' => true
             ],
             'bot_id' => [
                 'type' => self::STR,
                 'length' => 36,
+                'required' => true,
             ],
             'is_active' => [
                 'type' => self::BOOL,
                 'required' => true,
                 'api' => true,
             ],
+            'platform_api_key' => [
+                'type' => self::STR,
+                'length' => 32,
+                'required' => true,
+                'api' => true,
+            ],
             'webhook' => [
                 'type' => self::STR,
                 'maxLength' => 1048,
+                'required' => true,
                 'api' => true,
             ],
             'subscribed_at' => [
                 'type' => self::UINT,
-                'required' => true,
                 'default' => XF::$time,
+                'required' => true,
                 'api' => true,
             ]
         ];
@@ -85,6 +95,20 @@ class BotSubscription extends Entity
         return true;
     }
 
+    protected function verifyPlatformApiKey(string &$platform_api_key): bool
+    {
+        /** @var Md5Token $validator */
+        $validator = $this->app()->validator('Md5Token');
+
+        if (!$validator->isValid($platform_api_key, $errorKey)) {
+            $this->error($validator->getPrintableErrorValue($errorKey), 'platform_api_key');
+
+            return false;
+        }
+
+        return true;
+    }
+
     protected function verifyWebhook(string &$webhook): bool
     {
         /** @var Url $validator */
@@ -99,6 +123,16 @@ class BotSubscription extends Entity
         return true;
     }
 
+    public function same(BotSubscription $botSubscription): bool
+    {
+        return $this->bot_subscription_id === $botSubscription->bot_subscription_id;
+    }
+
+    public function equals(BotSubscription $botSubscription): bool
+    {
+        return $this->webhook === $botSubscription->webhook;
+    }
+
     public function activate(): void
     {
         $this->is_active = true;
@@ -109,17 +143,8 @@ class BotSubscription extends Entity
         $this->is_active = false;
     }
 
-    /**
-     * @throws BotSubscriptionAlreadyExistsException
-     */
     public function setSubscriber(Bot $bot): void
     {
-        foreach ($bot->BotSubscriptions as $alreadyExistingSubscription) {
-            if ($this->webhook === $alreadyExistingSubscription->webhook) {
-                throw new BotSubscriptionAlreadyExistsException($bot, $this);
-            }
-        }
-
         $this->bot_id = $bot->bot_id;
         $this->hydrateRelation('Bot', $bot);
     }

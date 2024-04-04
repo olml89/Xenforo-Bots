@@ -25,7 +25,7 @@ final class Delete
     {
         $botSubscription = $this->botSubscriptionFinder->find($bot_subscription_id);
         $bot->owns($botSubscription);
-        $this->botSubscriptionRepository->delete($botSubscription);
         $bot->unsubscribe($botSubscription);
+        $this->botSubscriptionRepository->delete($botSubscription);
     }
 }

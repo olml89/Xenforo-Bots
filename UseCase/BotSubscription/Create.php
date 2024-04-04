@@ -22,11 +22,11 @@ final class Create
      * @throws BotSubscriptionAlreadyExistsException
      * @throws BotSubscriptionStorageException
      */
-    public function create(Bot $bot, string $webhook): BotSubscription
+    public function create(Bot $bot, string $platform_api_key, string $webhook): BotSubscription
     {
-        $botSubscription = $this->botSubscriptionFactory->create($bot, $webhook);
-        $this->botSubscriptionRepository->save($botSubscription);
+        $botSubscription = $this->botSubscriptionFactory->create($platform_api_key, $webhook);
         $bot->subscribe($botSubscription);
+        $this->botSubscriptionRepository->save($botSubscription);
 
         return $botSubscription;
     }

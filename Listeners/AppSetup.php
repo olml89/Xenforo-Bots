@@ -26,9 +26,11 @@ use olml89\XenforoBots\UseCase\BotSubscription\Create as CreateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Deactivate as DeactivateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Delete as DeleteBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve as RetrieveBotSubscription;
+use olml89\XenforoBots\UseCase\BotSubscription\Update as UpdateBotSubscription;
 use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
 use olml89\XenforoBots\UseCase\Post\Notify as NotifyPost;
 use olml89\XenforoBots\UseCase\UserAlert\Notify as NotifyUserAlert;
+use olml89\XenforoBots\XF\Validator\Md5Token;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use Stripe\Util\RandomGenerator;
 use XF\App;
@@ -213,6 +215,15 @@ final class AppSetup
             );
         };
 
+        $container[UpdateBotSubscription::class] = function() use($app): UpdateBotSubscription
+        {
+            return new UpdateBotSubscription(
+                botSubscriptionFinder: $app->get(BotSubscriptionFinder::class),
+                botSubscriptionFactory: $app->get(BotSubscriptionFactory::class),
+                botSubscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            );
+        };
+
         $container[DeleteBotSubscription::class] = function() use($app): DeleteBotSubscription
         {
             return new DeleteBotSubscription(
@@ -266,14 +277,16 @@ final class AppSetup
             type: 'validator',
             callable: function($class, array $params, Container $container, callable $original) use ($app): AbstractValidator
             {
-                if ($class === 'Uuid') {
-                    return new Uuid(
+                return match ($class) {
+                    'Uuid' => new Uuid(
                         laminasUuid: new LaminasUuid(),
                         app: $app,
-                    );
-                }
-
-                return $original($class, $params, $container, $original);
+                    ),
+                    'Md5Token' => new Md5Token(
+                        app: $app,
+                    ),
+                    default => $original($class, $params, $container, $original)
+                };
             }
         );
     }

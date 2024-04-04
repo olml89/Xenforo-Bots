@@ -6,7 +6,6 @@ use olml89\XenforoBots\Entity\BotSubscription;
 
 final class BotSubscriptionNotFoundException extends EntityNotFoundException
 {
-
     protected static function errorCode(): string
     {
         return 'botSubscription.retrieval.not_found';
