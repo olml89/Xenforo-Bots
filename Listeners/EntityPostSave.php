@@ -2,9 +2,7 @@
 
 namespace olml89\XenforoBots\Listeners;
 
-use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
-use olml89\XenforoBots\UseCase\Post\Notify as NotifyPost;
-use olml89\XenforoBots\UseCase\UserAlert\Notify as NotifyUserAlert;
+use olml89\XenforoBots\Service\NotificationEnqueuer;
 use olml89\XenforoBots\XF\Entity\ConversationMessage;
 use olml89\XenforoBots\XF\Entity\UserAlert;
 use XF;
@@ -15,30 +13,15 @@ final class EntityPostSave
 {
     public static function listen(Entity $entity): void
     {
-        if ($entity instanceof UserAlert) {
-            self::instantiateUseCase(NotifyUserAlert::class)->notify($entity);
-
+        if (!($entity instanceof UserAlert || $entity instanceof ConversationMessage || $entity instanceof Post)) {
             return;
         }
 
-        if ($entity instanceof ConversationMessage) {
-            self::instantiateUseCase(NotifyConversationMessage::class)->notify($entity);
-
-            return;
-        }
-
-        if ($entity instanceof Post) {
-            self::instantiateUseCase(NotifyPost::class)->notify($entity);
-        }
+        self::getNotificationEnqueuer()->enqueue($entity);
     }
 
-    /**
-     * @template T
-     * @param class-string<T> $useCaseClass
-     * @return T
-     */
-    private static function instantiateUseCase(string $useCaseClass): object
+    private static function getNotificationEnqueuer(): NotificationEnqueuer
     {
-        return XF::app()->get($useCaseClass);
+        return XF::app()->get(NotificationEnqueuer::class);
     }
 }

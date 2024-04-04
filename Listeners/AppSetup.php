@@ -8,16 +8,20 @@ use olml89\XenforoBots\Factory\ApiKeyFactory;
 use olml89\XenforoBots\Factory\BotFactory;
 use olml89\XenforoBots\Factory\BotSubscriptionFactory;
 use olml89\XenforoBots\Factory\UserFactory;
+use olml89\XenforoBots\Finder\ConversationMessageFinder;
+use olml89\XenforoBots\Finder\PostFinder;
+use olml89\XenforoBots\Finder\UserAlertFinder;
 use olml89\XenforoBots\Repository\ApiKeyRepository;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Repository\BotSubscriptionRepository;
 use olml89\XenforoBots\Repository\UserRepository;
 use olml89\XenforoBots\Service\Authorizer;
-use olml89\XenforoBots\Service\BotSubscriptionFinder;
+use olml89\XenforoBots\Finder\BotSubscriptionFinder;
 use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\Service\NotificationEnqueuer;
 use olml89\XenforoBots\Service\UuidGenerator;
 use olml89\XenforoBots\Service\WebhookNotifier;
-use olml89\XenforoBots\Service\BotFinder;
+use olml89\XenforoBots\Finder\BotFinder;
 use olml89\XenforoBots\UseCase\Bot\Create as CreateBot;
 use olml89\XenforoBots\UseCase\Bot\Delete as DeleteBot;
 use olml89\XenforoBots\UseCase\Bot\Retrieve as RetrieveBot;
@@ -92,6 +96,44 @@ final class AppSetup
         };
 
         /**
+         * Finders
+         */
+        $container[BotFinder::class] = function() use($app): BotFinder
+        {
+            return new BotFinder(
+                botRepository: $app->get(BotRepository::class),
+            );
+        };
+
+        $container[BotSubscriptionFinder::class] = function() use($app): BotSubscriptionFinder
+        {
+            return new BotSubscriptionFinder(
+                botSubscriptionRepository: $app->get(BotSubscriptionRepository::class),
+            );
+        };
+
+        $container[ConversationMessageFinder::class] = function() use($app): ConversationMessageFinder
+        {
+            return new ConversationMessageFinder(
+                conversationMessageFinder: $app->finder('XF:ConversationMessage'),
+            );
+        };
+
+        $container[PostFinder::class] = function() use($app): PostFinder
+        {
+            return new PostFinder(
+                postFinder: $app->finder('XF:Post'),
+            );
+        };
+
+        $container[UserAlertFinder::class] = function() use($app): UserAlertFinder
+        {
+            return new UserAlertFinder(
+                userAlertFinder: $app->finder('XF:UserAlert'),
+            );
+        };
+
+        /**
          * Repositories
          */
         $container[ApiKeyRepository::class] = function() use ($app): ApiKeyRepository
@@ -134,25 +176,18 @@ final class AppSetup
             );
         };
 
-        $container[BotFinder::class] = function() use($app): BotFinder
-        {
-            return new BotFinder(
-                botRepository: $app->get(BotRepository::class),
-            );
-        };
-
-        $container[BotSubscriptionFinder::class] = function() use($app): BotSubscriptionFinder
-        {
-            return new BotSubscriptionFinder(
-                botSubscriptionRepository: $app->get(BotSubscriptionRepository::class),
-            );
-        };
-
         $container[ErrorHandler::class] = function() use($app, $container): ErrorHandler
         {
             return new ErrorHandler(
                 error: $app->error(),
                 debug: $container['config']['debug'],
+            );
+        };
+
+        $container[NotificationEnqueuer::class] = function() use($app): NotificationEnqueuer
+        {
+            return new NotificationEnqueuer(
+                jobManager: $app->jobManager(),
             );
         };
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\XenforoBots\Service;
+namespace olml89\XenforoBots\Finder;
 
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotNotFoundException;

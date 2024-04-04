@@ -11,7 +11,7 @@ use olml89\XenforoBots\Exception\BotSubscriptionStorageException;
 use olml89\XenforoBots\Exception\BotSubscriptionValidationException;
 use olml89\XenforoBots\Factory\BotSubscriptionFactory;
 use olml89\XenforoBots\Repository\BotSubscriptionRepository;
-use olml89\XenforoBots\Service\BotSubscriptionFinder;
+use olml89\XenforoBots\Finder\BotSubscriptionFinder;
 
 final class Update
 {

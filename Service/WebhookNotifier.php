@@ -9,6 +9,7 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Promise\PromiseInterface;
 use olml89\XenforoBots\Entity\BotSubscription;
 use olml89\XenforoBots\Entity\BotSubscriptionCollection;
+use olml89\XenforoBots\Job\NotifyEntityCreationJob;
 use olml89\XenforoBots\UseCase\JsonSerializableObject;
 use XF\Error;
 
@@ -29,6 +30,7 @@ final class WebhookNotifier
             return;
         }
 
+        /*
         $asyncRequests = function() use($botSubscriptions, $endpoint, $data): Generator {
             foreach ($botSubscriptions as $botSubscription) {
                 yield function() use ($botSubscription, $endpoint, $data): PromiseInterface {
@@ -60,5 +62,6 @@ final class WebhookNotifier
         );
 
         $pool->promise()->wait();
+        */
     }
 }

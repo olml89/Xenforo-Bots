@@ -5,7 +5,7 @@ namespace olml89\XenforoBots\UseCase\Bot;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Repository\BotRepository;
-use olml89\XenforoBots\Service\BotFinder;
+use olml89\XenforoBots\Finder\BotFinder;
 
 final class Delete
 {

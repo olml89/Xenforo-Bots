@@ -7,7 +7,7 @@ use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotSubscriptionNotFoundException;
 use olml89\XenforoBots\Exception\BotSubscriptionStorageException;
 use olml89\XenforoBots\Repository\BotSubscriptionRepository;
-use olml89\XenforoBots\Service\BotSubscriptionFinder;
+use olml89\XenforoBots\Finder\BotSubscriptionFinder;
 
 final class Activate
 {
