@@ -5,7 +5,7 @@ namespace olml89\XenforoBots\UseCase\Post;
 use olml89\XenforoBots\Entity\BotSubscriptionCollection;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Service\WebhookNotifier;
-use olml89\XenforoBots\XF\Entity\Post;
+use XF\Entity\Post;
 
 final class Notify
 {

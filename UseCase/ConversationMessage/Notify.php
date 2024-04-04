@@ -5,8 +5,8 @@ namespace olml89\XenforoBots\UseCase\ConversationMessage;
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Entity\BotSubscriptionCollection;
 use olml89\XenforoBots\Service\WebhookNotifier;
-use olml89\XenforoBots\XF\Entity\User;
-use XF\Entity\ConversationMessage;
+use olml89\XenforoBots\XF\Entity\ConversationMessage;
+use olml89\XenforoBots\XF\Entity\ConversationRecipient;
 
 final class Notify
 {
@@ -16,17 +16,25 @@ final class Notify
         private readonly WebhookNotifier $webhookNotifier,
     ) {}
 
-    /**
-     * @param User[] $usersNotified
-     */
-    public function notify(ConversationMessage $conversationMessage, array $usersNotified): void
+    public function notify(ConversationMessage $conversationMessage): void
     {
-        $notifiableBots = array_filter(
-            array_map(
-                fn (User $user): ?Bot => $user->Bot,
-                $usersNotified
+        /** @var ConversationRecipient[] $notifiableConversationRecipients */
+        $notifiableConversationRecipients = $conversationMessage
+            ->Conversation
+            ->Recipients
+            ->filter(
+                function (ConversationRecipient $conversationRecipient) use ($conversationMessage): bool {
+                    return !$conversationRecipient->User->same($conversationMessage->User)
+                        && !is_null($conversationRecipient->User->Bot);
+                }
             )
+            ->toArray();
+
+        $notifiableBots = array_map(
+            fn (ConversationRecipient $conversationRecipient): Bot => $conversationRecipient->User->Bot,
+            $notifiableConversationRecipients
         );
+
         $botSubscriptions = new BotSubscriptionCollection();
 
         foreach ($notifiableBots as $notifiableBot) {

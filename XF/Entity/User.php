@@ -29,4 +29,9 @@ final class User extends XFCP_User
 
         return $structure;
     }
+
+    public function same(User $user): bool
+    {
+        return $this->user_id === $user->user_id;
+    }
 }
