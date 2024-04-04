@@ -22,7 +22,6 @@ final class User extends XFCP_User
             'entity' => 'olml89\XenforoBots:Bot',
             'type' => self::TO_ONE,
             'conditions' => 'user_id',
-            'primary' => true,
             'cascadeDelete' => true,
         ];
         $structure->defaultWith[] = 'Bot';
