@@ -23,6 +23,10 @@ final class UserFactory
             throw UserValidationException::entity($user);
         }
 
+        if ($user->Auth->hasErrors()) {
+            throw UserValidationException::entity($user->Auth);
+        }
+
         return $user;
     }
 
