@@ -3,8 +3,10 @@
 namespace olml89\XenforoBots\UseCase\Bot;
 
 use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Finder\BotFinder;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 
 final class Retrieve
 {
@@ -13,10 +15,14 @@ final class Retrieve
     ) {}
 
     /**
+     * @throws ApiKeyNotAuthorizedException
      * @throws BotNotFoundException
      */
-    public function retrieve(string $bot_id): Bot
+    public function retrieve(ApiKey $owner, string $bot_id): Bot
     {
-        return $this->botFinder->find($bot_id);
+        $bot = $this->botFinder->find($bot_id);
+        $owner->owns($bot);
+
+        return $bot;
     }
 }

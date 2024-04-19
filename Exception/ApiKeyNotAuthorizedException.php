@@ -2,6 +2,7 @@
 
 namespace olml89\XenforoBots\Exception;
 
+use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\XF\Entity\ApiKey;
 use olml89\XenforoBots\XF\Mvc\Reply\ForbiddenException;
 
@@ -27,6 +28,18 @@ final class ApiKeyNotAuthorizedException extends ForbiddenException
             params: [
                 'api_key_id' => $apiKey->api_key_id,
                 'api_key' => $apiKey->api_key,
+            ]
+        );
+    }
+
+    public static function doesNotOwn(ApiKey $apiKey, Bot $bot): self
+    {
+        return self::fromMessageAndErrorCode(
+            message: 'Bot is not owned by this ApiKey',
+            errorCode: 'api_key.unauthorized',
+            params: [
+                'api_key_id' => $apiKey->api_key_id,
+                'bot_id' => $bot->bot_id,
             ]
         );
     }

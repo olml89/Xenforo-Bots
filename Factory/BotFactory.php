@@ -5,6 +5,7 @@ namespace olml89\XenforoBots\Factory;
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Service\UuidGenerator;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 use olml89\XenforoBots\XF\Entity\User;
 use XF\Mvc\Entity\Manager;
 
@@ -18,9 +19,9 @@ final class BotFactory
     /**
      * @throws BotValidationException
      */
-    public function create(User $user): Bot
+    public function create(ApiKey $owner, User $user): Bot
     {
-        $bot = $this->instantiateBot($user);
+        $bot = $this->instantiateBot($owner, $user);
 
         if ($bot->hasErrors()) {
             throw BotValidationException::entity($bot);
@@ -29,7 +30,7 @@ final class BotFactory
         return $bot;
     }
 
-    private function instantiateBot(User $user): Bot
+    private function instantiateBot(ApiKey $owner, User $user): Bot
     {
         /** @var Bot $bot */
         $bot = $this->entityManager->create(
@@ -37,6 +38,7 @@ final class BotFactory
         );
 
         $bot->bot_id = $this->uuidGenerator->random();
+        $bot->attachToOwner($owner);
         $bot->attachToUser($user);
 
         return $bot;

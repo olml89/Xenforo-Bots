@@ -12,6 +12,7 @@ class Setup extends AbstractSetup
         $this->createTable('olml89_xenforo_bots_bot', function (Create $table)
         {
             $table->addColumn('bot_id', 'varchar', 36)->primaryKey();
+            $table->addColumn('owner_id', 'int')->nullable(false);
             $table->addColumn('user_id', 'int')->nullable(false);
             $table->addColumn('api_key_id', 'int')->nullable(false);
             $table->addColumn('created_at', 'int')->nullable(false);

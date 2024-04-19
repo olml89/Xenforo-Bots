@@ -2,9 +2,9 @@
 
 namespace olml89\XenforoBots\XF\Api\Controller;
 
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Exception\BotStorageException;
-use olml89\XenforoBots\Exception\UserNotAuthorizedException;
 use olml89\XenforoBots\Service\Authorizer;
 use olml89\XenforoBots\UseCase\Bot\Create;
 use XF\Api\Controller\AbstractController;
@@ -26,13 +26,13 @@ final class Bots extends AbstractController
     }
 
     /**
-     * @throws UserNotAuthorizedException
+     * @throws ApiKeyNotAuthorizedException
      * @throws BotValidationException
      * @throws BotStorageException
      */
     public function actionPost(): ApiResult
     {
-        $this->authorizer->assertSuperUserKey();
+        $owner = $this->authorizer->getAuthorizedSuperUserKey();
 
         $this->assertRequiredApiInput([
             'username',
@@ -40,6 +40,7 @@ final class Bots extends AbstractController
         ]);
 
         $bot = $this->createBot->create(
+            owner: $owner,
             username: $this->request->filter('username', 'str'),
             password: $this->request->filter('password', 'str'),
         );

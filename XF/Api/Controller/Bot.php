@@ -2,9 +2,9 @@
 
 namespace olml89\XenforoBots\XF\Api\Controller;
 
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotRemovalException;
-use olml89\XenforoBots\Exception\UserNotAuthorizedException;
 use olml89\XenforoBots\Service\Authorizer;
 use olml89\XenforoBots\UseCase\Bot\Delete;
 use olml89\XenforoBots\UseCase\Bot\Retrieve;
@@ -30,14 +30,17 @@ final class Bot extends AbstractController
     }
 
     /**
-     * @throws UserNotAuthorizedException
+     * @throws ApiKeyNotAuthorizedException
      * @throws BotNotFoundException
      */
     public function actionGet(ParameterBag $params): ApiResult
     {
-        $this->authorizer->assertSuperUserKey();
+        $owner = $this->authorizer->getAuthorizedSuperUserKey();
 
-        $bot = $this->retrieveBot->retrieve($params->get('bot_id'));
+        $bot = $this->retrieveBot->retrieve(
+            owner: $owner,
+            bot_id: $params->get('bot_id')
+        );
 
         return $this->apiSuccess([
             'bot' => $bot,
@@ -45,14 +48,18 @@ final class Bot extends AbstractController
     }
 
     /**
-     * @throws UserNotAuthorizedException
+     * @throws ApiKeyNotAuthorizedException
      * @throws BotNotFoundException
      * @throws BotRemovalException
      */
     public function actionDelete(ParameterBag $params): ApiResult
     {
-        $this->authorizer->assertSuperUserKey();
-        $this->deleteBot->delete($params->get('bot_id'));
+        $owner = $this->authorizer->getAuthorizedSuperUserKey();
+
+        $this->deleteBot->delete(
+            owner: $owner,
+            bot_id: $params->get('bot_id')
+        );
 
         return $this->apiSuccess();
     }

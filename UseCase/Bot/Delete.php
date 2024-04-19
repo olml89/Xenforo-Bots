@@ -2,10 +2,12 @@
 
 namespace olml89\XenforoBots\UseCase\Bot;
 
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Finder\BotFinder;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 
 final class Delete
 {
@@ -15,12 +17,15 @@ final class Delete
     ) {}
 
     /**
+     * @throws ApiKeyNotAuthorizedException
      * @throws BotNotFoundException
      * @throws BotRemovalException
      */
-    public function delete(string $bot_id): void
+    public function delete(ApiKey $owner, string $bot_id): void
     {
         $bot = $this->botFinder->find($bot_id);
+        $owner->owns($bot);
+
         $this->botRepository->delete($bot);
     }
 }

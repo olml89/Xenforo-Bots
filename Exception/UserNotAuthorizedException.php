@@ -10,10 +10,7 @@ final class UserNotAuthorizedException extends ForbiddenException
     public static function noBot(User $user): self
     {
         return self::fromMessageAndErrorCode(
-            message: sprintf(
-                'User \'%s\' is not a Bot',
-                $user->username,
-            ),
+            message: 'User is not a Bot',
             errorCode: 'user.unauthorized',
             params: [
                 'user_id' => $user->user_id,

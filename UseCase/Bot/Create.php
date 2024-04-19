@@ -35,11 +35,11 @@ final class Create
      * @throws BotValidationException
      * @throws BotStorageException
      */
-    public function create(string $username, string $password): Bot
+    public function create(ApiKey $owner, string $username, string $password): Bot
     {
         try {
             $this->database->beginTransaction();
-            $bot = $this->createBot($username, $password);
+            $bot = $this->createBot($owner, $username, $password);
             $this->database->commit();
 
             return $bot;
@@ -54,11 +54,11 @@ final class Create
      * @throws BotValidationException
      * @throws BotStorageException
      */
-    private function createBot(string $username, string $password): Bot
+    private function createBot(ApiKey $owner, string $username, string $password): Bot
     {
         try {
             $user = $this->createUser($username, $password);
-            $bot = $this->botFactory->create($user);
+            $bot = $this->botFactory->create($owner, $user);
             $apiKey = $this->createApiKey($bot);
             $bot->setApiKey($apiKey);
             $this->botRepository->save($bot);
@@ -66,7 +66,6 @@ final class Create
             return $bot;
         }
         catch (UserValidationException|UserStorageException|ApiKeyValidationException|ApiKeyStorageException $e) {
-            //throw $e;
             throw BotValidationException::fromDomainException($e);
         }
     }

@@ -20,7 +20,7 @@ final class Authorizer
     /**
      * @throws ApiKeyNotAuthorizedException
      */
-    public function assertSuperUserKey(): void
+    public function getAuthorizedSuperUserKey(): ApiKey
     {
         /** @var ApiKey $apiKey */
         $apiKey = XF::apiKey();
@@ -28,6 +28,8 @@ final class Authorizer
         if (!$apiKey->is_super_user) {
             throw ApiKeyNotAuthorizedException::superUserRequired($apiKey);
         }
+
+        return $apiKey;
     }
 
     /**

@@ -16,6 +16,7 @@ use XF\Mvc\Entity\Structure;
 /**
  * COLUMNS
  *
+ * @property int $owner_id
  * @property string $bot_id
  * @property int $user_id
  * @property int $api_key_id
@@ -23,6 +24,7 @@ use XF\Mvc\Entity\Structure;
  *
  * RELATIONS
  *
+ * @property-read ApiKey $Owner
  * @property-read User $User
  * @property-read ApiKey $ApiKey
  * @property-read BotSubscriptionCollection $BotSubscriptions
@@ -48,6 +50,10 @@ final class Bot extends Entity
         $structure->contentType = 'olml89_xenforo_bots_bot';
         $structure->primaryKey = 'bot_id';
         $structure->columns = [
+            'owner_id' => [
+                'type' => self::UINT,
+                'required' => true,
+            ],
             'bot_id' => [
                 'type' => self::STR,
                 'length' => 36,
@@ -71,6 +77,12 @@ final class Bot extends Entity
             ]
         ];
         $structure->relations = [
+            'Owner' => [
+                'entity' => 'XF:ApiKey',
+                'type' => self::TO_ONE,
+                'conditions' => 'owner_id',
+                'primary' => true,
+            ],
             'User' => [
                 'entity' => 'XF:User',
                 'type' => self::TO_ONE,
@@ -129,6 +141,12 @@ final class Bot extends Entity
         return $this->bot_id === $bot->bot_id;
     }
 
+    public function attachToOwner(ApiKey $owner): void
+    {
+        $this->owner_id = $owner->api_key_id;
+        $this->hydrateRelation('Owner', $owner);
+    }
+
     public function attachToUser(User $user): void
     {
         $this->user_id = $user->user_id;
@@ -147,7 +165,7 @@ final class Bot extends Entity
     public function owns(BotSubscription $botSubscription): void
     {
         if (!$this->same($botSubscription->Bot)) {
-            throw BotNotAuthorizedException::notAllowed($this);
+            throw BotNotAuthorizedException::doesNotOwn($this, $botSubscription);
         }
     }
 

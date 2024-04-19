@@ -2,6 +2,8 @@
 
 namespace olml89\XenforoBots\XF\Entity;
 
+use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use XF\Api\Result\EntityResult;
 
 /**
@@ -13,6 +15,21 @@ use XF\Api\Result\EntityResult;
  */
 final class ApiKey extends XFCP_ApiKey
 {
+    public function same(ApiKey $apiKey): bool
+    {
+        return $this->api_key_id === $apiKey->api_key_id;
+    }
+
+    /**
+     * @throws ApiKeyNotAuthorizedException
+     */
+    public function owns(Bot $bot): void
+    {
+        if (!$this->same($bot->Owner)) {
+            throw ApiKeyNotAuthorizedException::doesNotOwn($this, $bot);
+        }
+    }
+
     protected function setupApiResultData(
         EntityResult $result,
         $verbosity = self::VERBOSITY_NORMAL,
