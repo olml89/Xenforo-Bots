@@ -11,12 +11,12 @@ abstract class EntityNotFoundException extends NotFoundException
     public static function id(int|string $id): static
     {
         return static::fromMessageAndErrorCode(
-            message: sprintf(
-                'Entity \'%s\' with id \'%s\' not found',
-                static::entityClass(),
-                $id,
-            ),
+            message: 'Entity not found',
             errorCode: static::errorCode(),
+            params: [
+                'entity' => static::entityClass(),
+                'id' => $id,
+            ]
         );
     }
 
@@ -24,11 +24,13 @@ abstract class EntityNotFoundException extends NotFoundException
     {
         return static::fromMessageAndErrorCode(
             message: sprintf(
-                'Entity \'%s\' %s',
-                static::entityClass(),
+                'Entity %s',
                 $message,
             ),
             errorCode: static::errorCode(),
+            params: [
+                'entity' => static::entityClass(),
+            ]
         );
     }
 }

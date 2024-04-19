@@ -11,12 +11,12 @@ abstract class EntityStorageException extends InternalServerErrorException
     public static function entity(Entity $entity, ?Throwable $context = null): static
     {
         return static::fromMessageAndErrorCode(
-            message: sprintf(
-                'Error trying to save \'%s\' with id \'%s\'',
-                $entity::class,
-                $entity->getEntityId(),
-            ),
+            message: 'Error trying to save entity',
             errorCode: static::errorCode(),
+            params: [
+                'entity' => $entity::class,
+                'id' => $entity->getEntityId(),
+            ],
             context: $context,
         );
     }

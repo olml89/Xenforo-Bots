@@ -12,9 +12,12 @@ final class BotNotAuthorizedException extends ForbiddenException
         return self::fromMessageAndErrorCode(
             message: sprintf(
                 'Bot \'%s\' cannot perform this action on this resource',
-                $bot->bot_id,
+                $bot->User->username,
             ),
-            errorCode: 'unauthorized_bot',
+            errorCode: 'bot.unauthorized',
+            params: [
+                'bot_id' => $bot->bot_id,
+            ]
         );
     }
 }

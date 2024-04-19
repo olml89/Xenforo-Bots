@@ -66,6 +66,7 @@ final class Create
             return $bot;
         }
         catch (UserValidationException|UserStorageException|ApiKeyValidationException|ApiKeyStorageException $e) {
+            //throw $e;
             throw BotValidationException::fromDomainException($e);
         }
     }

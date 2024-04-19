@@ -3,6 +3,7 @@
 namespace olml89\XenforoBots\Service;
 
 use olml89\XenforoBots\Entity\Bot;
+use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotAuthorizedException;
 use olml89\XenforoBots\Exception\BotNotFoundException;
 use olml89\XenforoBots\Exception\UserNotAuthorizedException;
@@ -17,18 +18,20 @@ final class Authorizer
     ) {}
 
     /**
-     * @throws UserNotAuthorizedException
+     * @throws ApiKeyNotAuthorizedException
      */
     public function assertSuperUserKey(): void
     {
+        /** @var ApiKey $apiKey */
         $apiKey = XF::apiKey();
 
-        if ($apiKey->key_type !== 'super') {
-            throw UserNotAuthorizedException::noSuperUser($apiKey->User);
+        if (!$apiKey->is_super_user) {
+            throw ApiKeyNotAuthorizedException::superUserRequired($apiKey);
         }
     }
 
     /**
+     * @throws ApiKeyNotAuthorizedException
      * @throws UserNotAuthorizedException
      * @throws BotNotFoundException
      * @throws BotNotAuthorizedException
@@ -46,15 +49,17 @@ final class Authorizer
     }
 
     /**
+     * @throws ApiKeyNotAuthorizedException
      * @throws UserNotAuthorizedException
      */
     private function getAuthenticatedBot(): Bot
     {
         /** @var ApiKey $apiKey */
         $apiKey = XF::apiKey();
+        $t = $apiKey->key_type;
 
-        if ($apiKey->key_type !== 'user') {
-            UserNotAuthorizedException::noPlainUser($apiKey->User);
+        if ($apiKey->is_super_user) {
+            throw ApiKeyNotAuthorizedException::superUserNotAllowed($apiKey);
         }
 
         $authenticatedUser = $apiKey->User;

@@ -20,6 +20,7 @@ abstract class DomainException extends ApiException
         return static::fromMessageAndErrorCode(
             message: $errorMessage->getMessage(),
             errorCode: static::errorCode() . '.' . $errorMessage->getCode(),
+            params: $errorMessage->getParams(),
             context: $domainException->getContext() ?? $domainException,
         );
     }

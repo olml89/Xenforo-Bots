@@ -2,11 +2,8 @@
 
 namespace olml89\XenforoBots\Exception;
 
-use olml89\XenforoBots\XF\Mvc\Reply\DomainException;
 use olml89\XenforoBots\XF\Mvc\Reply\UnprocessableEntityException;
-use XF\Api\ErrorMessage;
 use XF\Mvc\Entity\Entity;
-use XF\Mvc\Reply\Error;
 use XF\PrintableException;
 
 abstract class EntityValidationException extends UnprocessableEntityException

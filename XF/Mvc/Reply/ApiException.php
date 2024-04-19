@@ -9,7 +9,7 @@ use XF\Mvc\Reply\Exception;
 
 abstract class ApiException extends Exception
 {
-    public readonly ?Throwable $context;
+    private readonly ?Throwable $context;
 
     public function __construct(ErrorMessage $apiErrorMessage, ?Throwable $context = null)
     {
@@ -36,11 +36,16 @@ abstract class ApiException extends Exception
 
     abstract protected static function httpCode(): int;
 
-    protected static function fromMessageAndErrorCode(string $message, string $errorCode, ?Throwable $context = null): static
-    {
+    protected static function fromMessageAndErrorCode(
+        string $message,
+        string $errorCode,
+        array $params = [],
+        ?Throwable $context = null
+    ): static {
         $apiErrorMessage = new ErrorMessage(
             message: $message,
             code: $errorCode,
+            params: $params
         );
 
         return new static($apiErrorMessage, $context);

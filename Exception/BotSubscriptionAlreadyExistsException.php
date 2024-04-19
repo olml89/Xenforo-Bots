@@ -15,24 +15,24 @@ final class BotSubscriptionAlreadyExistsException extends ConflictException
     public static function alreadySubscribed(BotSubscription $botSubscription): self
     {
         return self::fromMessageAndErrorCode(
-            message: sprintf(
-                'BotSubscription \'%s\' is already subscribed to Bot \'%s\'',
-                $botSubscription->bot_subscription_id,
-                $botSubscription->bot_id,
-            ),
+            message: 'BotSubscription is already subscribed to another Bot',
             errorCode: self::errorCode(),
+            params: [
+                'bot_id' => $botSubscription->bot_id,
+                'bot_subscription_id' => $botSubscription->bot_subscription_id,
+            ]
         );
     }
 
     public static function sameWebhook(BotSubscription $botSubscription): self
     {
         return self::fromMessageAndErrorCode(
-            message: sprintf(
-                'Bot \'%s\' already has a BotSubscription to the webhook \'%s\'',
-                $botSubscription->bot_id,
-                $botSubscription->webhook,
-            ),
+            message: 'Bot already has a BotSubscription to this webhook',
             errorCode: self::errorCode(),
+            params: [
+                'bot_id' => $botSubscription->bot_id,
+                'webhook' => $botSubscription->webhook,
+            ]
         );
     }
 }
