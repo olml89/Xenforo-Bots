@@ -51,7 +51,7 @@ final class BotSubscriptionFactory
         );
 
         $botSubscription->bot_subscription_id = $this->uuidGenerator->random();
-        $botSubscription->activate();
+        $botSubscription->deactivate();
 
         return $botSubscription;
     }
