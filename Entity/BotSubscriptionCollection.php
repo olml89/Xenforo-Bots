@@ -142,4 +142,9 @@ final class BotSubscriptionCollection implements Countable, Iterator
     {
         reset($this->botSubscriptions);
     }
+
+    public function toArray(): array
+    {
+        return $this->botSubscriptions;
+    }
 }

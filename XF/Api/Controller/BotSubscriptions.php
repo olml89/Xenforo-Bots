@@ -11,6 +11,7 @@ use olml89\XenforoBots\Exception\BotSubscriptionStorageException;
 use olml89\XenforoBots\Exception\UserNotAuthorizedException;
 use olml89\XenforoBots\Service\Authorizer;
 use olml89\XenforoBots\UseCase\BotSubscription\Create;
+use olml89\XenforoBots\UseCase\BotSubscription\Index;
 use XF\Api\Controller\AbstractController;
 use XF\Api\Mvc\Reply\ApiResult;
 use XF\App;
@@ -20,14 +21,33 @@ use XF\Mvc\ParameterBag;
 final class BotSubscriptions extends AbstractController
 {
     private Authorizer $authorizer;
+    private Index $indexBotSubscriptions;
     private Create $createBotSubscription;
 
     public function __construct(App $app, Request $request)
     {
         $this->authorizer = $app->get(Authorizer::class);
+        $this->indexBotSubscriptions = $app->get(Index::class);
         $this->createBotSubscription = $app->get(Create::class);
 
         parent::__construct($app, $request);
+    }
+
+    /**
+     * @throws ApiKeyNotAuthorizedException
+     * @throws UserNotAuthorizedException
+     * @throws BotNotFoundException
+     * @throws BotNotAuthorizedException
+     */
+    public function actionGet(ParameterBag $params): ApiResult
+    {
+        $bot = $this->authorizer->getAuthorizedBot($params->get('bot_id'));
+
+        $botSubscriptions = $this->indexBotSubscriptions->index($bot);
+
+        return $this->apiSuccess([
+            'botSubscriptions' => $botSubscriptions,
+        ]);
     }
 
     /**

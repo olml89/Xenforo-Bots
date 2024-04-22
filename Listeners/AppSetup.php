@@ -24,11 +24,13 @@ use olml89\XenforoBots\Service\WebhookNotifier;
 use olml89\XenforoBots\Finder\BotFinder;
 use olml89\XenforoBots\UseCase\Bot\Create as CreateBot;
 use olml89\XenforoBots\UseCase\Bot\Delete as DeleteBot;
+use olml89\XenforoBots\UseCase\Bot\Index as IndexBots;
 use olml89\XenforoBots\UseCase\Bot\Retrieve as RetrieveBot;
 use olml89\XenforoBots\UseCase\BotSubscription\Activate as ActivateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Create as CreateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Deactivate as DeactivateBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Delete as DeleteBotSubscription;
+use olml89\XenforoBots\UseCase\BotSubscription\Index as IndexBotSubscriptions;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve as RetrieveBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Update as UpdateBotSubscription;
 use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
@@ -207,6 +209,13 @@ final class AppSetup
         /**
          * UseCases
          */
+        $container[IndexBots::class] = function() use ($app): IndexBots
+        {
+            return new IndexBots(
+                botRepository: $app->get(BotRepository::class),
+            );
+        };
+
         $container[CreateBot::class] = function() use ($app): CreateBot
         {
             return new CreateBot(
@@ -233,6 +242,11 @@ final class AppSetup
                 botFinder: $app->get(BotFinder::class),
                 botRepository: $app->get(BotRepository::class),
             );
+        };
+
+        $container[IndexBotSubscriptions::class] = function() use($app): IndexBotSubscriptions
+        {
+            return new IndexBotSubscriptions();
         };
 
         $container[CreateBotSubscription::class] = function() use($app): CreateBotSubscription

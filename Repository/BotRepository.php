@@ -6,6 +6,7 @@ use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\BotRemovalException;
 use olml89\XenforoBots\Exception\BotStorageException;
 use olml89\XenforoBots\Service\ErrorHandler;
+use olml89\XenforoBots\XF\Entity\ApiKey;
 use Throwable;
 use XF\Mvc\Entity\Finder;
 
@@ -19,10 +20,11 @@ final class BotRepository
     /**
      * @return Bot[]
      */
-    public function getAll(): array
+    public function getAll(ApiKey $owner): array
     {
         return $this
             ->botFinder
+            ->where('owner_id', $owner->api_key_id)
             ->fetch()
             ->toArray();
     }
