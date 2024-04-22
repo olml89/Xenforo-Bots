@@ -2,6 +2,7 @@
 
 namespace olml89\XenforoBots\Exception;
 
+use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Entity\BotSubscription;
 use olml89\XenforoBots\XF\Mvc\Reply\ConflictException;
 
@@ -24,13 +25,13 @@ final class BotSubscriptionAlreadyExistsException extends ConflictException
         );
     }
 
-    public static function sameWebhook(BotSubscription $botSubscription): self
+    public static function sameWebhook(Bot $bot, BotSubscription $botSubscription): self
     {
         return self::fromMessageAndErrorCode(
             message: 'Bot already has a BotSubscription to this webhook',
             errorCode: self::errorCode(),
             params: [
-                'bot_id' => $botSubscription->bot_id,
+                'bot_id' => $bot->bot_id,
                 'webhook' => $botSubscription->webhook,
             ]
         );

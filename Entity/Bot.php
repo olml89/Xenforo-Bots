@@ -187,7 +187,7 @@ final class Bot extends Entity
         };
 
         if ($this->BotSubscriptions->contains($checkingEqualsFunction)) {
-            throw BotSubscriptionAlreadyExistsException::sameWebhook($botSubscription);
+            throw BotSubscriptionAlreadyExistsException::sameWebhook($this, $botSubscription);
         }
 
         $this->BotSubscriptions->set($botSubscription);
