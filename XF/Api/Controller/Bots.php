@@ -3,6 +3,7 @@
 namespace olml89\XenforoBots\XF\Api\Controller;
 
 use olml89\XenforoBots\Exception\ApiKeyNotAuthorizedException;
+use olml89\XenforoBots\Exception\BotAlreadyExistsException;
 use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Exception\BotStorageException;
 use olml89\XenforoBots\Service\Authorizer;
@@ -27,6 +28,7 @@ final class Bots extends AbstractController
 
     /**
      * @throws ApiKeyNotAuthorizedException
+     * @throws BotAlreadyExistsException
      * @throws BotValidationException
      * @throws BotStorageException
      */

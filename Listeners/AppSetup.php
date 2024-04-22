@@ -211,12 +211,12 @@ final class AppSetup
         {
             return new CreateBot(
                 database: $app->db(),
+                botRepository: $app->get(BotRepository::class),
                 userFactory: $app->get(UserFactory::class),
                 userRepository: $app->get(UserRepository::class),
                 apiKeyFactory: $app->get(ApiKeyFactory::class),
                 apiKeyRepository: $app->get(ApiKeyRepository::class),
                 botFactory: $app->get(BotFactory::class),
-                botRepository: $app->get(BotRepository::class),
             );
         };
 

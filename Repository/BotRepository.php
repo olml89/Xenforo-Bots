@@ -29,13 +29,24 @@ final class BotRepository
 
     public function get(string $bot_id): ?Bot
     {
-        /** @var ?Bot $bot */
-        $bot = $this
+        /**
+         * @var ?Bot
+         */
+        return $this
             ->botFinder
             ->whereId($bot_id)
             ->fetchOne();
+    }
 
-        return $bot;
+    public function getByUsername(string $username): ?Bot
+    {
+        /**
+         * @var ?Bot
+         */
+        return $this
+            ->botFinder
+            ->where('User.username', $username)
+            ->fetchOne();
     }
 
     /**

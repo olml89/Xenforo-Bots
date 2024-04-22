@@ -38,7 +38,7 @@ final class UserFactory
         $user->username = $username;
         $user->Auth->setPassword($password);
 
-        // This allows the creation of an User without a set email address
+        // This allows the creation of a User without a set email address
         $user->setOption('admin_edit', true);
 
         return $user;

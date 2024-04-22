@@ -63,7 +63,6 @@ final class Bot extends Entity
             'user_id' => [
                 'type' => self::UINT,
                 'required' => true,
-                'api' => true,
             ],
             'api_key_id' => [
                 'type' => self::UINT,
@@ -89,6 +88,7 @@ final class Bot extends Entity
                 'conditions' => 'user_id',
                 'primary' => true,
                 'cascadeDelete' => true,
+                'api' => true,
             ],
             'ApiKey' => [
                 'entity' => 'XF:ApiKey',

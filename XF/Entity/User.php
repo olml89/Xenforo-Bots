@@ -3,6 +3,7 @@
 namespace olml89\XenforoBots\XF\Entity;
 
 use olml89\XenforoBots\Entity\Bot;
+use XF\Api\Result\EntityResult;
 use XF\Mvc\Entity\Structure;
 
 /**

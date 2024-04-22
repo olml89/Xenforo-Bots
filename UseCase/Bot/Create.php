@@ -5,6 +5,7 @@ namespace olml89\XenforoBots\UseCase\Bot;
 use olml89\XenforoBots\Entity\Bot;
 use olml89\XenforoBots\Exception\ApiKeyValidationException;
 use olml89\XenforoBots\Exception\ApiKeyStorageException;
+use olml89\XenforoBots\Exception\BotAlreadyExistsException;
 use olml89\XenforoBots\Exception\BotValidationException;
 use olml89\XenforoBots\Exception\BotStorageException;
 use olml89\XenforoBots\Exception\UserValidationException;
@@ -23,15 +24,16 @@ final class Create
 {
     public function __construct(
         private readonly AbstractAdapter $database,
+        private readonly BotRepository $botRepository,
         private readonly UserFactory $userFactory,
         private readonly UserRepository $userRepository,
         private readonly ApiKeyFactory $apiKeyFactory,
         private readonly ApiKeyRepository $apiKeyRepository,
         private readonly BotFactory $botFactory,
-        private readonly BotRepository $botRepository,
     ) {}
 
     /**
+     * @throws BotAlreadyExistsException
      * @throws BotValidationException
      * @throws BotStorageException
      */
@@ -51,12 +53,17 @@ final class Create
     }
 
     /**
+     * @throws BotAlreadyExistsException
      * @throws BotValidationException
      * @throws BotStorageException
      */
     private function createBot(ApiKey $owner, string $username, string $password): Bot
     {
         try {
+            if (!is_null($bot = $this->botRepository->getByUsername($username))) {
+                throw BotAlreadyExistsException::bot($bot);
+            }
+
             $user = $this->createUser($username, $password);
             $bot = $this->botFactory->create($owner, $user);
             $apiKey = $this->createApiKey($bot);

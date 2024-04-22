@@ -15,6 +15,7 @@ abstract class EntityValidationException extends UnprocessableEntityException
         return static::fromMessageAndErrorCode(
             message: $printableException->getMessage(),
             errorCode: static::errorCode() . '.' . $printableException->getCode(),
+            params: $entity->getErrors(),
             context: $printableException,
         );
     }
