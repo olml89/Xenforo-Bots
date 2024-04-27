@@ -17,6 +17,6 @@ final class Index
      */
     public function index(ApiKey $owner): array
     {
-        return $this->botRepository->getAll($owner);
+        return $this->botRepository->getOwnedBy($owner);
     }
 }

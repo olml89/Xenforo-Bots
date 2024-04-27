@@ -20,7 +20,18 @@ final class BotRepository
     /**
      * @return Bot[]
      */
-    public function getAll(ApiKey $owner): array
+    public function getAll(): array
+    {
+        return $this
+            ->botFinder
+            ->fetch()
+            ->toArray();
+    }
+
+    /**
+     * @return Bot[]
+     */
+    public function getOwnedBy(ApiKey $owner): array
     {
         return $this
             ->botFinder

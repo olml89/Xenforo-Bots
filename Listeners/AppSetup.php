@@ -10,7 +10,6 @@ use olml89\XenforoBots\Factory\BotSubscriptionFactory;
 use olml89\XenforoBots\Factory\UserFactory;
 use olml89\XenforoBots\Finder\ConversationMessageFinder;
 use olml89\XenforoBots\Finder\PostFinder;
-use olml89\XenforoBots\Finder\UserAlertFinder;
 use olml89\XenforoBots\Repository\ApiKeyRepository;
 use olml89\XenforoBots\Repository\BotRepository;
 use olml89\XenforoBots\Repository\BotSubscriptionRepository;
@@ -20,7 +19,7 @@ use olml89\XenforoBots\Finder\BotSubscriptionFinder;
 use olml89\XenforoBots\Service\ErrorHandler;
 use olml89\XenforoBots\Service\NotificationEnqueuer;
 use olml89\XenforoBots\Service\UuidGenerator;
-use olml89\XenforoBots\Service\WebhookNotifier;
+use olml89\XenforoBots\Service\Notifier\WebhookNotifier;
 use olml89\XenforoBots\Finder\BotFinder;
 use olml89\XenforoBots\UseCase\Bot\Create as CreateBot;
 use olml89\XenforoBots\UseCase\Bot\Delete as DeleteBot;
@@ -33,14 +32,15 @@ use olml89\XenforoBots\UseCase\BotSubscription\Delete as DeleteBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Index as IndexBotSubscriptions;
 use olml89\XenforoBots\UseCase\BotSubscription\Retrieve as RetrieveBotSubscription;
 use olml89\XenforoBots\UseCase\BotSubscription\Update as UpdateBotSubscription;
-use olml89\XenforoBots\UseCase\ConversationMessage\Notify as NotifyConversationMessage;
-use olml89\XenforoBots\UseCase\Post\Notify as NotifyPost;
-use olml89\XenforoBots\UseCase\UserAlert\Notify as NotifyUserAlert;
+use olml89\XenforoBots\UseCase\Notification\Content\ContentFactory;
+use olml89\XenforoBots\UseCase\Notification\Notify as NotifyNotifiable;
+use olml89\XenforoBots\UseCase\Notification\PublicInteraction\PublicInteractionFactory;
 use olml89\XenforoBots\XF\Validator\Md5Token;
 use olml89\XenforoBots\XF\Validator\Uuid;
 use Stripe\Util\RandomGenerator;
 use XF\App;
 use XF\Container;
+use XF\Repository\User;
 use XF\Validator\AbstractValidator;
 
 final class AppSetup
@@ -49,6 +49,7 @@ final class AppSetup
     {
         return $app->http()->createClient([
             'headers' => [
+                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],
             'http_errors' => true,
@@ -89,12 +90,24 @@ final class AppSetup
 
         $container[UserFactory::class] = function() use ($app): UserFactory
         {
-            /** @var \XF\Repository\User $userRepository */
+            /** @var User $userRepository */
             $userRepository = $app->repository('XF:User');
 
             return new UserFactory(
                 userRepository: $userRepository,
             );
+        };
+
+        $container[ContentFactory::class] = function() use ($app): ContentFactory
+        {
+            return new ContentFactory(
+                botRepository: $app->get(BotRepository::class),
+            );
+        };
+
+        $container[PublicInteractionFactory::class] = function() use ($app): PublicInteractionFactory
+        {
+            return new PublicInteractionFactory();
         };
 
         /**
@@ -125,13 +138,6 @@ final class AppSetup
         {
             return new PostFinder(
                 postFinder: $app->finder('XF:Post'),
-            );
-        };
-
-        $container[UserAlertFinder::class] = function() use($app): UserAlertFinder
-        {
-            return new UserAlertFinder(
-                userAlertFinder: $app->finder('XF:UserAlert'),
             );
         };
 
@@ -190,6 +196,8 @@ final class AppSetup
         {
             return new NotificationEnqueuer(
                 jobManager: $app->jobManager(),
+                contentFactory: $app->get(ContentFactory::class),
+                publicInteractionFactory: $app->get(PublicInteractionFactory::class),
             );
         };
 
@@ -202,7 +210,6 @@ final class AppSetup
         {
             return new WebhookNotifier(
                 httpClient: self::createJsonHttpClient($app),
-                error: $app->error(),
             );
         };
 
@@ -297,25 +304,11 @@ final class AppSetup
             );
         };
 
-        $container[NotifyConversationMessage::class] = function() use($app): NotifyConversationMessage
+        $container[NotifyNotifiable::class] = function() use($app): NotifyNotifiable
         {
-            return new NotifyConversationMessage(
+            return new NotifyNotifiable(
                 webhookNotifier: $app->get(WebhookNotifier::class),
-            );
-        };
-
-        $container[NotifyPost::class] = function() use($app): NotifyPost
-        {
-            return new NotifyPost(
-                botRepository: $app->get(BotRepository::class),
-                webhookNotifier: $app->get(WebhookNotifier::class),
-            );
-        };
-
-        $container[NotifyUserAlert::class] = function() use($app): NotifyUserAlert
-        {
-            return new NotifyUserAlert(
-                webhookNotifier: $app->get(WebhookNotifier::class),
+                error: $app->error(),
             );
         };
 
